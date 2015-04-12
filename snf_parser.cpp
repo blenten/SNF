@@ -10,11 +10,8 @@ FunctionType SNF_Parser::parse(std::string input, Expression &output)
 {
     if (input.length()==0) return OTHER;
      _input=input;
-     std::cout <<_input<<'\n';
-    removeUnused();
-    std::cout <<_input<<'\n';
-     std::cout <<checkBrackets();
-   // if (!checkBrackets()) return OTHER;
+     removeUnused();
+ if (!checkBrackets()) return OTHER;
 
     std::vector <std::string> variables;
 
