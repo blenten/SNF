@@ -40,7 +40,6 @@ private:
         SYMBOL_SPACE,
         SYMBOL_OTHER
     };
-    int functionType;
      std::string _input;
     int getSymbolType(char symb);
     bool checkBrackets();
