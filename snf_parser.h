@@ -6,6 +6,12 @@
 #include <iostream>
 #include <ctype.h>
 
+//Parser of string with SNF function
+//NOTE: variables may delim by:
+//operations: x1+x2, y1*y2
+//brackets: (x1)(x2), (x1+x2)(x1+!x2), this will interpret as conjunction
+//all spaces and unused symbols will be removed
+
 enum FunctionType {
     OTHER=-1, SDNF, SKNF
 };

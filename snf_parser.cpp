@@ -11,6 +11,7 @@ FunctionType SNF_Parser::parse(std::string input, Expression &output)
     if (input.length()==0) return OTHER;
      _input=input;
      removeUnused();
+     std::cout <<checkBrackets();
  if (!checkBrackets()) return OTHER;
 
     std::vector <std::string> variables;
