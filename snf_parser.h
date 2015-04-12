@@ -38,6 +38,7 @@ private:
      std::string _input;
     int getSymbolType(char symb);
     bool checkBrackets();
+    void removeUnused();
     int getVariables (std::vector<std::string> & variables);
 
 public:

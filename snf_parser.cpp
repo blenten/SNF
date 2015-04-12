@@ -9,10 +9,15 @@ SNF_Parser::SNF_Parser()
 FunctionType SNF_Parser::parse(std::string input, Expression &output)
 {
     if (input.length()==0) return OTHER;
-    _input=input;
+     _input=input;
+     std::cout <<_input<<'\n';
+    removeUnused();
+    std::cout <<_input<<'\n';
+     std::cout <<checkBrackets();
+   // if (!checkBrackets()) return OTHER;
+
     std::vector <std::string> variables;
-   // getVariables(input, variables);
-    std::cout <<checkBrackets();
+
 }
 
 int SNF_Parser::getSymbolType(char symb)
@@ -58,12 +63,38 @@ int SNF_Parser::getVariables(std::vector<std::string> &variables)
         if (getSymbolType(_input[i])==SYMBOL_RBRACKET)
         {
             if (lCount<=rCount) return false;
+
+            //like as: (x+y+)z
+            if (getSymbolType(_input[i-1])!=SYMBOL_OPERAND) return false;
             rCount++;
         }
         else if (getSymbolType(_input[i])==SYMBOL_LBRACKET)
+        {
+            if (getSymbolType(_input[i+1])!=SYMBOL_OPERAND) return false;
             lCount++;
+        }
     }
     if (lCount==rCount) return true;
     return false;
   }
 
+ void SNF_Parser::removeUnused()
+ {
+     int i=0;
+     while (_input[i]!='\0')
+     {
+         if (getSymbolType(_input[i])==SYMBOL_OTHER)_input.erase(i,1);
+         else i++;
+     }
+    i=0;
+     while (_input[i]!='\0')
+     {
+         if (getSymbolType(_input[i])==SYMBOL_SPACE)
+         {
+             _input.erase(i,1);
+             i--;
+         }
+         i++;
+     }
+
+ }
