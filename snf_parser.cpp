@@ -9,7 +9,8 @@ FunctionType SNF_Parser::parse(std::string input, Expression &output)
      std::vector <std::string> variables;
      getVariables(variables);
      for (int i=0;i<variables.size();i++)
-         std::cout <<variables[i]<<"\n";
+         std::cout <<variables[i]<<" ";
+     std::cout<<"\n";
 
 }
 
@@ -27,7 +28,7 @@ int SNF_Parser::getSymbolType(char symb)
     return SYMBOL_OTHER;
 }
 
-
+//so scary...
 void SNF_Parser::getVariables(std::vector<std::string> &variables)
 {
     std::string currVar="";
@@ -44,19 +45,39 @@ lena--;
     {
        if(isDisjunctionCurr!=-1) isDisjunstionPrev=isDisjunctionCurr;
 
+
         currVar=getOperand(lena);
         if (currVar!="")
           variables.push_back(currVar);
 
         currType=getSymbolType(_input[lena-1]);
+
+
         //conjunction is "*" or ()() or x(.. or ..)x
         if (currType==SYMBOL_CONJUNCTION ||
           (currType==SYMBOL_RBRACKET && getSymbolType(_input[lena])==SYMBOL_LBRACKET)||
-           (currType==SYMBOL_OPERAND && getSymbolType(_input[lena-2])==SYMBOL_LBRACKET)||
-           (currType==SYMBOL_RBRACKET && getSymbolType(_input[lena-2])==SYMBOL_OPERAND))
-            isDisjunctionCurr=0;
-           else if (currType==SYMBOL_DISJUNCTION) isDisjunctionCurr=1;
-                else isDisjunctionCurr=-1;
+           (currType==SYMBOL_RBRACKET && getSymbolType(_input[lena])==SYMBOL_OPERAND))
+             isDisjunctionCurr=0;
+
+        //situation like as: x(y+z)
+        else if (currType==SYMBOL_LBRACKET && getSymbolType(_input[lena])==SYMBOL_OPERAND)
+        {
+            int tmp=lena;
+            getOperand(tmp);
+            if (getSymbolType(_input[tmp-1])==SYMBOL_DISJUNCTION){
+                if (isDisjunctionCurr==0 || isDisjunctionCurr==-1) return;
+                    else isDisjunctionCurr=1;
+            }
+            else if (getSymbolType(_input[tmp-1])==SYMBOL_CONJUNCTION){
+                if (isDisjunctionCurr==1 || isDisjunctionCurr==-1) return;
+                    else isDisjunctionCurr=0;
+            }
+
+            else if (isDisjunctionCurr==-1) isDisjunctionCurr=0;
+        }
+
+        else if (currType==SYMBOL_DISJUNCTION) isDisjunctionCurr=1;
+        else isDisjunctionCurr=-1;
 
         if(isDisjunctionCurr!=-1 && isDisjunstionPrev!=-1)
              if (isDisjunctionCurr!=isDisjunstionPrev)
