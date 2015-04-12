@@ -6,6 +6,8 @@ FunctionType SNF_Parser::parse(std::string input, Expression &output)
      _input=input;
      removeUnused();
    if (!checkBrackets()) return OTHER;
+   int i=0;
+    while (_input[i]!='\0') std::cout<<getOperand(i);
 
     std::vector <std::string> variables;
 
@@ -18,7 +20,7 @@ int SNF_Parser::getSymbolType(char symb)
     if (symb=='&' || symb=='*') return SYMBOL_CONJUNCTION;
     if (symb=='|' || symb=='+') return SYMBOL_DISJUNCTION;
     if (symb=='!' || symb=='-') return SYMBOL_INVERSE;
-    if (isdigit(symb)||isalpha(symb)) return SYMBOL_OPERAND;
+    if (isdigit(symb) || isalpha(symb)) return SYMBOL_OPERAND;
     if (symb==' ') return SYMBOL_SPACE;
     if (symb=='\0') return SYMBOL_ZERO;
 
@@ -30,7 +32,7 @@ int SNF_Parser::getVariables(std::vector<std::string> &variables)
 {
     std::string currVar="";
 
-    size_t len=_input.length();
+    size_t lenochka=_input.length();
 
     int currIndex=0;
     int varNumber=0;
@@ -62,7 +64,8 @@ int SNF_Parser::getVariables(std::vector<std::string> &variables)
         // y(+x)
         else if (getSymbolType(_input[i])==SYMBOL_LBRACKET)
         {
-            if (getSymbolType(_input[i+1])!=SYMBOL_OPERAND) return false;
+            if (getSymbolType(_input[i+1])!=SYMBOL_OPERAND &&
+                getSymbolType(_input[i+1])!=SYMBOL_INVERSE) return false;
             lCount++;
         }
     }
@@ -89,3 +92,21 @@ int SNF_Parser::getVariables(std::vector<std::string> &variables)
      }
 
  }
+
+   std::string SNF_Parser::getOperand (int &index)
+   {
+    std::string output;
+    while (getSymbolType(_input[index])!=SYMBOL_CONJUNCTION &&
+           getSymbolType(_input[index])!=SYMBOL_DISJUNCTION &&
+           getSymbolType(_input[index])!=SYMBOL_LBRACKET &&
+           getSymbolType(_input[index])!=SYMBOL_RBRACKET &&
+                 getSymbolType(_input[index])!=SYMBOL_ZERO)
+    {
+        if (getSymbolType(_input[index])==SYMBOL_OPERAND ||
+            getSymbolType(_input[index])==SYMBOL_INVERSE) output+=_input[index];
+        index++;
+    }
+    index++;
+
+   return output;
+   }

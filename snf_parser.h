@@ -44,13 +44,14 @@ private:
     int getSymbolType(char symb);
     bool checkBrackets();
     void removeUnused();
+    //gets an operand and increase index to position after delim
+    std::string getOperand (int &index);
     int getVariables (std::vector<std::string> & variables);
 
 public:
 
     FunctionType parse (std::string input, Expression &output);
 
-    SNF_Parser();
 };
 
 #endif // SNF_PARSER_H
