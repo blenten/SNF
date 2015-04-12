@@ -28,16 +28,16 @@ int SNF_Parser::getSymbolType(char symb)
 }
 
 
-int SNF_Parser::getVariables(std::vector<std::string> &variables)
+void SNF_Parser::getVariables(std::vector<std::string> &variables)
 {
     std::string currVar="";
 
     int lena=0;
-      currVar="";
     int currType;
     int isDisjunstionPrev=-1, isDisjunctionCurr=-1;
 
-while (getSymbolType(_input[lena++])!=SYMBOL_OPERAND);
+while (getSymbolType(_input[lena++])!=SYMBOL_OPERAND); //if there is a bracket
+
 lena--;
 
     while (_input[lena]!='\0')
@@ -47,28 +47,26 @@ lena--;
         currVar=getOperand(lena);
         if (currVar!="")
           variables.push_back(currVar);
+
         currType=getSymbolType(_input[lena-1]);
+        //conjunction is "*" or ()() or x(.. or ..)x
         if (currType==SYMBOL_CONJUNCTION ||
-          (currType==SYMBOL_RBRACKET && getSymbolType(_input[lena])==SYMBOL_LBRACKET))
-                   isDisjunctionCurr=0;
+          (currType==SYMBOL_RBRACKET && getSymbolType(_input[lena])==SYMBOL_LBRACKET)||
+           (currType==SYMBOL_OPERAND && getSymbolType(_input[lena-2])==SYMBOL_LBRACKET)||
+           (currType==SYMBOL_RBRACKET && getSymbolType(_input[lena-2])==SYMBOL_OPERAND))
+            isDisjunctionCurr=0;
            else if (currType==SYMBOL_DISJUNCTION) isDisjunctionCurr=1;
                 else isDisjunctionCurr=-1;
 
-     if(isDisjunctionCurr!=-1 && isDisjunstionPrev!=-1)
-         if (isDisjunctionCurr!=isDisjunstionPrev)
-         {
-
-             currVar=getOperand(lena);
-              if (currVar!="")
-                variables.push_back(currVar);
-              return 0;
-         }
-
+        if(isDisjunctionCurr!=-1 && isDisjunstionPrev!=-1)
+             if (isDisjunctionCurr!=isDisjunstionPrev)
+                  return;
     }
 }
 
 
-  bool SNF_Parser::checkBrackets()
+
+bool SNF_Parser::checkBrackets()
   {
     int len=_input.length();
     int lCount=0, rCount=0;
@@ -96,7 +94,7 @@ lena--;
     return false;
   }
 
- void SNF_Parser::removeUnused()
+void SNF_Parser::removeUnused()
  {
      int i=0;
      while (_input[i]!='\0')
@@ -117,7 +115,7 @@ lena--;
  }
 
 
- std::string SNF_Parser::getOperand (int &index)
+std::string SNF_Parser::getOperand (int &index)
    {
     std::string output;
     while (getSymbolType(_input[index])!=SYMBOL_CONJUNCTION &&
