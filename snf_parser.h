@@ -47,7 +47,8 @@ private:
     void removeUnused();
     //gets an operand and increase index to position after delim
     std::string getOperand (int &index);
-    void getVariables (std::vector<std::string> & variables);
+   FunctionType getVariables (std::vector<std::string> & variables);
+
     bool checkOperationAfterInverse();
     int checkOperandAfterLBracket(int index, int isDisjunctionCurr);
     bool isVariablesRepeat(std::vector<std::string> &variables);

@@ -2,13 +2,14 @@
 
 FunctionType SNF_Parser::parse(std::string input, Expression &output)
 {
+    FunctionType ft;
     if (input.length()==0) return OTHER;
      _input=input;
      removeUnused();
    if (!checkBrackets()) return OTHER;
    if (!checkOperationAfterInverse()) return OTHER;
      std::vector <std::string> variables;
-     getVariables(variables);
+  ft= getVariables(variables);
 
     if (isVariablesRepeat(variables)) return OTHER;
 
@@ -30,7 +31,7 @@ int SNF_Parser::getSymbolType(char symb)
 }
 
 //so scary...
-void SNF_Parser::getVariables(std::vector<std::string> &variables)
+FunctionType SNF_Parser::getVariables(std::vector<std::string> &variables)
 {
     std::string currVar="";
     int lena=0;
@@ -61,7 +62,8 @@ void SNF_Parser::getVariables(std::vector<std::string> &variables)
         else if (currType==SYMBOL_LBRACKET && getSymbolType(_input[lena])==SYMBOL_OPERAND)
         {
            isDisjunctionCurr=checkOperandAfterLBracket(lena, isDisjunctionCurr);
-           if (isDisjunctionCurr==-1) return;
+           if (isDisjunctionCurr==-1) return isDisjunstionPrev? SKNF:SDNF;
+           else if (isDisjunctionCurr==-2) return isDisjunstionPrev? SDNF:SKNF;
         }
 
         else if (currType==SYMBOL_DISJUNCTION) isDisjunctionCurr=1;
@@ -69,8 +71,12 @@ void SNF_Parser::getVariables(std::vector<std::string> &variables)
 
         if(isDisjunctionCurr!=-1 && isDisjunstionPrev!=-1)
              if (isDisjunctionCurr!=isDisjunstionPrev)
-                  return;
+             {
+                 return isDisjunstionPrev? SKNF:SDNF;
+             }
     }
+    return isDisjunstionPrev? SKNF:SDNF;
+
 }
 
 
@@ -151,7 +157,8 @@ int SNF_Parser::checkOperandAfterLBracket(int index, int isDisjunctionCurr)
    {
        getOperand(index);
        if (getSymbolType(_input[index-1])==SYMBOL_DISJUNCTION){
-           if (isDisjunctionCurr==0 || isDisjunctionCurr==-1) return -1;
+           if (isDisjunctionCurr==-1) return -2;
+           else if (isDisjunctionCurr==0) return -1;
                else isDisjunctionCurr=1;
        }
        else if (getSymbolType(_input[index-1])==SYMBOL_CONJUNCTION){
