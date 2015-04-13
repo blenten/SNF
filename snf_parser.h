@@ -52,6 +52,7 @@ private:
     int checkOperandAfterLBracket(int index, int isDisjunctionCurr);
     bool isVariablesRepeat(std::vector<std::string> &variables);
 
+
 public:
 
     FunctionType parse (std::string input, Expression &output);

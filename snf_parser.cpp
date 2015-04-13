@@ -9,7 +9,7 @@ FunctionType SNF_Parser::parse(std::string input, Expression &output)
    if (!checkOperationAfterInverse()) return OTHER;
      std::vector <std::string> variables;
      getVariables(variables);
-     for (int i=0;i<variables.size();i++) std::cout <<variables[i]<<" ";
+
     if (isVariablesRepeat(variables)) return OTHER;
 
 
