@@ -13,6 +13,12 @@ FunctionType SNF_Parser::parse(std::string input, Expression &output)
 
     if (isVariablesRepeat(variables)) return OTHER;
 
+    switch(ft)
+    {
+    case -1: std::cout <<"OTHER\n"; break;
+    case 0: std::cout <<"SDNF\n"; break;
+    case 1: std::cout << "SKNF\n"; break;
+    }
 
 }
 
@@ -30,7 +36,7 @@ int SNF_Parser::getSymbolType(char symb)
     return SYMBOL_OTHER;
 }
 
-//so scary...
+
 FunctionType SNF_Parser::getVariables(std::vector<std::string> &variables)
 {
     std::string currVar="";
@@ -58,8 +64,7 @@ FunctionType SNF_Parser::getVariables(std::vector<std::string> &variables)
            (currType==SYMBOL_RBRACKET && getSymbolType(_input[lena])==SYMBOL_OPERAND))
              isDisjunctionCurr=0;
 
-        //situation like as: x(y+z)
-        else if (currType==SYMBOL_LBRACKET && getSymbolType(_input[lena])==SYMBOL_OPERAND)
+        else if (currType==SYMBOL_LBRACKET && getSymbolType(_input[lena])==SYMBOL_OPERAND) //situation like as: x(y+z)
         {
            isDisjunctionCurr=checkOperandAfterLBracket(lena, isDisjunctionCurr);
            if (isDisjunctionCurr==-1) return isDisjunstionPrev? SKNF:SDNF;
@@ -69,11 +74,9 @@ FunctionType SNF_Parser::getVariables(std::vector<std::string> &variables)
         else if (currType==SYMBOL_DISJUNCTION) isDisjunctionCurr=1;
         else isDisjunctionCurr=-1;
 
-        if(isDisjunctionCurr!=-1 && isDisjunstionPrev!=-1)
-             if (isDisjunctionCurr!=isDisjunstionPrev)
-             {
-                 return isDisjunstionPrev? SKNF:SDNF;
-             }
+        if(isDisjunctionCurr!=-1 && isDisjunstionPrev!=-1 /*&& isDisjunctionCurr!=isDisjunstionPrev*/)
+             return isDisjunstionPrev? SKNF:SDNF;
+
     }
     return isDisjunstionPrev? SKNF:SDNF;
 
@@ -154,7 +157,7 @@ std::string SNF_Parser::getOperand (int &index)
    }
 
 int SNF_Parser::checkOperandAfterLBracket(int index, int isDisjunctionCurr)
-   {
+{
        getOperand(index);
        if (getSymbolType(_input[index-1])==SYMBOL_DISJUNCTION){
            if (isDisjunctionCurr==-1) return -2;
@@ -162,14 +165,15 @@ int SNF_Parser::checkOperandAfterLBracket(int index, int isDisjunctionCurr)
                else isDisjunctionCurr=1;
        }
        else if (getSymbolType(_input[index-1])==SYMBOL_CONJUNCTION){
-           if (isDisjunctionCurr==1 || isDisjunctionCurr==-1) return -1;
+           if (isDisjunctionCurr==1) return -1;
+           else if (isDisjunctionCurr==-1) return -2;
                else isDisjunctionCurr=0;
        }
 
        else if (isDisjunctionCurr==-1) isDisjunctionCurr=0;
 
        return isDisjunctionCurr;
-   }
+}
 
 bool SNF_Parser::isVariablesRepeat(std::vector<std::string> &variables)
  {
