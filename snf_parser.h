@@ -10,6 +10,7 @@
 //NOTE: variables may delim by:
 //operations: x1+x2, y1*y2
 //brackets: (x1)(x2), (x1+x2)(x1+!x2), this will interpret as conjunction
+//inverse: x1!x2!x3 as conjunction
 //all spaces and unused symbols will be removed
 
 enum FunctionType {
@@ -47,7 +48,7 @@ private:
     //gets an operand and increase index to position after delim
     std::string getOperand (int &index);
     void getVariables (std::vector<std::string> & variables);
-
+    bool checkOperationAfterInverse();
     int checkOperandAfterLBracket(int index, int isDisjunctionCurr);
     bool isVariablesRepeat(std::vector<std::string> &variables);
 

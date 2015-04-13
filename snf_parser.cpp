@@ -6,9 +6,10 @@ FunctionType SNF_Parser::parse(std::string input, Expression &output)
      _input=input;
      removeUnused();
    if (!checkBrackets()) return OTHER;
+   if (!checkOperationAfterInverse()) return OTHER;
      std::vector <std::string> variables;
      getVariables(variables);
-     std::cout <<isVariablesRepeat(variables);
+     for (int i=0;i<variables.size();i++) std::cout <<variables[i]<<" ";
     if (isVariablesRepeat(variables)) return OTHER;
 
 
@@ -132,7 +133,13 @@ std::string SNF_Parser::getOperand (int &index)
            getSymbolType(_input[index])!=SYMBOL_RBRACKET &&
                  getSymbolType(_input[index])!=SYMBOL_ZERO)
     {
-        if (getSymbolType(_input[index])==SYMBOL_OPERAND) output+=_input[index];
+         if (getSymbolType(_input[index])==SYMBOL_INVERSE)
+         {
+          _input.insert(index, "&");
+          index+=2;
+          return output;
+         }
+       else if (getSymbolType(_input[index])==SYMBOL_OPERAND) output+=_input[index];
         index++;
     }
     index++;
@@ -169,3 +176,14 @@ bool SNF_Parser::isVariablesRepeat(std::vector<std::string> &variables)
 
     return 0;
  }
+
+bool SNF_Parser::checkOperationAfterInverse()
+{
+ int len=_input.size();
+ for (int i=0;i<len-1;i++)
+     if (getSymbolType(_input[i])== SYMBOL_INVERSE && getSymbolType(_input[i])!=SYMBOL_OPERAND) return 0;
+
+ if (getSymbolType(_input[len-1])==SYMBOL_INVERSE) return 0;
+ return 1;
+
+}
