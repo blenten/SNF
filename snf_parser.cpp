@@ -10,7 +10,7 @@ FunctionType SNF_Parser::parse(std::string input, Expression &output)
    if (!checkOperationAfterInverse()) return OTHER;
    std::vector <std::string> variables;
    ft= getVariables(variables);
-  //  for (int i=0;i<variables.size();i++) std::cout<< variables[i]<<" ";
+    for (int i=0;i<variables.size();i++) std::cout<< variables[i]<<" ";
     if (isVariablesRepeat(variables)) return OTHER;
 
     switch(ft)
@@ -74,7 +74,7 @@ FunctionType SNF_Parser::getVariables(std::vector<std::string> &variables)
         else if (currType==SYMBOL_DISJUNCTION) isDisjunctionCurr=1;
         else isDisjunctionCurr=-1;
 
-        if(isDisjunctionCurr!=-1 && isDisjunstionPrev!=-1 /*&& isDisjunctionCurr!=isDisjunstionPrev*/)
+        if(isDisjunctionCurr!=-1 && isDisjunstionPrev!=-1 && isDisjunctionCurr!=isDisjunstionPrev)
              return isDisjunstionPrev? SKNF:SDNF;
 
     }
@@ -193,7 +193,14 @@ bool SNF_Parser::checkOperationAfterInverse()
 {
  int len=_input.size();
  for (int i=0;i<len-1;i++)
-     if (getSymbolType(_input[i])== SYMBOL_INVERSE && getSymbolType(_input[i+1])!=SYMBOL_OPERAND) return 0;
+     if (getSymbolType(_input[i])== SYMBOL_INVERSE && getSymbolType(_input[i+1])==SYMBOL_INVERSE)
+     {
+         _input.erase(i,2);
+         _input.insert(i,"&");
+         len--;
+       \
+     }
+    else if (getSymbolType(_input[i])== SYMBOL_INVERSE && getSymbolType(_input[i+1])!=SYMBOL_OPERAND) return 0;
 
  if (getSymbolType(_input[len-1])==SYMBOL_INVERSE) return 0;
  return 1;
