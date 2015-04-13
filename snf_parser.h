@@ -48,6 +48,9 @@ private:
     std::string getOperand (int &index);
     void getVariables (std::vector<std::string> & variables);
 
+    int checkOperandAfterLBracket(int index, int isDisjunctionCurr);
+    bool isVariablesRepeat(std::vector<std::string> &variables);
+
 public:
 
     FunctionType parse (std::string input, Expression &output);

@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
     Expression ex;
     std::string input="x1*x2*x3+x1*!x2*x3";
 
-    std::string test="(x2)(x3)(x4+x3)";
+    std::string test="x+y+x1+z";
     parser.parse(test,ex);
 
 

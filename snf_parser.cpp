@@ -8,9 +8,9 @@ FunctionType SNF_Parser::parse(std::string input, Expression &output)
    if (!checkBrackets()) return OTHER;
      std::vector <std::string> variables;
      getVariables(variables);
-     for (int i=0;i<variables.size();i++)
-         std::cout <<variables[i]<<" ";
-     std::cout<<"\n";
+     std::cout <<isVariablesRepeat(variables);
+    if (isVariablesRepeat(variables)) return OTHER;
+
 
 }
 
@@ -32,26 +32,23 @@ int SNF_Parser::getSymbolType(char symb)
 void SNF_Parser::getVariables(std::vector<std::string> &variables)
 {
     std::string currVar="";
-
     int lena=0;
     int currType;
     int isDisjunstionPrev=-1, isDisjunctionCurr=-1;
 
-while (getSymbolType(_input[lena++])!=SYMBOL_OPERAND); //if there is a bracket
+    while (getSymbolType(_input[lena++])!=SYMBOL_OPERAND); //if there is a bracket
 
-lena--;
+    lena--;
 
     while (_input[lena]!='\0')
     {
        if(isDisjunctionCurr!=-1) isDisjunstionPrev=isDisjunctionCurr;
-
 
         currVar=getOperand(lena);
         if (currVar!="")
           variables.push_back(currVar);
 
         currType=getSymbolType(_input[lena-1]);
-
 
         //conjunction is "*" or ()() or x(.. or ..)x
         if (currType==SYMBOL_CONJUNCTION ||
@@ -62,18 +59,8 @@ lena--;
         //situation like as: x(y+z)
         else if (currType==SYMBOL_LBRACKET && getSymbolType(_input[lena])==SYMBOL_OPERAND)
         {
-            int tmp=lena;
-            getOperand(tmp);
-            if (getSymbolType(_input[tmp-1])==SYMBOL_DISJUNCTION){
-                if (isDisjunctionCurr==0 || isDisjunctionCurr==-1) return;
-                    else isDisjunctionCurr=1;
-            }
-            else if (getSymbolType(_input[tmp-1])==SYMBOL_CONJUNCTION){
-                if (isDisjunctionCurr==1 || isDisjunctionCurr==-1) return;
-                    else isDisjunctionCurr=0;
-            }
-
-            else if (isDisjunctionCurr==-1) isDisjunctionCurr=0;
+           isDisjunctionCurr=checkOperandAfterLBracket(lena, isDisjunctionCurr);
+           if (isDisjunctionCurr==-1) return;
         }
 
         else if (currType==SYMBOL_DISJUNCTION) isDisjunctionCurr=1;
@@ -145,11 +132,40 @@ std::string SNF_Parser::getOperand (int &index)
            getSymbolType(_input[index])!=SYMBOL_RBRACKET &&
                  getSymbolType(_input[index])!=SYMBOL_ZERO)
     {
-        if (getSymbolType(_input[index])==SYMBOL_OPERAND ||
-            getSymbolType(_input[index])==SYMBOL_INVERSE) output+=_input[index];
+        if (getSymbolType(_input[index])==SYMBOL_OPERAND) output+=_input[index];
         index++;
     }
     index++;
 
    return output;
    }
+
+int SNF_Parser::checkOperandAfterLBracket(int index, int isDisjunctionCurr)
+   {
+       getOperand(index);
+       if (getSymbolType(_input[index-1])==SYMBOL_DISJUNCTION){
+           if (isDisjunctionCurr==0 || isDisjunctionCurr==-1) return -1;
+               else isDisjunctionCurr=1;
+       }
+       else if (getSymbolType(_input[index-1])==SYMBOL_CONJUNCTION){
+           if (isDisjunctionCurr==1 || isDisjunctionCurr==-1) return -1;
+               else isDisjunctionCurr=0;
+       }
+
+       else if (isDisjunctionCurr==-1) isDisjunctionCurr=0;
+
+       return isDisjunctionCurr;
+   }
+
+bool SNF_Parser::isVariablesRepeat(std::vector<std::string> &variables)
+ {
+
+    int len=variables.size();
+    if (len==1) return 0;
+
+    for (int i=0;i<len-1;i++)
+        for (int j=i+1;j<len;j++)
+            if (variables[i]==variables[j]) return 1;
+
+    return 0;
+ }
