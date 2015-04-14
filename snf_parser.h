@@ -60,13 +60,17 @@ private:
     void removeUnused();
     //gets an operand and increase index to position after delim
     std::string getOperand (int &index);
+    std::string getOperandToFill (int &index);
    FunctionType getVariables (std::vector<std::string> & variables);
 
     bool checkInversions();
     OperationState getOperationStateAfterLBracket(int index, OperationState currState);
     bool isVariablesRepeat(std::vector<std::string> &variables);
 
-    void fillExpressionVector(Expression& expression, FunctionType& ft);
+    void fillExpressionVector(Expression& expression, FunctionType& ft,
+                              std::vector<std::string> & variables);
+
+    OperationState getNextState(int & lena, OperationState prevState);
 
 public:
 

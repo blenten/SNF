@@ -5,9 +5,9 @@ int main(int argc, char *argv[])
 {
     SNF_Parser parser;
     Expression ex;
-    std::string input="x1*x2*x3-x4";
+    std::string input="a*b + a*!b";
 
-    std::string test="3r23423423424324";
+    std::string test="(a+b)(!a+b)";
 
 
 
