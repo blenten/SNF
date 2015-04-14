@@ -12,6 +12,7 @@
 //brackets: (x1)(x2), (x1+x2)(x1+!x2), this will interpret as conjunction
 //inverse: x1!x2!x3 as conjunction
 //all spaces and unused symbols will be removed
+//double inversions will be removed
 
 enum FunctionType {
     OTHER=-1, SDNF, SKNF
@@ -40,21 +41,20 @@ enum SymbolType
     SYMBOL_OTHER
 };
 
-struct Element
+struct Variable
 {
   std::string variable;
   bool inverted;
 };
 
-typedef std::vector<Element> Operand;
+typedef std::vector<Variable> Operand;
 typedef std::vector <Operand> Expression;
 
 class SNF_Parser
 {
 private:
 
-
-     std::string _input;
+    std::string _input;
     SymbolType getSymbolType(char symb);
     bool checkBrackets();
     void removeUnused();
@@ -62,10 +62,11 @@ private:
     std::string getOperand (int &index);
    FunctionType getVariables (std::vector<std::string> & variables);
 
-    bool checkOperationAfterInverse();
-    OperationState checkOperandAfterLBracket(int index, OperationState currState);
+    bool checkInversions();
+    OperationState getOperationStateAfterLBracket(int index, OperationState currState);
     bool isVariablesRepeat(std::vector<std::string> &variables);
 
+    void fillExpressionVector(Expression& expression, FunctionType& ft);
 
 public:
 

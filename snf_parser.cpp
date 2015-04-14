@@ -2,16 +2,17 @@
 
 FunctionType SNF_Parser::parse(std::string input, Expression &output)
 {
-   FunctionType ft;
+   FunctionType ft=OTHER;
     output.clear();
-    if (input.length()==0) return OTHER;
-     _input=input;
+    _input=input;
      removeUnused();
+    if (_input.length()==0) return OTHER;
     if (!checkBrackets()) return OTHER;
-    if (!checkOperationAfterInverse()) return OTHER;
+    if (!checkInversions()) return OTHER;
     std::vector <std::string> variables;
     ft= getVariables(variables);
-    for (int i=0;i<variables.size();i++) std::cout<< variables[i]<<" ";
+    if (variables.size()==0) return OTHER;
+    for (unsigned int i=0;i<variables.size();i++) std::cout<< variables[i]<<" ";
     if (isVariablesRepeat(variables)) return OTHER;
 
     return ft;
@@ -35,14 +36,15 @@ SymbolType SNF_Parser::getSymbolType(char symb)
 
 FunctionType SNF_Parser::getVariables(std::vector<std::string> &variables)
 {
+    variables.clear();
     std::string currVar="";
     int lena=0;
     int currType;
    OperationState prevState=Undefined, currState=Undefined;
 
-    while (getSymbolType(_input[lena++])!=SYMBOL_OPERAND); //if there is a bracket
+    while (getSymbolType(_input[lena])!=SYMBOL_OPERAND &&
+           getSymbolType(_input[lena])!=SYMBOL_ZERO){lena++;} //if there is a bracket
 
-    lena--;
 
     while (_input[lena]!='\0')
     {
@@ -62,10 +64,9 @@ FunctionType SNF_Parser::getVariables(std::vector<std::string> &variables)
 
         else if (currType==SYMBOL_LBRACKET && getSymbolType(_input[lena])==SYMBOL_OPERAND) //situation like as: x(y+z)
         {
-           currState=checkOperandAfterLBracket(lena, currState);
+           currState=getOperationStateAfterLBracket(lena, currState);
            if (currState==DisjunctionToConjunction||
-               currState==ConjunctionToDinsjunction ||
-               currState==Undefined)return prevState? SKNF:SDNF;
+               currState==ConjunctionToDinsjunction)return prevState? SKNF:SDNF;
            else if (currState==UndefinedToDisjunction) return (prevState)? SDNF:SKNF;
            else if (currState==UndefinedToConjunction){ prevState=Conjunction; currState=Conjunction;}
         }
@@ -141,7 +142,7 @@ std::string SNF_Parser::getOperand (int &index)
            getSymbolType(_input[index])!=SYMBOL_DISJUNCTION &&
            getSymbolType(_input[index])!=SYMBOL_LBRACKET &&
            getSymbolType(_input[index])!=SYMBOL_RBRACKET &&
-                 getSymbolType(_input[index])!=SYMBOL_ZERO)
+           getSymbolType(_input[index])!=SYMBOL_ZERO)
     {
          if (getSymbolType(_input[index])==SYMBOL_INVERSE && index>0 &&
                  (getSymbolType(_input[index-1])==SYMBOL_OPERAND ||getSymbolType(_input[index-1])==SYMBOL_RBRACKET ))
@@ -150,7 +151,8 @@ std::string SNF_Parser::getOperand (int &index)
               index+=1;
               return output;
          }
-       else if (getSymbolType(_input[index])==SYMBOL_OPERAND) output+=_input[index];
+       else if (getSymbolType(_input[index])==SYMBOL_OPERAND)output+=_input[index];
+
         index++;
     }
     index++;
@@ -158,7 +160,7 @@ std::string SNF_Parser::getOperand (int &index)
    }
 
 
-OperationState SNF_Parser::checkOperandAfterLBracket(int index, OperationState currState)
+OperationState SNF_Parser::getOperationStateAfterLBracket(int index, OperationState currState)
 {
        getOperand(index);
        if (getSymbolType(_input[index-1])==SYMBOL_DISJUNCTION){
@@ -190,7 +192,7 @@ bool SNF_Parser::isVariablesRepeat(std::vector<std::string> &variables)
     return 0;
  }
 
-bool SNF_Parser::checkOperationAfterInverse()
+bool SNF_Parser::checkInversions()
 {
  int len=_input.size();
  for (int i=0;i<len-1;i++)
@@ -204,5 +206,11 @@ bool SNF_Parser::checkOperationAfterInverse()
 
  if (getSymbolType(_input[len-1])==SYMBOL_INVERSE) return 0;
  return 1;
+
+}
+
+void fillExpressionVector(Expression& expression, FunctionType& ft)
+{
+
 
 }
