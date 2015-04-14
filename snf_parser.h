@@ -17,13 +17,15 @@ enum FunctionType {
     OTHER=-1, SDNF, SKNF
 };
 
-enum OperationState {UndefinedToDisjunction=-5,
-                         UndefinedToConjunction=-4,
-                         ConjunctionToDinsjunction=-3,
-                         DisjunctionToConjunction=-2,
-                         Undefined=-1,
-                         Conjunction=0,
-                         Disjunction=1};
+enum OperationState {
+    UndefinedToDisjunction=-5,
+    UndefinedToConjunction=-4,
+    ConjunctionToDinsjunction=-3,
+    DisjunctionToConjunction=-2,
+    Undefined=-1,
+    Conjunction=0,
+    Disjunction=1
+};
 
 enum SymbolType
 {

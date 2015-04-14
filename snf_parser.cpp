@@ -48,8 +48,6 @@ FunctionType SNF_Parser::getVariables(std::vector<std::string> &variables)
     {
        if(currState!=Undefined) prevState=currState;
 
-
-       std::cout <<prevState<<" "<<currState<<"\n";
         currVar=getOperand(lena);
         if (currVar!="")
           variables.push_back(currVar);
@@ -60,16 +58,16 @@ FunctionType SNF_Parser::getVariables(std::vector<std::string> &variables)
         if (currType==SYMBOL_CONJUNCTION ||
           (currType==SYMBOL_RBRACKET && getSymbolType(_input[lena])==SYMBOL_LBRACKET)||
            (currType==SYMBOL_RBRACKET && getSymbolType(_input[lena])==SYMBOL_OPERAND))
-             currState=Conjunction;
+            currState=Conjunction;
 
         else if (currType==SYMBOL_LBRACKET && getSymbolType(_input[lena])==SYMBOL_OPERAND) //situation like as: x(y+z)
         {
            currState=checkOperandAfterLBracket(lena, currState);
            if (currState==DisjunctionToConjunction||
                currState==ConjunctionToDinsjunction ||
-               currState==Undefined) return prevState? SKNF:SDNF;
-           else if (currState==UndefinedToDisjunction) return prevState? SDNF:SKNF;
-           else if (currState==UndefinedToConjunction){std::swap (prevState, currState);}
+               currState==Undefined)return prevState? SKNF:SDNF;
+           else if (currState==UndefinedToDisjunction) return (prevState)? SDNF:SKNF;
+           else if (currState==UndefinedToConjunction){ prevState=Conjunction; currState=Conjunction;}
         }
 
         else if (currType==SYMBOL_DISJUNCTION) currState=Disjunction;
@@ -78,11 +76,11 @@ FunctionType SNF_Parser::getVariables(std::vector<std::string> &variables)
         if(currState!=Undefined && prevState!=Undefined &&
                 currState!=DisjunctionToConjunction &&
                 currState!=ConjunctionToDinsjunction && currState!=prevState)
-           return prevState? SKNF:SDNF;
+           return (prevState)? SKNF:SDNF;
 
     }
 
-    return prevState? SKNF:SDNF;
+    return (prevState)? SKNF:SDNF;
 }
 
 
