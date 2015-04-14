@@ -17,6 +17,27 @@ enum FunctionType {
     OTHER=-1, SDNF, SKNF
 };
 
+enum OperationState {UndefinedToDisjunction=-5,
+                         UndefinedToConjunction=-4,
+                         ConjunctionToDinsjunction=-3,
+                         DisjunctionToConjunction=-2,
+                         Undefined=-1,
+                         Conjunction=0,
+                         Disjunction=1};
+
+enum SymbolType
+{
+    SYMBOL_CONJUNCTION,
+    SYMBOL_DISJUNCTION,
+    SYMBOL_LBRACKET,
+    SYMBOL_RBRACKET,
+    SYMBOL_INVERSE,
+    SYMBOL_OPERAND,
+    SYMBOL_ZERO,
+    SYMBOL_SPACE,
+    SYMBOL_OTHER
+};
+
 struct Element
 {
   std::string variable;
@@ -29,20 +50,10 @@ typedef std::vector <Operand> Expression;
 class SNF_Parser
 {
 private:
-    enum SymbolTypes
-    {
-        SYMBOL_CONJUNCTION,
-        SYMBOL_DISJUNCTION,
-        SYMBOL_LBRACKET,
-        SYMBOL_RBRACKET,
-        SYMBOL_INVERSE,
-        SYMBOL_OPERAND,
-        SYMBOL_ZERO,
-        SYMBOL_SPACE,
-        SYMBOL_OTHER
-    };
+
+
      std::string _input;
-    int getSymbolType(char symb);
+    SymbolType getSymbolType(char symb);
     bool checkBrackets();
     void removeUnused();
     //gets an operand and increase index to position after delim
@@ -50,7 +61,7 @@ private:
    FunctionType getVariables (std::vector<std::string> & variables);
 
     bool checkOperationAfterInverse();
-    int checkOperandAfterLBracket(int index, int isDisjunctionCurr);
+    OperationState checkOperandAfterLBracket(int index, OperationState currState);
     bool isVariablesRepeat(std::vector<std::string> &variables);
 
 

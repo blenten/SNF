@@ -7,9 +7,20 @@ int main(int argc, char *argv[])
     Expression ex;
     std::string input="x1*x2*x3+x1*!x2*x3";
 
-    std::string test="!x!!y!!z+!y";
-    parser.parse(test,ex);
+    std::string test="y+(x)";
 
+
+
+FunctionType ft= parser.parse(test,ex);
+
+
+switch(ft)
+{
+
+    case OTHER: std::cout <<"OTHER\n"; break;
+    case SDNF: std::cout <<"SDNF\n"; break;
+    case SKNF: std::cout << "SKNF\n"; break;
+}
 
     return 0;
 }
