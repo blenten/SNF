@@ -55,11 +55,14 @@ class SNF_Parser
 private:
 
     std::string _input;
+
     SymbolType getSymbolType(char symb);
     bool checkBrackets();
     void removeUnused();
+
     //gets an operand and increase index to position after delim
     std::string getOperand (int &index);
+    //same as previous but reads inversions
     std::string getOperandToFill (int &index);
    FunctionType getVariables (std::vector<std::string> & variables);
 
@@ -71,7 +74,9 @@ private:
                               std::vector<std::string> & variables);
     void addOperandToVector (Expression & expression);
 
+     OperationState getNextState1(int & lena, OperationState prevState);
     OperationState getNextState(int & lena, OperationState prevState);
+
 
 public:
 

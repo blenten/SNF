@@ -12,7 +12,7 @@ FunctionType SNF_Parser::parse(std::string input, Expression &output)
     std::vector <std::string> variables;
     ft= getVariables(variables);
     if (variables.size()==0) return OTHER;
-    for (unsigned int i=0;i<variables.size();i++)
+  //  for (unsigned int i=0;i<variables.size();i++)std::cout <<variables[i]<<" ";
 
     if (isVariablesRepeat(variables)) return OTHER;
 
@@ -43,7 +43,7 @@ FunctionType SNF_Parser::getVariables(std::vector<std::string> &variables)
     variables.clear();
     std::string currVar="";
     int lena=0;
-    int currType;
+    SymbolType currType;
    OperationState prevState=Undefined, currState=Undefined;
 
     while (getSymbolType(_input[lena])!=SYMBOL_OPERAND &&
@@ -107,7 +107,7 @@ bool SNF_Parser::checkBrackets()
         // y(+x)
         else if (getSymbolType(_input[i])==SYMBOL_LBRACKET)
         {
-            if (getSymbolType(_input[i+1])!=SYMBOL_OPERAND &&
+            if (getSymbolType(_input[i+1])!=SYMBOL_OPERAND&&
                 getSymbolType(_input[i+1])!=SYMBOL_INVERSE&&
                 getSymbolType(_input[i+1]) !=SYMBOL_LBRACKET)return false;
             lCount++;
@@ -291,9 +291,8 @@ void SNF_Parser::fillExpressionVector(Expression& expression, FunctionType& ft,
 
 OperationState SNF_Parser::getNextState(int & lena, OperationState prevState)
 {
-
     SymbolType currType=getSymbolType(_input[lena-1]);
-    OperationState currState;
+    OperationState currState=Undefined;
     if (currType==SYMBOL_CONJUNCTION ||
       (currType==SYMBOL_RBRACKET && getSymbolType(_input[lena])==SYMBOL_LBRACKET)||
        (currType==SYMBOL_RBRACKET && getSymbolType(_input[lena])==SYMBOL_OPERAND))
