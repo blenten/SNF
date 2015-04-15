@@ -1,64 +1,49 @@
 #include "snf_minimizer.h"
 
-///------------VAR-------------///
-Variable::Variable(string name, bool invertion=false)
-{
-    this->name = name;
-    this->invertion = invertion;
-}
-bool Variable::operator==(Variable var)
-{
-    if(name==var.name && invertion==var.invertion)  return true;
-    return false;
-}
-
 ///------------SNF-------------///
-
-// TEST
-void SNF_Minimizer::test()
-{
-    Variable x1("x1", false),x2("x2", false),x3("x3", false);
-    ops.resize(3);
-    ops[0].push_back(x1);
-    ops[0].push_back(x2);
-    ops[0].push_back(x3);
-    x1.invertion = true;
-    ops[1].push_back(x1);
-    ops[1].push_back(x2);
-    ops[1].push_back(x3);
-    x2.invertion = true;
-    ops[2].push_back(x1);
-    ops[2].push_back(x2);
-    ops[2].push_back(x3);
-
-    printOps();
-    match();
-    printOps();
-}
+// for testing
 void SNF_Minimizer::printOps()
 {
-    for(int i=0; i<(int)ops.size(); i++)
+    if(exp.empty())
     {
-        for(int j=0; j<(int)ops[i].size(); j++)
+        cout<<"exp is empty!\n";
+    }else
+    {
+        for(int i=0; i<(int)exp.size(); i++)
         {
-            if(ops[i][j].invertion)
+            for(int j=0; j<(int)exp[i].size(); j++)
             {
-                cout<<'!'<<ops[i][j].name;
-            }else
-            {
-                cout<<ops[i][j].name;
+                if(exp[i][j].invertion)
+                {
+                    cout<<'!'<<exp[i][j].name;
+                }else
+                {
+                    cout<<exp[i][j].name;
+                }
             }
+            cout<<' ';
         }
-        cout<<' ';
     }
-    cout<<endl;
+    cout<<"\nF_Type returned: "<<expType<<endl;
+}
+///CONSTRUCTOR
+SNF_Minimizer::SNF_Minimizer()
+{
+    expType = NOTYPE;   // needed for testing. not nessesery
+    exp.clear();
 }
 /// MINIMIZE
 string SNF_Minimizer::minimize(string input)
 {
     string output;
-    ///parser.parse(input, ops, expType);
+    cout<<"Parsing...";
+    expType = parser.parse(input, exp);
+    cout<<"DONE:\n";
+    printOps();
+    cout<<"\nMatching...";
     match();
+    cout<<"DONE:\n";
+    printOps();
     return output;
 }
 
@@ -66,18 +51,18 @@ string SNF_Minimizer::minimize(string input)
 void SNF_Minimizer::match()
 {
     vector<Operand> temp;
-    for(int i=0; i<(int)ops.size()-1; i++)
+    for(int i=0; i<(int)exp.size()-1; i++)
     {
-        for(int j=i+1; j<(int)ops.size(); j++)
+        for(int j=i+1; j<(int)exp.size(); j++)
         {
-            matchOperands(ops[i], ops[j], temp);
+            matchOperands(exp[i], exp[j], temp);
         }
     }
-    ops.clear();
-    ops = temp;
+    exp.clear();
+    exp = temp;
 }
 // subMatch
-void SNF_Minimizer::matchOperands(Operand &op1, Operand &op2, vector<Operand> &result)
+void SNF_Minimizer::matchOperands(Operand &op1, Operand &op2, Expression &result)
 {
     Operand res_op;
     for(int i=0; i<(int)op1.size(); i++)
@@ -87,21 +72,8 @@ void SNF_Minimizer::matchOperands(Operand &op1, Operand &op2, vector<Operand> &r
 
     if(res_op.size()==(op1.size()-1))   result.push_back(res_op);
 }
-/// EXTCHECK
-void SNF_Minimizer::extCheck()
+/// DEL UNNESSESARY
+void SNF_Minimizer::delUnness()
 {
-    bool ext;
-    for(int i=0; i<(int)ops.size(); i++)
-    {
-        if(expType==SNDF)
-        {
-            ext = D_check(ops[i]);
-        }else if(expType==SNCF)
-        {
-            ext = C_check(ops[i]);
-        }else
-        {
-            cout<<"wrong type\n";
-        }
-    }
+    //some shit in progress
 }

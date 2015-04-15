@@ -1,49 +1,26 @@
 #ifndef SNF_MINIMIZER_H
 #define SNF_MINIMIZER_H
 
-#include<iostream>
-#include<string>
-#include<vector>
+#include"../snf_parser/snf_parser.h"
 
 using namespace std;
-
-// temporary
-enum
-{
-    SNDF;
-    SNCF;
-};
-
-/// VAR & OPERAND
-class Variable
-{
-public:
-    Variable(string, bool);
-    bool operator==(Variable);
-    string name;
-    bool invertion;
-};
-typedef vector<Variable> Operand;
-
 
 /// MINIMIZER
 
 class SNF_Minimizer
 {
 public:
-    void test(); // while parser isn't ready
+    SNF_Minimizer();
     void printOps(); // for testing
 
     string minimize(string);
     void match();
-    void extCheck(); // izbitochnost
+    void delUnness(); // izbitochnost
 private:
-    void D_check(Operand&);
-    void C_check(Operand&);
-    void matchOperands(Operand&, Operand&, vector<Operand>&);
-    ///ExpParser parser; //olerapx
-    vector<Operand> ops;
-    int expType;
+    void matchOperands(Operand&, Operand&, Expression&);
+    SNF_Parser parser; //olerapx
+    Expression exp;
+    FunctionType expType;
 };
 
 #endif // SNF_MINIMIZER_H

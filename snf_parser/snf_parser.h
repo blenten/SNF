@@ -1,10 +1,11 @@
 #ifndef SNF_PARSER_H
 #define SNF_PARSER_H
 
-#include "string"
-#include "vector"
+#include <string>
+#include <vector>
 #include <iostream>
 #include <ctype.h>
+#include "../lvar.h"
 
 //Parser of string with SNF function
 //NOTE: variables may delim by:
@@ -15,7 +16,7 @@
 //double inversions will be removed
 
 enum FunctionType {
-    OTHER=-1, SDNF, SKNF
+    OTHER=-1, SNDF, SNKF, NOTYPE=-2 // needed for testing. not nessesery
 };
 
 enum OperationState {
@@ -41,15 +42,7 @@ enum SymbolType
     SYMBOL_OTHER
 };
 
-struct Variable
-{
-  std::string variable;
-  bool inverted;
-};
-
-typedef std::vector<Variable> Operand;
-typedef std::vector <Operand> Expression;
-
+///PARSER
 class SNF_Parser
 {
 private:

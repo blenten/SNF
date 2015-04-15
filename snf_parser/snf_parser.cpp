@@ -43,7 +43,7 @@ FunctionType SNF_Parser::getVariables(std::vector<std::string> &variables)
     std::string currVar="";
     int lena=0;
     SymbolType currType;
-   OperationState prevState=Undefined, currState=Undefined;
+    OperationState prevState=Undefined, currState=Undefined;
 
     while (getSymbolType(_input[lena])!=SYMBOL_OPERAND &&
            getSymbolType(_input[lena])!=SYMBOL_ZERO){lena++;} //if there is a bracket
@@ -60,7 +60,7 @@ FunctionType SNF_Parser::getVariables(std::vector<std::string> &variables)
         currType=getSymbolType(_input[lena-1]);
         currState=getNextState(lena,currState);
         if (currState!=Undefined && prevState!= Undefined && currState!=prevState)
-            return (currState==Conjunction? SKNF:SDNF);
+            return (currState==Conjunction? SNKF:SNDF);
 /*
         //conjunction is "*" or ()() or x(.. or ..)x
         if (currType==SYMBOL_CONJUNCTION ||
@@ -86,7 +86,7 @@ FunctionType SNF_Parser::getVariables(std::vector<std::string> &variables)
            return (prevState)? SKNF:SDNF;
 */
     }
-  return (prevState==Disjunction? SKNF:SDNF);
+  return (prevState==Disjunction? SNKF:SNDF);
    // return (prevState)? SKNF:SDNF;
 }
 
@@ -132,8 +132,8 @@ void SNF_Parser::removeUnused()
     i=0;
      while (_input[i]!='\0')
      {
-         if (getSymbolType(_input[i])==SYMBOL_SPACE)         
-             _input.erase(i,1);             
+         if (getSymbolType(_input[i])==SYMBOL_SPACE)
+             _input.erase(i,1);
 
         else i++;
      }
@@ -224,7 +224,7 @@ bool SNF_Parser::checkInversions()
      {
          _input.erase(i,2);
          _input.insert(i,"&");
-         len--;       
+         len--;
      }
     else if (getSymbolType(_input[i])== SYMBOL_INVERSE && getSymbolType(_input[i+1])!=SYMBOL_OPERAND) return 0;
     else if (getSymbolType(_input[i])== SYMBOL_OPERAND && getSymbolType(_input[i+1])==SYMBOL_LBRACKET)
@@ -242,7 +242,7 @@ bool SNF_Parser::checkInversions()
 void SNF_Parser::fillExpressionVector(Expression& expression, FunctionType& ft,
                                       std::vector<std::string> & variables)
 {
-    OperationState os=(ft==SKNF)? Disjunction: Conjunction;
+    OperationState os=(ft==SNKF)? Disjunction: Conjunction;
 
     int lena=0, operandIndex=0, varIndex=0;
 
@@ -259,11 +259,11 @@ void SNF_Parser::fillExpressionVector(Expression& expression, FunctionType& ft,
         Variable var;
         if (getSymbolType(currVar[0])==SYMBOL_INVERSE)
         {
-            var.inverted=true;
+            var.invertion=true;
             currVar.erase(0,1);
         }
-        else var.inverted=false;
-        var.variable=currVar;
+        else var.invertion=false;
+        var.name=currVar;
 
         if (varIndex<variables.size() && currVar == variables[varIndex] && currVar!="")
         {
