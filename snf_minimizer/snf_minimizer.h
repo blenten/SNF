@@ -8,10 +8,10 @@
 using namespace std;
 
 // temporary
-enum
+enum FunctionType
 {
-    SNDF;
-    SNCF;
+    SNDF,
+    SNKF
 };
 
 /// VAR & OPERAND
@@ -19,11 +19,12 @@ class Variable
 {
 public:
     Variable(string, bool);
-    bool operator==(Variable);
+    bool operator==(Variable&);
     string name;
     bool invertion;
 };
 typedef vector<Variable> Operand;
+typedef vector<Operand> Expression;
 
 
 /// MINIMIZER
@@ -36,13 +37,11 @@ public:
 
     string minimize(string);
     void match();
-    void extCheck(); // izbitochnost
+    void delunness(); // izbitochnost
 private:
-    void D_check(Operand&);
-    void C_check(Operand&);
-    void matchOperands(Operand&, Operand&, vector<Operand>&);
+    void matchOperands(Operand&, Operand&, Expression&);
     ///ExpParser parser; //olerapx
-    vector<Operand> ops;
+    Expression expr;
     int expType;
 };
 
