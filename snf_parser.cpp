@@ -18,12 +18,6 @@ FunctionType SNF_Parser::parse(std::string input, Expression &output)
 
     fillExpressionVector(output, ft, variables);
 
-    for (int i=0;i<output.size();i++)
-    {
-        for (int j=0;j<output[i].size();j++)
-            std::cout <<output[i][j].variable<<" ";
-        std::cout <<"\n";
-    }
 
     return ft;
 
@@ -248,42 +242,39 @@ void SNF_Parser::fillExpressionVector(Expression& expression, FunctionType& ft,
            getSymbolType(_input[lena])!=SYMBOL_ZERO){lena++;}
     OperationState currState=os;
 
-    Operand op;
-    expression.push_back(op);
+   addOperandToVector(expression);
 
 
     while (_input[lena!='\0'])
     {
         std::string currVar = getOperandToFill(lena);
         Variable var;
-        var.variable=currVar;
-        var.inverted=false;
-        std::string tempVar=currVar;
-
-        if (getSymbolType(tempVar[0])==SYMBOL_INVERSE)
+        if (getSymbolType(currVar[0])==SYMBOL_INVERSE)
         {
             var.inverted=true;
-            tempVar.erase(0,1);
+            currVar.erase(0,1);
         }
-        if (varIndex<variables.size() && tempVar == variables[varIndex] && tempVar!="")
+        else var.inverted=false;
+        var.variable=currVar;
+
+        if (varIndex<variables.size() && currVar == variables[varIndex] && currVar!="")
         {
             expression.at(operandIndex).push_back(var);
             varIndex++;
         }
-        else if (tempVar!="")
+        else if (currVar!="")
         {
             ft=OTHER;
             return;
         }
         if (_input[lena]=='\0') return;
         currState=getNextState(lena, currState);
-        if (currState!=os ||variables[variables.size()-1]==tempVar )
+        if (currState!=os ||variables[variables.size()-1]==currVar )
         {
             if(varIndex>=variables.size()-1)
             {
                 varIndex=0;
-                Operand op1;
-                expression.push_back(op1);
+                addOperandToVector(expression);
                 operandIndex++;
             }
             else if (varIndex)
@@ -327,3 +318,9 @@ OperationState SNF_Parser::getNextState(int & lena, OperationState prevState)
 
 }
 
+
+void SNF_Parser::addOperandToVector (Expression & expression)
+{
+    Operand op;
+    expression.push_back(op);
+}

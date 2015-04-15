@@ -69,6 +69,7 @@ private:
 
     void fillExpressionVector(Expression& expression, FunctionType& ft,
                               std::vector<std::string> & variables);
+    void addOperandToVector (Expression & expression);
 
     OperationState getNextState(int & lena, OperationState prevState);
 
