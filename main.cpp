@@ -1,10 +1,15 @@
 #include <QCoreApplication>
 #include "snf_parser.h"
+#include "snf_minimizer/snf_minimizer.h"
+
 
 void expressionOutputSample(const Expression&  ex, const FunctionType& ft);
 
 int main(int argc, char *argv[])
 {
+
+    SNF_Minimizer snf;
+    snf.test();
     SNF_Parser parser;
     Expression ex;
     std::string input="x";
@@ -40,3 +45,5 @@ void expressionOutputSample(const Expression&  ex, const FunctionType &ft)
         std::cout <<"\n";
     }
 }
+
+
