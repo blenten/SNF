@@ -12,7 +12,6 @@ FunctionType SNF_Parser::parse(std::string input, Expression &output)
     std::vector <std::string> variables;
     ft= getVariables(variables);
     if (variables.size()==0) return OTHER;
-  //  for (unsigned int i=0;i<variables.size();i++)std::cout <<variables[i]<<" ";
 
     if (isVariablesRepeat(variables)) return OTHER;
 
@@ -59,7 +58,10 @@ FunctionType SNF_Parser::getVariables(std::vector<std::string> &variables)
           variables.push_back(currVar);
 
         currType=getSymbolType(_input[lena-1]);
-
+        currState=getNextState(lena,currState);
+        if (currState!=Undefined && prevState!= Undefined && currState!=prevState)
+            return (currState==Conjunction? SKNF:SDNF);
+/*
         //conjunction is "*" or ()() or x(.. or ..)x
         if (currType==SYMBOL_CONJUNCTION ||
           (currType==SYMBOL_RBRACKET && getSymbolType(_input[lena])==SYMBOL_LBRACKET)||
@@ -82,10 +84,10 @@ FunctionType SNF_Parser::getVariables(std::vector<std::string> &variables)
                 currState!=DisjunctionToConjunction &&
                 currState!=ConjunctionToDinsjunction && currState!=prevState)
            return (prevState)? SKNF:SDNF;
-
+*/
     }
-
-    return (prevState)? SKNF:SDNF;
+  return (prevState==Disjunction? SKNF:SDNF);
+   // return (prevState)? SKNF:SDNF;
 }
 
 
@@ -225,6 +227,12 @@ bool SNF_Parser::checkInversions()
          len--;       
      }
     else if (getSymbolType(_input[i])== SYMBOL_INVERSE && getSymbolType(_input[i+1])!=SYMBOL_OPERAND) return 0;
+    else if (getSymbolType(_input[i])== SYMBOL_OPERAND && getSymbolType(_input[i+1])==SYMBOL_LBRACKET)
+     {
+         _input.insert(i+1,"&");
+         len++;
+         i++;
+     }
 
  if (getSymbolType(_input[len-1])==SYMBOL_INVERSE) return 0;
  return 1;
@@ -300,12 +308,14 @@ OperationState SNF_Parser::getNextState(int & lena, OperationState prevState)
 
     else if (currType==SYMBOL_LBRACKET && getSymbolType(_input[lena])==SYMBOL_OPERAND)
     {
-       currState=getOperationStateAfterLBracket(lena, currState);
+       currState=getOperationStateAfterLBracket(lena, prevState);
        if (currState==DisjunctionToConjunction) return Conjunction;
           else if( currState==ConjunctionToDinsjunction)return Disjunction;
        else if (currState==UndefinedToDisjunction) return Disjunction;
        else if (currState==UndefinedToConjunction) return Conjunction;
     }
+    else if (currType==SYMBOL_RBRACKET && getSymbolType(_input[lena])==SYMBOL_DISJUNCTION)
+        return Disjunction;
 
     else if (currType==SYMBOL_DISJUNCTION) return Disjunction;
     else currState = Undefined;

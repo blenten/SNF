@@ -7,13 +7,14 @@ int main(int argc, char *argv[])
 {
     SNF_Parser parser;
     Expression ex;
-    std::string input="(x)y(z)";
+    std::string input="x";
+    std::string input2="(x)+(y)";
     std::string test="((x1))!x2!x3+ x1*x2*x3+ !x1*x2*x3";
 
     FunctionType  ft=parser.parse(input,ex);
     expressionOutputSample(ex,ft);
 
-    ft= parser.parse(test,ex);
+    ft= parser.parse(input2,ex);
     expressionOutputSample(ex,ft);
 
     return 0;
