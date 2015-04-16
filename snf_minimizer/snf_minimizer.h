@@ -12,12 +12,12 @@ public:
     SNF_Minimizer();
     void printOps(); // for testing
 
-    string minimize(string);
+    string minimize(string input);
     void match();
     void delUnness(); // izbitochnost
 private:
     bool checkNess(Operand&);
-    void matchOperands(Operand&, Operand&, Expression&);
+    void matchOperands(Operand& op1, Operand& op2, Expression& result);
     SNF_Parser parser; //olerapx
     Expression exp;
     FunctionType expType;
