@@ -48,4 +48,6 @@ SNF.depend
 SNF.layout
 *.exe
 
+#QT Creator files
+SNF-Parser.pro
 SNF-Parser.pro.user
