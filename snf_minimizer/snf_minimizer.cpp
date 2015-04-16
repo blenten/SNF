@@ -75,5 +75,8 @@ void SNF_Minimizer::matchOperands(Operand &op1, Operand &op2, Expression &result
 /// DEL UNNESSESARY
 void SNF_Minimizer::delUnness()
 {
-    //some shit in progress
+    for(int i=0; i<exp.size(); i++)
+    {
+        if(!checkNess(exp[i]))  exp.erase(i);
+    }
 }

@@ -6,7 +6,6 @@
 using namespace std;
 
 /// MINIMIZER
-
 class SNF_Minimizer
 {
 public:
@@ -17,6 +16,7 @@ public:
     void match();
     void delUnness(); // izbitochnost
 private:
+    bool checkNess(Operand&);
     void matchOperands(Operand&, Operand&, Expression&);
     SNF_Parser parser; //olerapx
     Expression exp;
