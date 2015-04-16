@@ -8,7 +8,7 @@ FunctionType SNF_Parser::parse(std::string input, Expression &output)
      removeUnused();
     if (_input.length()==0) return OTHER;
     if (!checkBrackets()) return OTHER;
-    if (!checkInversions()) return OTHER;
+    if (!checkInversionsAndInsertConjunctionSymbols()) return OTHER;
     std::vector <std::string> variables;
     ft= getVariables(variables);
     if (variables.size()==0) return OTHER;
@@ -61,33 +61,10 @@ FunctionType SNF_Parser::getVariables(std::vector<std::string> &variables)
         currState=getNextState(lena,currState);
         if (currState!=Undefined && prevState!= Undefined && currState!=prevState)
             return (currState==Conjunction? SNKF:SNDF);
-/*
-        //conjunction is "*" or ()() or x(.. or ..)x
-        if (currType==SYMBOL_CONJUNCTION ||
-          (currType==SYMBOL_RBRACKET && getSymbolType(_input[lena])==SYMBOL_LBRACKET)||
-           (currType==SYMBOL_RBRACKET && getSymbolType(_input[lena])==SYMBOL_OPERAND))
-            currState=Conjunction;
 
-        else if (currType==SYMBOL_LBRACKET && getSymbolType(_input[lena])==SYMBOL_OPERAND) //situation like as: x(y+z)
-        {
-           currState=getOperationStateAfterLBracket(lena, currState);
-           if (currState==DisjunctionToConjunction||
-               currState==ConjunctionToDinsjunction)return prevState? SKNF:SDNF;
-           else if (currState==UndefinedToDisjunction) return (prevState)? SDNF:SKNF;
-           else if (currState==UndefinedToConjunction){ prevState=Conjunction; currState=Conjunction;}
-        }
-
-        else if (currType==SYMBOL_DISJUNCTION) currState=Disjunction;
-        else currState=Undefined;
-
-        if(currState!=Undefined && prevState!=Undefined &&
-                currState!=DisjunctionToConjunction &&
-                currState!=ConjunctionToDinsjunction && currState!=prevState)
-           return (prevState)? SKNF:SDNF;
-*/
     }
   return (prevState==Disjunction? SNKF:SNDF);
-   // return (prevState)? SKNF:SDNF;
+  return OTHER;
 }
 
 
@@ -216,7 +193,7 @@ bool SNF_Parser::isVariablesRepeat(std::vector<std::string> &variables)
     return 0;
  }
 
-bool SNF_Parser::checkInversions()
+bool SNF_Parser::checkInversionsAndInsertConjunctionSymbols()
 {
  int len=_input.size();
  for (int i=0;i<len-1;i++)

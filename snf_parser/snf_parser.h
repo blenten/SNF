@@ -59,7 +59,7 @@ private:
     std::string getOperandToFill (int &index);
    FunctionType getVariables (std::vector<std::string> & variables);
 
-    bool checkInversions();
+    bool checkInversionsAndInsertConjunctionSymbols();
     OperationState getOperationStateAfterLBracket(int index, OperationState currState);
     bool isVariablesRepeat(std::vector<std::string> &variables);
 
