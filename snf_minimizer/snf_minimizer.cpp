@@ -44,6 +44,10 @@ string SNF_Minimizer::minimize(string input)
     match();
     cout<<"DONE:\n";
     printOps();
+    cout<<"\nNesschecking...";
+    delNeedless();
+    cout<<"DONE:\n";
+    printOps();
     return output;
 }
 
@@ -73,10 +77,49 @@ void SNF_Minimizer::matchOperands(Operand &op1, Operand &op2, Expression &result
     if(res_op.size()==(op1.size()-1))   result.push_back(res_op);
 }
 /// DEL UNNESSESARY
-void SNF_Minimizer::delUnness()
+void SNF_Minimizer::delNeedless()
 {
-    for(int i=0; i<exp.size(); i++)
+    int i=0;
+    while(i<(int)exp.size())
     {
-        if(!checkNess(exp[i]))  exp.erase(i);
+        if(!checkNecessity(i))  // if exp[i] needless
+        {
+            exp.erase(exp.begin()+i);   //erase exp[i]
+        }else
+        {
+            i++;
+        }
     }
+}
+/// NECESSITY CHECK
+bool SNF_Minimizer::checkNecessity(int index)
+{
+    int res=0;    //resulting coef
+
+    for(int i=0; i<(int)exp.size(); i++)
+    {
+        if(i!=index)
+        {
+            for(int j=0; j<(int)exp[i].size(); j++)
+            {
+                res += inop(exp[i][j], exp[index]);
+            }
+        }
+    }
+
+    if(res<=0)  return true;
+    return false;
+}
+// INOP
+INOP_t SNF_Minimizer::inop(Variable &var, Operand &op)
+{
+    for(int i=0; i<(int)op.size(); i++)
+    {
+        if(var.name==op[i].name)
+        {
+            if(var.invertion==op[i].invertion)  return IN;
+            return invIN;
+        }
+    }
+    return NIN;
 }
