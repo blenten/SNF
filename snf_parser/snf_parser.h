@@ -65,11 +65,11 @@ private:
     OperationState getOperationStateAfterLBracket(int index, OperationState currState);
     bool isVariablesRepeat(std::vector<std::string> &variables);
 
-    void fillExpressionVector(Expression& expression, FunctionType& ft,
+    void fillExpressionVector(Expression& expression, const FunctionType &ft,
                               std::vector<std::string> & variables);
     void addOperandToVector (Expression & expression);
 
-     OperationState getNextState1(int & lena, OperationState prevState);
+
     OperationState getNextState(int & lena, OperationState prevState);
 
     template < typename T > std::string toString( const T& n )

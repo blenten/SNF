@@ -14,7 +14,7 @@ FunctionType SNF_Parser::parse(std::string input, Expression &output)
         ft= getVariables(variables);
         if (variables.size()==0) throw InvalidFunctionException("Input string has no variables");
 
-        if (isVariablesRepeat(variables)) return OTHER;
+        if (isVariablesRepeat(variables)) throw InvalidFunctionException("Input string has repeating variables");
 
         fillExpressionVector(output, ft, variables);
 
@@ -23,7 +23,6 @@ FunctionType SNF_Parser::parse(std::string input, Expression &output)
     }
     catch(InvalidFunctionException e)
     {
-        std::cout <<e.getError()<<"\n";
         return OTHER;
     }
 
@@ -103,7 +102,7 @@ void SNF_Parser::checkBrackets()
         }
         if (lCount!=rCount)throw InvalidFunctionException ("Left brackets number is not equal that right brackets number");
   }
-    catch(...){throw;}
+    catch(InvalidFunctionException){throw;}
   }
 
 
@@ -215,7 +214,8 @@ try{
          len--;
      }
     else if (getSymbolType(_input[i])== SYMBOL_INVERSE &&
-             getSymbolType(_input[i+1])!=SYMBOL_OPERAND) throw InvalidFunctionException ("No operand after inversion at position"+ toString(i));
+             getSymbolType(_input[i+1])!=SYMBOL_OPERAND)
+         throw InvalidFunctionException ("No operand after inversion at position "+ toString(i));
     else if (getSymbolType(_input[i])== SYMBOL_OPERAND && getSymbolType(_input[i+1])==SYMBOL_LBRACKET)
      {
          _input.insert(i+1,"&");
@@ -225,13 +225,14 @@ try{
 
  if (getSymbolType(_input[len-1])==SYMBOL_INVERSE) throw InvalidFunctionException("Last symbol in string is inversion");
 }
-catch (...){throw;}
+catch (InvalidFunctionException){throw;}
 
 }
 
-void SNF_Parser::fillExpressionVector(Expression& expression, FunctionType& ft,
+void SNF_Parser::fillExpressionVector(Expression& expression, const FunctionType& ft,
                                       std::vector<std::string> & variables)
 {
+try{
     OperationState os=(ft==SNKF)? Disjunction: Conjunction;
 
     int lena=0, operandIndex=0, varIndex=0;
@@ -260,14 +261,18 @@ void SNF_Parser::fillExpressionVector(Expression& expression, FunctionType& ft,
             expression.at(operandIndex).push_back(var);
             varIndex++;
         }
-        else if (currVar!="")
+        else if (currVar!="")        
+           throw InvalidFunctionException ("The sequence of variables is broken");
+
+        if (_input[lena]=='\0')
         {
-            ft=OTHER;
+           if (varIndex<variables.size()) throw InvalidFunctionException("Can't read all variables because of incorrect operation changing");
             return;
         }
-        if (_input[lena]=='\0') return;
+
+
         currState=getNextState(lena, currState);
-        if (currState!=os ||variables[variables.size()-1]==currVar )
+        if (currState!=os  && variables[variables.size()-1]==currVar )
         {
             if(varIndex>=variables.size()-1)
             {
@@ -276,14 +281,13 @@ void SNF_Parser::fillExpressionVector(Expression& expression, FunctionType& ft,
                 operandIndex++;
             }
             else if (varIndex)
-            {
-                ft=OTHER;
-                return;
-            }
+               throw InvalidFunctionException ("The sequence of variables is broken");
+
         }
 
     }
-
+}
+    catch(InvalidFunctionException){throw;}
 }
 
 
