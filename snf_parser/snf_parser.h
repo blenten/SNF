@@ -5,7 +5,9 @@
 #include <vector>
 #include <iostream>
 #include <ctype.h>
+#include <sstream>
 #include "../lvar.h"
+#include "Exceptions/invalidfunctionexception.h"
 
 //Parser of string with SNF function
 //NOTE: variables may delim by:
@@ -50,7 +52,7 @@ private:
     std::string _input;
 
     SymbolType getSymbolType(char symb);
-    bool checkBrackets();
+    void checkBrackets();
     void removeUnused();
 
     //gets an operand and increase index to position after delim
@@ -59,7 +61,7 @@ private:
     std::string getOperandToFill (int &index);
    FunctionType getVariables (std::vector<std::string> & variables);
 
-    bool checkInversionsAndInsertConjunctionSymbols();
+    void checkInversionsAndInsertConjunctionSymbols();
     OperationState getOperationStateAfterLBracket(int index, OperationState currState);
     bool isVariablesRepeat(std::vector<std::string> &variables);
 
@@ -69,6 +71,13 @@ private:
 
      OperationState getNextState1(int & lena, OperationState prevState);
     OperationState getNextState(int & lena, OperationState prevState);
+
+    template < typename T > std::string toString( const T& n )
+    {
+        std::ostringstream stm ;
+        stm << n ;
+        return stm.str() ;
+    }
 
 
 public:
