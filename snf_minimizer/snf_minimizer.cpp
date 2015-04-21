@@ -29,15 +29,20 @@ void SNF_Minimizer::printOps()
 ///CONSTRUCTOR
 SNF_Minimizer::SNF_Minimizer()
 {
-    expType = NOTYPE;   // needed for testing. not nessesery
     exp.clear();
 }
 /// MINIMIZE
 string SNF_Minimizer::minimize(string input)
 {
-    string output;
     cout<<"Parsing...";
-    expType = parser.parse(input, exp);
+    try
+    {
+        expType = parser.parse(input, exp);
+    }catch(InvalidFunctionException e)
+    {
+        cout<<"Nope.\n";
+        return e.getError();
+    }
     cout<<"DONE:\n";
     printOps();
     cout<<"\nMatching...";
@@ -48,6 +53,26 @@ string SNF_Minimizer::minimize(string input)
     delNeedless();
     cout<<"DONE:\n";
     printOps();
+    cout<<"\n\n";
+    return res_toString();
+}
+
+/// OUTPUT
+string SNF_Minimizer::res_toString()
+{
+    string output;
+    for(int i=0; i<(int)exp.size(); i++)
+    {
+        if(expType==SNKF) output += '(';
+        for(int j=0; j<(int)exp[i].size(); j++)
+        {
+            if(exp[i][j].invertion==true) output += '!';
+            output += exp[i][j].name;
+            if(expType==SNKF && (exp[i].size()-j)>1) output += '+';
+        }
+        if(expType==SNKF)output += ')';
+        if(expType==SNDF && (exp.size()-i)>1) output += '+';
+    }
     return output;
 }
 

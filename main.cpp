@@ -1,34 +1,23 @@
 #include "snf_minimizer/snf_minimizer.h"
 
-#include <string.h>
+#include <string>
+#include <stdlib.h>
 void expressionOutputSample(const Expression&  ex, const FunctionType& ft);
 
 int main(int argc, char *argv[])
 {
     SNF_Minimizer snf;
-  //  snf.minimize("x1*x2*x3 + !x1*x2*x3 + !x1*!x2*x3 + !x1*!x2*!x3");
-    ///Olerapx's previous magic below
-
-//  SNF_Minimizer snf;
-//  snf.test();
-    /*
-    SNF_Parser parser;
-    Expression ex;
-    std::string input="(y)";
-    std::string input2="(x)+(y)";
-    std::string test="((x1))!x2!x3+ x1*x2*x3+ !x1*x2*x3";
-
-    FunctionType  ft=parser.parse(input,ex);
-    expressionOutputSample(ex,ft);
-
-    ft= parser.parse(input2,ex);
-    expressionOutputSample(ex,ft);
-*/
-
+    string result;
+    result = snf.minimize("(x1+x2+x3)(!x1+x2+x3)(!x1+!x2+x3)(!x1+!x2+!x3)");
+    cout<<"RES: "<<result<<endl;
+    system("PAUSE");  // you actually can add some OS detection
+                        //and linux commands here if you want
     return 0;
 }
 
 ///You really don't need to comment this
+// YAP :p
+/*
 void expressionOutputSample(const Expression&  ex, const FunctionType &ft)
 {
 
@@ -50,4 +39,4 @@ void expressionOutputSample(const Expression&  ex, const FunctionType &ft)
     }
 }
 
-
+*/

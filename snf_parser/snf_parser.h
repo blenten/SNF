@@ -18,7 +18,7 @@
 //double inversions will be removed
 
 enum FunctionType {
-    OTHER=-1, SNDF, SNKF, NOTYPE=-2 // needed for testing. not nessesery
+    OTHER=-1, SNDF, SNKF
 };
 
 enum OperationState {

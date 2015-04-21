@@ -2,7 +2,6 @@
 
 FunctionType SNF_Parser::parse(std::string input, Expression &output)
 {
-    try{
        FunctionType ft=OTHER;
         output.clear();
         _input=input;
@@ -20,12 +19,6 @@ FunctionType SNF_Parser::parse(std::string input, Expression &output)
 
 
         return ft;
-    }
-    catch(InvalidFunctionException e)
-    {
-        return OTHER;
-    }
-
 }
 
 SymbolType SNF_Parser::getSymbolType(char symb)
@@ -261,7 +254,7 @@ try{
             expression.at(operandIndex).push_back(var);
             varIndex++;
         }
-        else if (currVar!="")        
+        else if (currVar!="")
            throw InvalidFunctionException ("The sequence of variables is broken");
 
         if (_input[lena]=='\0')
