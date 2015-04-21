@@ -8,7 +8,8 @@ int main(int argc, char *argv[])
 {
     SNF_Minimizer snf;
     string result;
-    result = snf.minimize("(x1+x2+x3)(!x1+x2+x3)(!x1+!x2+x3)(!x1+!x2+!x3)");
+    //result = snf.minimize("(x1+x2+x3)(!x1+x2+x3)(!x1+!x2+x3)(!x1+!x2+!x3)"); ///commented MUHAHAHAHAHA
+    result=snf.minimize("x1!!!!x2+ !x1*x2");
     cout<<"RES: "<<result<<endl;
 
     cin.clear();
@@ -18,6 +19,8 @@ int main(int argc, char *argv[])
 
 ///You really don't need to comment this
 // YAP :p
+
+///motherfucker
 /*
 void expressionOutputSample(const Expression&  ex, const FunctionType &ft)
 {

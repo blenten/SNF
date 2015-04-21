@@ -61,7 +61,9 @@ private:
     std::string getOperandToFill (int &index);
    FunctionType getVariables (std::vector<std::string> & variables);
 
-    void checkInversionsAndInsertConjunctionSymbols();
+    void checkInversions();
+    //inserts '&' instead of double inversion and after operand before left bracket
+    void insertConjunctionSymbols();
     OperationState getOperationStateAfterLBracket(int index, OperationState currState);
     bool isVariablesRepeat(std::vector<std::string> &variables);
 

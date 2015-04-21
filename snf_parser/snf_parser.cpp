@@ -8,7 +8,9 @@ FunctionType SNF_Parser::parse(std::string input, Expression &output)
          removeUnused();
         if (_input.length()==0) throw InvalidFunctionException("Input string doesn't contain any variables or operands");
         checkBrackets();
-        checkInversionsAndInsertConjunctionSymbols();
+        insertConjunctionSymbols();
+        checkInversions();
+        std::cout <<_input<<"\n";
         std::vector <std::string> variables;
         ft= getVariables(variables);
         if (variables.size()==0) throw InvalidFunctionException("Input string has no variables");
@@ -69,7 +71,7 @@ FunctionType SNF_Parser::getVariables(std::vector<std::string> &variables)
 
 void SNF_Parser::checkBrackets()
   {
-    try{
+
         int len=_input.length();
         int lCount=0, rCount=0;
         for (int i=0;i<len+1;i++)
@@ -94,8 +96,7 @@ void SNF_Parser::checkBrackets()
             }
         }
         if (lCount!=rCount)throw InvalidFunctionException ("Left brackets number is not equal that right brackets number");
-  }
-    catch(InvalidFunctionException){throw;}
+
   }
 
 
@@ -195,37 +196,42 @@ bool SNF_Parser::isVariablesRepeat(std::vector<std::string> &variables)
     return 0;
  }
 
-void SNF_Parser::checkInversionsAndInsertConjunctionSymbols()
+void SNF_Parser::checkInversions()
 {
-try{
  int len=_input.size();
- for (int i=0;i<len-1;i++)
-     if (getSymbolType(_input[i])== SYMBOL_INVERSE && getSymbolType(_input[i+1])==SYMBOL_INVERSE)
-     {
-         _input.erase(i,2);
-         _input.insert(i,"&");
-         len--;
-     }
-    else if (getSymbolType(_input[i])== SYMBOL_INVERSE &&
-             getSymbolType(_input[i+1])!=SYMBOL_OPERAND)
+ for (int i=0;i<len-1;i++)   
+     if (getSymbolType(_input[i])== SYMBOL_INVERSE && getSymbolType(_input[i+1])!=SYMBOL_OPERAND)
          throw InvalidFunctionException ("No operand after inversion at position "+ toString(i));
-    else if (getSymbolType(_input[i])== SYMBOL_OPERAND && getSymbolType(_input[i+1])==SYMBOL_LBRACKET)
-     {
-         _input.insert(i+1,"&");
-         len++;
-         i++;
-     }
 
  if (getSymbolType(_input[len-1])==SYMBOL_INVERSE) throw InvalidFunctionException("Last symbol in string is inversion");
-}
-catch (InvalidFunctionException){throw;}
 
 }
+
+void SNF_Parser::insertConjunctionSymbols()
+{
+    int len=_input.size();
+    for (int i=0;i<len-1;i++)
+        if (getSymbolType(_input[i])== SYMBOL_INVERSE && getSymbolType(_input[i+1])==SYMBOL_INVERSE)
+        {
+            _input.erase(i,2);
+            _input.insert(i,"&");
+            len--;
+        }
+       else if (getSymbolType(_input[i])== SYMBOL_OPERAND && getSymbolType(_input[i+1])==SYMBOL_LBRACKET)
+        {
+            _input.insert(i+1,"&");
+            len++;
+            i++;
+        }
+
+   }
+
+
 
 void SNF_Parser::fillExpressionVector(Expression& expression, const FunctionType& ft,
                                       std::vector<std::string> & variables)
 {
-try{
+
     OperationState os=(ft==SNKF)? Disjunction: Conjunction;
 
     int lena=0, operandIndex=0, varIndex=0;
@@ -279,8 +285,7 @@ try{
         }
 
     }
-}
-    catch(InvalidFunctionException){throw;}
+
 }
 
 
