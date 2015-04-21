@@ -1,7 +1,7 @@
 #include "snf_minimizer/snf_minimizer.h"
 
 #include <string>
-#include <stdlib.h>
+
 void expressionOutputSample(const Expression&  ex, const FunctionType& ft);
 
 int main(int argc, char *argv[])
@@ -10,8 +10,9 @@ int main(int argc, char *argv[])
     string result;
     result = snf.minimize("(x1+x2+x3)(!x1+x2+x3)(!x1+!x2+x3)(!x1+!x2+!x3)");
     cout<<"RES: "<<result<<endl;
-    system("PAUSE");  // you actually can add some OS detection
-                        //and linux commands here if you want
+
+    cin.clear();
+    cin.get();
     return 0;
 }
 
