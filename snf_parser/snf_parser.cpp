@@ -10,7 +10,6 @@ FunctionType SNF_Parser::parse(std::string input, Expression &output)
         checkBrackets();
         insertConjunctionSymbols();
         checkInversions();
-        std::cout <<_input<<"\n";
         std::vector <std::string> variables;
         ft= getVariables(variables);
         if (variables.size()==0) throw InvalidFunctionException("Input string has no variables");
