@@ -1,4 +1,5 @@
 #include "snf_minimizer/snf_minimizer.h"
+#include "snf_generator/snf_generator.h"
 
 #include <string>
 
@@ -6,16 +7,35 @@ void expressionOutputSample(const Expression&  ex, const FunctionType& ft);
 
 int main(int argc, char *argv[])
 {
-    SNF_Minimizer snf;
-    string result;
-    //result = snf.minimize("(x1+x2+x3)(!x1+x2+x3)(!x1+!x2+x3)(!x1+!x2+!x3)"); ///commented MUHAHAHAHAHA
-    result=snf.minimize("x1!!!!x2+ !x1*x2");
-    cout<<"RES: "<<result<<endl;
+   std::vector <std::string> vec;
+   SNF_Generator::generate(0,5,vec);
+
 
     cin.clear();
     cin.get();
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+///this was in main.cpp
+/*  SNF_Minimizer snf;
+  string result;
+  //result = snf.minimize("(x1+x2+x3)(!x1+x2+x3)(!x1+!x2+x3)(!x1+!x2+!x3)"); ///commented MUHAHAHAHAHA
+  result=snf.minimize("x1!!!!x2+ !x1*x2");
+  cout<<"RES: "<<result<<endl;
+*/
+
 
 ///You really don't need to comment this
 // YAP :p
