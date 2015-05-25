@@ -8,7 +8,10 @@ void expressionOutputSample(const Expression&  ex, const FunctionType& ft);
 int main(int argc, char *argv[])
 {
    std::vector <std::string> vec;
-   SNF_Generator::generate(0,5,vec);
+   SNF_Generator::generate(1,5,vec);
+
+   for (int i=0;i<vec.size();i++)
+       std::cout <<vec.at(i)<<"\n";
 
 
     cin.clear();
