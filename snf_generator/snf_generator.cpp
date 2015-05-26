@@ -6,8 +6,15 @@ void SNF_Generator::generate(unsigned int downVariablesNumber, unsigned int upVa
     for (unsigned int i=downVariablesNumber;i<=upVariablesNumber;i++)
     {
        for (unsigned int operandNumber=downOperandsNumber;operandNumber<=upOperandsNumber; operandNumber++)
-           if(getRandom(1)) vec.push_back(generateFunction(i,operandNumber, SNDF));
-           else vec.push_back(generateFunction(i,operandNumber, SNKF));
+       {
+           Function func;
+           func.operandsNumber=operandNumber;
+           func.variablesNumber=i;
+           if(getRandom(1)) func.function=generateFunction(i,operandNumber, SNDF);
+           else func.function=generateFunction(i,operandNumber, SNKF);
+
+           vec.push_back(func);
+       }
     }
 }
 
@@ -44,4 +51,14 @@ std::string SNF_Generator::generateFunction(unsigned int number, unsigned int op
         }
     }
     return output;
+}
+
+
+unsigned long SNF_Generator::getTimeMinimized (std::string function)
+{
+    unsigned long time = QDateTime::currentMSecsSinceEpoch();
+    SNF_Minimizer min;
+    min.minimize(function);
+    time=QDateTime::currentMSecsSinceEpoch()-time;
+    return time;
 }

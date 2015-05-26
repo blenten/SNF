@@ -4,7 +4,13 @@
 #include <QDateTime>
 #include <cstdlib>
 
-typedef std::vector<std::string> FunctionVector;
+struct Function
+{
+    std::string function;
+    int variablesNumber, operandsNumber;
+};
+
+typedef std::vector<Function> FunctionVector;
 
 class SNF_Generator
 {
@@ -17,6 +23,8 @@ public:
     //each function will be with operands number from down to up value
     static void generate (unsigned int downVariablesNumber, unsigned int upVariablesNumber,
                           unsigned int downOperandsNumber, unsigned int upOperandsNumber, FunctionVector& vec);
+
+    static unsigned long getTimeMinimized (std::string function);
 
 };
 

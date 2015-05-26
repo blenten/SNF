@@ -34,7 +34,7 @@ SNF_Minimizer::SNF_Minimizer()
 /// MINIMIZE
 string SNF_Minimizer::minimize(string input)
 {
-    cout<<"Parsing...";
+///    cout<<"Parsing...";
     try
     {
         expType = parser.parse(input, exp);
@@ -43,17 +43,17 @@ string SNF_Minimizer::minimize(string input)
         cout<<"Nope.\n";
         return e.getError();
     }
-    cout<<"DONE:\n";
-    printOps();
-    cout<<"\nMatching...";
+///    cout<<"DONE:\n";
+///    printOps();
+///    cout<<"\nMatching...";
     match();
-    cout<<"DONE:\n";
-    printOps();
-    cout<<"\nNesschecking...";
+///    cout<<"DONE:\n";
+///    printOps();
+///    cout<<"\nNesschecking...";
     delNeedless();
-    cout<<"DONE:\n";
-    printOps();
-    cout<<"\n\n";
+///    cout<<"DONE:\n";
+///    printOps();
+///    cout<<"\n\n";
     return res_toString();
 }
 

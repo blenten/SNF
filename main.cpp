@@ -7,16 +7,16 @@ void expressionOutputSample(const Expression&  ex, const FunctionType& ft);
 
 int main(int argc, char *argv[])
 {
-   std::vector <std::string> vec;
-   SNF_Generator::generate(4,5,1,3,vec);
+   FunctionVector vec;
+   SNF_Generator::generate(100,150,100,101,vec);
 
    SNF_Minimizer min;
    for (int i=0;i<vec.size();i++)
    {
-       std::cout<<"Function: "<<vec.at(i)<<"\n";
-       std::cout<<"minimized:      "<<min.minimize(vec.at(i))<<"\n";
+      const Function &func=vec.at(i);
+     std::cout <<"function with "<<func.variablesNumber<<" variables and "<<func.operandsNumber
+              <<" operands minimized with time: "<<std::to_string(SNF_Generator::getTimeMinimized(vec.at(i).function))<<"ms\n";
    }
-
 
     cin.clear();
     cin.get();
