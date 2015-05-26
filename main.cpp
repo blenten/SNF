@@ -8,10 +8,14 @@ void expressionOutputSample(const Expression&  ex, const FunctionType& ft);
 int main(int argc, char *argv[])
 {
    std::vector <std::string> vec;
-   SNF_Generator::generate(1,5,vec);
+   SNF_Generator::generate(4,5,1,3,vec);
 
+   SNF_Minimizer min;
    for (int i=0;i<vec.size();i++)
-       std::cout <<vec.at(i)<<"\n";
+   {
+       std::cout<<"Function: "<<vec.at(i)<<"\n";
+       std::cout<<"minimized:      "<<min.minimize(vec.at(i))<<"\n";
+   }
 
 
     cin.clear();

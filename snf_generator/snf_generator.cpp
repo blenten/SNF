@@ -1,32 +1,29 @@
 #include "snf_generator.h"
 
-void SNF_Generator::generate(unsigned int downVariablesNumber, unsigned int upVariablesNumber, FunctionVector &vec)
+void SNF_Generator::generate(unsigned int downVariablesNumber, unsigned int upVariablesNumber, unsigned int downOperandsNumber, unsigned int upOperandsNumber, FunctionVector &vec)
 {
     srand (QDateTime::currentMSecsSinceEpoch());
     for (unsigned int i=downVariablesNumber;i<=upVariablesNumber;i++)
     {
-       if(getRandom(1)) vec.push_back(generateFunction(i, SNDF));
-       else vec.push_back(generateFunction(i, SNKF));
+       for (unsigned int operandNumber=downOperandsNumber;operandNumber<=upOperandsNumber; operandNumber++)
+           if(getRandom(1)) vec.push_back(generateFunction(i,operandNumber, SNDF));
+           else vec.push_back(generateFunction(i,operandNumber, SNKF));
     }
 }
-
 
 int SNF_Generator::getRandom(int max)
 {
     return rand()%(max+1);
 }
 
-
-std::string SNF_Generator::generateFunction(unsigned int number, FunctionType ft)
+std::string SNF_Generator::generateFunction(unsigned int number, unsigned int operandNumber, FunctionType ft)
 {
     std::vector <std::string> usedVariables;
     for(unsigned int i=1;i<=number;i++) usedVariables.push_back("x"+std::to_string(i));
 
     std::string output="";
 
-    unsigned int addNumber=5; //TODO
-
-    for (unsigned int i=0;i<addNumber;i++)
+    for (unsigned int i=0;i<operandNumber;i++)
     {
         output+="(";
         for (unsigned int j=0;j<number;j++)
@@ -40,13 +37,11 @@ std::string SNF_Generator::generateFunction(unsigned int number, FunctionType ft
             }
         }
         output+=")";
-        if (i!=addNumber-1)
+        if (i!=operandNumber-1)
         {
             if (ft)output+="+";
             else output+="*";
         }
     }
-
     return output;
 }
-
