@@ -8,14 +8,15 @@ void expressionOutputSample(const Expression&  ex, const FunctionType& ft);
 int main(int argc, char *argv[])
 {
    FunctionVector vec;
-   SNF_Generator::generate(100,150,100,101,vec);
+   std::cout <<"Start generating...";
+   SNF_Generator::generate(1000,1000,300,300,vec);
+   std::cout <<"finished\n";
 
    SNF_Minimizer min;
-   for (int i=0;i<vec.size();i++)
+   for (FunctionVector::iterator iter=vec.begin();iter<vec.end();iter++)
    {
-      const Function &func=vec.at(i);
-     std::cout <<"function with "<<func.variablesNumber<<" variables and "<<func.operandsNumber
-              <<" operands minimized with time: "<<std::to_string(SNF_Generator::getTimeMinimized(vec.at(i).function))<<"ms\n";
+     std::cout <<"function with "<<(*iter).variablesNumber<<" variables and "<<(*iter).operandsNumber
+              <<" operands minimized with time: "<<std::to_string(SNF_Generator::getTimeMinimized((*iter).function))<<"ms\n";
    }
 
     cin.clear();
