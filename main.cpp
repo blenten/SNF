@@ -1,5 +1,6 @@
 #include "snf_minimizer/snf_minimizer.h"
 #include "snf_generator/snf_generator.h"
+#include <fstream>
 
 #include <string>
 
@@ -7,17 +8,12 @@ void expressionOutputSample(const Expression&  ex, const FunctionType& ft);
 
 int main(int argc, char *argv[])
 {
-   FunctionVector vec;
-   std::cout <<"Start generating...";
-   SNF_Generator::generate(1000,1000,300,300,vec);
-   std::cout <<"finished\n";
+    FunctionVector vec;
+    SNF_Generator::generate(2,500,2,500,vec,50,50);
 
-   SNF_Minimizer min;
-   for (FunctionVector::iterator iter=vec.begin();iter<vec.end();iter++)
-   {
-     std::cout <<"function with "<<(*iter).variablesNumber<<" variables and "<<(*iter).operandsNumber
-              <<" operands minimized with time: "<<std::to_string(SNF_Generator::getTimeMinimized((*iter).function))<<"ms\n";
-   }
+    std::ofstream ofs("log.txt");
+    SNF_Generator::testMinimizing(vec,std::cout); //change to ofs after testing
+    ofs.close();
 
     cin.clear();
     cin.get();
