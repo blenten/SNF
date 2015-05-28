@@ -3,6 +3,7 @@
 #include "../snf_minimizer/snf_minimizer.h"
 #include <QDateTime>
 #include <cstdlib>
+#include <iomanip>
 
 struct Function
 {
