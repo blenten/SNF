@@ -5,13 +5,13 @@
 
 void expressionOutputSample(const Expression&  ex, const FunctionType& ft);
 
-int main(int argc, char *argv[])
+int main()
 {
    FunctionVector vec;
-   SNF_Generator::generate(100,150,100,101,vec);
+   SNF_Generator::generate(5,5,1,5,vec);
 
    SNF_Minimizer min;
-   for (int i=0;i<vec.size();i++)
+   for (int i=0;i<(int)vec.size();i++)
    {
       const Function &func=vec.at(i);
      std::cout <<"function with "<<func.variablesNumber<<" variables and "<<func.operandsNumber

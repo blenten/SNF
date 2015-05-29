@@ -25,7 +25,7 @@ private:
     string res_toString();
     bool checkNecessity(int index);
     INOP_t inop(Variable&, Operand&);
-    void matchOperands(Operand& op1, Operand& op2, Expression& result);
+    bool matchOperands(Operand& op1, Operand& op2, Expression& result);
 
     SNF_Parser parser; //olerapx
     Expression exp;
