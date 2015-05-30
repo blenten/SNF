@@ -1,11 +1,13 @@
 #include "snf_generator.h"
 
-void SNF_Generator::generate(unsigned int downVariablesNumber, unsigned int upVariablesNumber, unsigned int downOperandsNumber, unsigned int upOperandsNumber, FunctionVector &vec)
+void SNF_Generator::generate(unsigned int downVariablesNumber, unsigned int upVariablesNumber, unsigned int downOperandsNumber,
+                             unsigned int upOperandsNumber, FunctionVector &vec, unsigned int variablesStep,
+                             unsigned int operandsStep)
 {
     srand (QDateTime::currentMSecsSinceEpoch());
-    for (unsigned int i=downVariablesNumber;i<=upVariablesNumber;i++)
+    for (unsigned int i=downVariablesNumber;i<=upVariablesNumber;i+=variablesStep)
     {
-       for (unsigned int operandNumber=downOperandsNumber;operandNumber<=upOperandsNumber; operandNumber++)
+       for (unsigned int operandNumber=downOperandsNumber;operandNumber<=upOperandsNumber; operandNumber+=operandsStep)
        {
            Function func;
            func.operandsNumber=operandNumber;
@@ -61,4 +63,16 @@ unsigned long SNF_Generator::getTimeMinimized (std::string function)
     min.minimize(function);
     time=QDateTime::currentMSecsSinceEpoch()-time;
     return time;
+}
+
+void SNF_Generator::testMinimizing(FunctionVector &vec, std::ostream &os)
+{
+    SNF_Minimizer min;
+     os<<"variables\toperands\ttime\n";
+    for (FunctionVector::iterator iter=vec.begin();iter<vec.end();iter++)
+    {
+        os<<std::setw(9)<<(*iter).variablesNumber<<"\t";
+        os<<std::setw(8)<<(*iter).operandsNumber<<"\t";
+        os<< std::to_string(SNF_Generator::getTimeMinimized((*iter).function))<<"ms\t\n";
+    }
 }

@@ -1,5 +1,6 @@
 #include "snf_minimizer/snf_minimizer.h"
 #include "snf_generator/snf_generator.h"
+#include <fstream>
 
 #include <string>
 
@@ -17,7 +18,6 @@ int main()
      std::cout <<"function with "<<func.variablesNumber<<" variables and "<<func.operandsNumber
               <<" operands minimized with time: "<<std::to_string(SNF_Generator::getTimeMinimized(vec.at(i).function))<<"ms\n";
    }
-
     cin.clear();
     cin.get();
     return 0;
