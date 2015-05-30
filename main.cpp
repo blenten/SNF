@@ -10,7 +10,6 @@ void expressionOutputSample(const Expression&  ex, const FunctionType& ft);
 
 int main(int argc, char* argv[])
 {
-
     QApplication app(argc, argv);
 
     MainWindow mwnd;
