@@ -1,12 +1,22 @@
 #include "snf_minimizer.h"
 
 //------------SNF-------------//
-/// for testing
-void SNF_Minimizer::printOps()
+/// for generator only.
+string SNF_Minimizer::minimize(string s)
+{
+    return "your mamka";
+}
+
+string SNF_Minimizer::getLog()
+{
+    return logs.str();
+}
+
+void SNF_Minimizer::log()
 {
     if(exp.empty())
     {
-        cout<<"exp is empty!\n";
+        logs<<"exp is empty!\n";
     }else
     {
         int size = (int) exp.size();
@@ -16,47 +26,40 @@ void SNF_Minimizer::printOps()
             {
                 if(exp[i][j].invertion)
                 {
-                    cout<<'!'<<exp[i][j].name;
+                    logs<<'!'<<exp[i][j].name;
                 }else
                 {
-                    cout<<exp[i][j].name;
+                    logs<<exp[i][j].name;
                 }
             }
-            cout<<'\t';
+            logs<<'\t';
         }
     }
-    cout<<"\nF_Type returned: "<<expType<<endl;
+    logs<<endl;
 }
 //CONSTRUCTOR
 SNF_Minimizer::SNF_Minimizer()
 {
     exp.clear();
 }
-// MINIMIZE
-string SNF_Minimizer::minimize(string input)
+//PARSE
+bool SNF_Minimizer::parse(string input)
 {
-//    cout<<"Parsing...";
     try
     {
         expType = parser.parse(input, exp);
     }catch(InvalidFunctionException e)
     {
-        cout<<"Nope.\n";
-        return e.getError();
+        logs<<e.getError();
+        return true;
     }
-//    cout<<"DONE:\n";
-    if(exp.size()<=1)   return res_toString();
-    printOps();
-    cout<<"\nMatching...";
-    match();
-    cout<<"DONE:\n";
-    printOps();
-    cout<<"\nNesschecking...";
-    delNeedless();
-    cout<<"DONE:\n";
-    printOps();
-    cout<<"\n\n";
-    return res_toString();
+    if(exp.size()<=1)
+    {
+        logs<<"Wrong input!\n";
+        return true;
+    }
+    log();
+    return false;
 }
 
 // OUTPUT
@@ -64,14 +67,14 @@ string SNF_Minimizer::res_toString()
 {
     string output;
     int size = (int)exp.size();
-    for(int i=0; i<(int)size; i++)
+    for(int i=0; i<size; i++)
     {
         if(expType==SNKF) output += '(';
-        for(int j=0; j<size; j++)
+        for(int j=0; j<(int)exp[i].size(); j++)
         {
             if(exp[i][j].invertion==true) output += '!';
             output += exp[i][j].name;
-            if(expType==SNKF && (size-j)>1) output += '+';
+            if(expType==SNKF && (exp[i].size()-j)>1) output += '+';
         }
         if(expType==SNKF)output += ')';
         if(expType==SNDF && (size-i)>1) output += '+';
@@ -112,6 +115,8 @@ void SNF_Minimizer::match()
         exp.clear();
         exp = temp;
     }
+    //
+    log();
 }
 /// subMatch
 bool SNF_Minimizer::matchOperands(Operand &op1, Operand &op2, Expression &result)
@@ -132,6 +137,12 @@ bool SNF_Minimizer::matchOperands(Operand &op1, Operand &op2, Expression &result
 // DEL UNNESSESARY
 void SNF_Minimizer::delNeedless()
 {
+
+    if(exp.size()<=1)
+    {
+        return;
+    }
+
     int i=0;
     while(i<(int)exp.size())
     {
@@ -143,6 +154,8 @@ void SNF_Minimizer::delNeedless()
             i++;
         }
     }
+    //
+    log();
 }
 // NECESSITY CHECK
 bool SNF_Minimizer::checkNecessity(int index)

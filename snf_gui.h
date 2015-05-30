@@ -18,8 +18,12 @@ public:
 private slots:
     void on_minimizeButton_clicked();
 
+    void on_stepsButton_clicked();
+
 private:
     Ui::SNF_gui *ui;
+    QString log;
+    bool logShown=false;
 };
 
 #endif // SNF_GUI_H

@@ -2,6 +2,7 @@
 #define SNF_MINIMIZER_H
 
 #include"../snf_parser/snf_parser.h"
+#include <sstream>
 
 using namespace std;
 
@@ -15,17 +16,22 @@ class SNF_Minimizer
 {
 public:
     SNF_Minimizer();
-    void printOps(); // for testing
 
-    string minimize(string input);
-
-private:
+    bool parse(string input);
     void match();
     void delNeedless();
     string res_toString();
+    string getLog();
+
+    string minimize(string); //for generator only. needs fixing!
+
+private:
     bool checkNecessity(int index);
     INOP_t inop(Variable&, Operand&);
     bool matchOperands(Operand& op1, Operand& op2, Expression& result);
+
+    void log();         //creating log for "steps"
+    stringstream logs;
 
     SNF_Parser parser; //olerapx
     Expression exp;
