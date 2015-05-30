@@ -315,7 +315,6 @@ OperationState SNF_Parser::getNextState(int & lena, OperationState prevState)
             currState!=DisjunctionToConjunction &&
             currState!=ConjunctionToDinsjunction && currState!=prevState)
        return (prevState==Conjunction)? Disjunction:Conjunction;
-
 }
 
 

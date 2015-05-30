@@ -7,7 +7,7 @@ using namespace std;
 
 enum INOP_t
 {
-    IN=1, invIN=-1, NIN=0
+    IN=1, invIN=0, NIN=-1
 };
 
 /// MINIMIZER

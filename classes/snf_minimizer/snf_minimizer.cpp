@@ -84,14 +84,25 @@ void SNF_Minimizer::match()
 {
     int size = (int)exp.size();
     vector<Operand> temp;
+    vector<bool> mergedlist;
+    mergedlist.resize(size);
     for(int i=0; i<size-1; i++)
     {
-        bool merged = false;
         for(int j=i+1; j<size; j++)
         {
+            bool merged = false;
             merged = matchOperands(exp[i], exp[j], temp);
+
+            if(merged)
+            {
+                mergedlist[i] = true;
+                mergedlist[j] = true;
+            }
         }
-        if(!merged)
+    }
+    for(int i=0; i<size;i++)
+    {
+        if(mergedlist[i]==false)
         {
             temp.push_back(exp[i]);
         }
@@ -136,20 +147,56 @@ void SNF_Minimizer::delNeedless()
 // NECESSITY CHECK
 bool SNF_Minimizer::checkNecessity(int index)
 {
-    int res=0;    //resulting coef
-
+    int res=0;
+    Expression NINs;
     for(int i=0; i<(int)exp.size(); i++)
     {
         if(i!=index)
         {
+            int tempres=1;
+            Operand op;
             for(int j=0; j<(int)exp[i].size(); j++)
             {
-                res += inop(exp[i][j], exp[index]);
+                INOP_t temp = inop(exp[i][j], exp[index]);
+                if(temp==invIN)
+                {
+                    tempres = 0;
+                    op.clear();
+                    break;
+                }else if(temp==NIN)
+                {
+                    tempres = 0;
+                    op.push_back(exp[i][j]);
+                }
             }
+            if(!op.empty())
+            {
+                NINs.push_back(op);
+            }
+            res += tempres;
         }
     }
 
-    if(res<=0)  return true;
+    if(res==0)
+    {
+        if(NINs.empty())
+        {
+            return true;
+        }else
+        {
+            for(int i=0; i<(int)NINs.size()-1; i++)
+            {
+                for(int j=i+1; j<(int)NINs.size(); j++)
+                {
+                    if(NINs[i].size()==1 && NINs[j].size()==1 && NINs[i][0].name==NINs[j][0].name && NINs[i][0].invertion!=NINs[j][0].invertion)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+    }
     return false;
 }
 // INOP

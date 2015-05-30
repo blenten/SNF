@@ -7,7 +7,7 @@
 #include <ctype.h>
 #include <sstream>
 #include "../lvar.h"
-#include "Exceptions/invalidfunctionexception.h"
+#include "../Exceptions/invalidfunctionexception.h"
 
 //Parser of string with SNF function
 //NOTE: variables may delim by:
