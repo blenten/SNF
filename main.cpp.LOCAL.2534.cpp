@@ -8,9 +8,8 @@
 
 void expressionOutputSample(const Expression&  ex, const FunctionType& ft);
 
-int main()
+int main(int argc, char *argv[])
 {
-
     QApplication app(argc, argv);
 
     MainWindow mwnd;
@@ -26,8 +25,6 @@ int main()
     //cin.clear();
     //cin.get();
     return app.exec();
-
-
 }
 
 

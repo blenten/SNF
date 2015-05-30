@@ -1,7 +1,7 @@
 #include "snf_minimizer.h"
 
-///------------SNF-------------///
-// for testing
+//------------SNF-------------//
+/// for testing
 void SNF_Minimizer::printOps()
 {
     if(exp.empty())
@@ -9,7 +9,8 @@ void SNF_Minimizer::printOps()
         cout<<"exp is empty!\n";
     }else
     {
-        for(int i=0; i<(int)exp.size(); i++)
+        int size = (int) exp.size();
+        for(int i=0; i<size; i++)
         {
             for(int j=0; j<(int)exp[i].size(); j++)
             {
@@ -21,20 +22,20 @@ void SNF_Minimizer::printOps()
                     cout<<exp[i][j].name;
                 }
             }
-            cout<<' ';
+            cout<<'\t';
         }
     }
     cout<<"\nF_Type returned: "<<expType<<endl;
 }
-///CONSTRUCTOR
+//CONSTRUCTOR
 SNF_Minimizer::SNF_Minimizer()
 {
     exp.clear();
 }
-/// MINIMIZE
+// MINIMIZE
 string SNF_Minimizer::minimize(string input)
 {
-///    cout<<"Parsing...";
+//    cout<<"Parsing...";
     try
     {
         expType = parser.parse(input, exp);
@@ -43,55 +44,66 @@ string SNF_Minimizer::minimize(string input)
         cout<<"Nope.\n";
         return e.getError();
     }
-///    cout<<"DONE:\n";
-///    printOps();
-///    cout<<"\nMatching...";
+//    cout<<"DONE:\n";
+    if(exp.size()<=1)   return res_toString();
+    printOps();
+    cout<<"\nMatching...";
     match();
-///    cout<<"DONE:\n";
-///    printOps();
-///    cout<<"\nNesschecking...";
+    cout<<"DONE:\n";
+    printOps();
+    cout<<"\nNesschecking...";
     delNeedless();
-///    cout<<"DONE:\n";
-///    printOps();
-///    cout<<"\n\n";
+    cout<<"DONE:\n";
+    printOps();
+    cout<<"\n\n";
     return res_toString();
 }
 
-/// OUTPUT
+// OUTPUT
 string SNF_Minimizer::res_toString()
 {
     string output;
-    for(int i=0; i<(int)exp.size(); i++)
+    int size = (int)exp.size();
+    for(int i=0; i<(int)size; i++)
     {
         if(expType==SNKF) output += '(';
-        for(int j=0; j<(int)exp[i].size(); j++)
+        for(int j=0; j<size; j++)
         {
             if(exp[i][j].invertion==true) output += '!';
             output += exp[i][j].name;
-            if(expType==SNKF && (exp[i].size()-j)>1) output += '+';
+            if(expType==SNKF && (size-j)>1) output += '+';
         }
         if(expType==SNKF)output += ')';
-        if(expType==SNDF && (exp.size()-i)>1) output += '+';
+        if(expType==SNDF && (size-i)>1) output += '+';
     }
     return output;
 }
 
-/// MATCH
+// MATCH
 void SNF_Minimizer::match()
 {
+    int size = (int)exp.size();
     vector<Operand> temp;
-    for(int i=0; i<(int)exp.size()-1; i++)
+    for(int i=0; i<size-1; i++)
     {
-        for(int j=i+1; j<(int)exp.size(); j++)
+        bool merged = false;
+        for(int j=i+1; j<size; j++)
         {
-            matchOperands(exp[i], exp[j], temp);
+            merged = matchOperands(exp[i], exp[j], temp);
+        }
+        if(!merged)
+        {
+            temp.push_back(exp[i]);
         }
     }
-    exp.clear();
-    exp = temp;
+    if(!temp.empty())
+    {
+        exp.clear();
+        exp = temp;
+    }
 }
-// subMatch
-void SNF_Minimizer::matchOperands(Operand &op1, Operand &op2, Expression &result)
+/// subMatch
+bool SNF_Minimizer::matchOperands(Operand &op1, Operand &op2, Expression &result)
 {
     Operand res_op;
     for(int i=0; i<(int)op1.size(); i++)
@@ -99,9 +111,14 @@ void SNF_Minimizer::matchOperands(Operand &op1, Operand &op2, Expression &result
         if(op1[i]==op2[i])  res_op.push_back(op1[i]);
     }
 
-    if(res_op.size()==(op1.size()-1))   result.push_back(res_op);
+    if(res_op.size()==(op1.size()-1))
+    {
+        result.push_back(res_op);
+        return true;
+    }
+    return false;
 }
-/// DEL UNNESSESARY
+// DEL UNNESSESARY
 void SNF_Minimizer::delNeedless()
 {
     int i=0;
@@ -116,7 +133,7 @@ void SNF_Minimizer::delNeedless()
         }
     }
 }
-/// NECESSITY CHECK
+// NECESSITY CHECK
 bool SNF_Minimizer::checkNecessity(int index)
 {
     int res=0;    //resulting coef

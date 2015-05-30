@@ -10,7 +10,7 @@ void expressionOutputSample(const Expression&  ex, const FunctionType& ft);
 
 int main()
 {
-
+<<<<<<< HEAD
     QApplication app(argc, argv);
 
     MainWindow mwnd;
@@ -26,8 +26,21 @@ int main()
     //cin.clear();
     //cin.get();
     return app.exec();
+=======
+   FunctionVector vec;
+   SNF_Generator::generate(5,5,1,5,vec);
 
-
+   SNF_Minimizer min;
+   for (int i=0;i<(int)vec.size();i++)
+   {
+      const Function &func=vec.at(i);
+     std::cout <<"function with "<<func.variablesNumber<<" variables and "<<func.operandsNumber
+              <<" operands minimized with time: "<<std::to_string(SNF_Generator::getTimeMinimized(vec.at(i).function))<<"ms\n";
+   }
+    cin.clear();
+    cin.get();
+    return 0;
+>>>>>>> 0b1d7223024525223b75c6f2c9a2c8f5a2f1d78b
 }
 
 
