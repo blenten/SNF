@@ -4,7 +4,7 @@
 #include <QDateTime>
 #include <cstdlib>
 #include <iomanip>
-
+#include <fstream>
 #include <omp.h>
 
 class SNF_Generator
@@ -15,11 +15,11 @@ private:
 
 public:
 
-    //gets time of minimizing functions and writes a log to output stream
-    static void testMinimizing (std::ostream& os,unsigned int downVariablesNumber,
+    //gets time of minimizing functions; writes a log to file on path; prints an completing info to infoOutputStream
+    static void testMinimizing (std::string path,unsigned int downVariablesNumber,
                                 unsigned int upVariablesNumber, unsigned int downOperandsNumber,
                                 unsigned int upOperandsNumber, unsigned int variablesStep=1,
-                                unsigned int operandsStep=1);
+                                unsigned int operandsStep=1, std::ostream &infoOutputStream=std::cout);
 
     static std::string generateFunction (unsigned int number, unsigned int operandNumber,FunctionType ft);
 
