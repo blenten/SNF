@@ -5,33 +5,24 @@
 #include <cstdlib>
 #include <iomanip>
 
-struct Function
-{
-    std::string function;
-    int variablesNumber, operandsNumber;
-};
-
-typedef std::vector<Function> FunctionVector;
+#include <omp.h>
 
 class SNF_Generator
 {
 private:
     static int getRandom (int max);
-    static std::string generateFunction (unsigned int number, unsigned int operandNumber,FunctionType ft);
-    static unsigned long getTimeMinimized (std::string function);
+    static double getTimeMinimized (std::string function);
 
 public:
-    //generates vector of functions (with variables number from down to up value) in FunctionVector
-    //each function will be with operands number from down to up value
-    static void generate (unsigned int downVariablesNumber, unsigned int upVariablesNumber,
-                          unsigned int downOperandsNumber, unsigned int upOperandsNumber,
-                          FunctionVector& vec, unsigned int variablesStep=1, unsigned int operandsStep=1);
 
     //gets time of minimizing functions and writes a log to output stream
-    static void testMinimizing (FunctionVector& vec, std::ostream& os);
+    static void testMinimizing (std::ostream& os,unsigned int downVariablesNumber,
+                                unsigned int upVariablesNumber, unsigned int downOperandsNumber,
+                                unsigned int upOperandsNumber, unsigned int variablesStep=1,
+                                unsigned int operandsStep=1);
+
+    static std::string generateFunction (unsigned int number, unsigned int operandNumber,FunctionType ft);
 
 };
-
-
 
 #endif
