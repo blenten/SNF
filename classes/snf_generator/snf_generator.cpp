@@ -36,7 +36,7 @@ double SNF_Generator::getTimeMinimized (std::string function)
 {
     double time = omp_get_wtime();
     SNF_Minimizer min;
-    min.minimize(function);
+    SNF_Generator::minimize(function);
     time=omp_get_wtime()-time;
     return time;
 }
@@ -68,7 +68,7 @@ void SNF_Generator::testMinimizing(std::string path, unsigned int downVariablesN
 
             os<<std::setw(9)<<i<<"\t";
             os<<std::setw(8)<<j<<"\t";
-            os<< std::to_string(SNF_Generator::getTimeMinimized(func))<<"ms\t\n";
+            os<< std::to_string(SNF_Generator::getTimeMinimized(func))<<"s\t\n";
             os.close();
 
             curr++;
@@ -76,4 +76,15 @@ void SNF_Generator::testMinimizing(std::string path, unsigned int downVariablesN
             infoOutputStream.flush();
         }
     }
+}
+
+std::string SNF_Generator::minimize(string function)
+{
+    SNF_Minimizer snf;
+    if(snf.parse(function))
+        return "";
+
+    snf.match();
+    snf.delNeedless();
+    return snf.res_toString();
 }

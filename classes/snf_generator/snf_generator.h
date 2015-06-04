@@ -13,6 +13,9 @@ private:
     static int getRandom (int max);
     static double getTimeMinimized (std::string function);
 
+    //replacement of mother-returning function in Minimizer class
+    static std::string minimize (std::string function);
+
 public:
 
     //gets time of minimizing functions; writes a log to file on path; prints an completing info to infoOutputStream
