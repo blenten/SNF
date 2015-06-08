@@ -1,8 +1,4 @@
 #include "snf_gui.h"
-#include "ui_snf_gui.h"
-
-#include "classes/snf_minimizer/snf_minimizer.h"
-#include <QDebug>
 
 SNF_gui::SNF_gui(QWidget *parent) :
     QWidget(parent),
@@ -20,28 +16,42 @@ void SNF_gui::on_minimizeButton_clicked()
 {
     SNF_Minimizer snf;
     QString input = ui->inputText->toPlainText();
-    ///
-    ui->conditionLabel->setText("Parsing...");
+    QTime time = QTime::currentTime();
+    int val=0;
+
+    qsrand((uint)time.msec());
+
+    ui->conditionLabel->setText("Парсинг...");
+    QTest::qWait(100 + qrand()%50);
     if(snf.parse(input.toStdString()))
     {
-        ui->conditionLabel->setText("Failure.");
-        ui->outputLine->setText("Input error.");
+        ui->conditionLabel->setText("Неудачно.");
+        ui->outputLine->setText("Ошибка ввода.");
         log = snf.getLog().c_str();
         return;
     }
+    val += 30 + qrand()%14;
+    ui->progressBar->setValue(val);
     ///
-    ui->conditionLabel->setText("Matching...");
+    ui->conditionLabel->setText("Склейка...");
+    QTest::qWait(100 + qrand()%50);
     snf.match();
+    val += 30 + qrand()%14;
+    ui->progressBar->setValue(val);
     ///
-    ui->conditionLabel->setText("Checking nesessity...");
+    ui->conditionLabel->setText("Проверка избыточности...");
+    QTest::qWait(100 + qrand()%50);
     snf.delNeedless();
+    ui->progressBar->setValue(100);
     ///
-    ui->conditionLabel->setText("Done.");
+    ui->conditionLabel->setText("Готово.");
     ui->outputLine->setText(snf.res_toString().c_str());
     log = snf.getLog().c_str();
 }
 
 void SNF_gui::on_stepsButton_clicked()
 {
-    qDebug()<<log;
+    Log *logform = new Log(this);
+    logform->setlog(log);
+    logform->show();
 }

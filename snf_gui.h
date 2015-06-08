@@ -2,6 +2,12 @@
 #define SNF_GUI_H
 
 #include <QWidget>
+#include "ui_snf_gui.h"
+#include "classes/snf_minimizer/snf_minimizer.h"
+#include <QtTest/QTest>
+#include <QTime>
+
+#include "log.h"
 
 namespace Ui {
 class SNF_gui;

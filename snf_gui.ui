@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>SNF</string>
+   <string> SNF Minimizer 0.1</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Input fuction:</string>
+        <string>Функция ввода:</string>
        </property>
       </widget>
      </item>
@@ -31,7 +31,7 @@
    <item>
     <widget class="QPushButton" name="minimizeButton">
      <property name="text">
-      <string>MINIMIZE</string>
+      <string>МИНИМИЗИРОВАТЬ</string>
      </property>
     </widget>
    </item>
@@ -50,7 +50,7 @@
         <enum>Qt::LeftToRight</enum>
        </property>
        <property name="text">
-        <string>condition</string>
+        <string>сост.</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -64,7 +64,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Output function:</string>
+        <string>Функция вывода:</string>
        </property>
       </widget>
      </item>
@@ -80,7 +80,7 @@
    <item>
     <widget class="QPushButton" name="stepsButton">
      <property name="text">
-      <string>Show steps</string>
+      <string>Пошагово</string>
      </property>
     </widget>
    </item>
