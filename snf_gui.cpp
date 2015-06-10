@@ -1,11 +1,13 @@
 #include "snf_gui.h"
 
+
 void SNF_gui::sleep(unsigned int ms)
 {
     QTime dieTime= QTime::currentTime().addMSecs(ms);
     while( QTime::currentTime() < dieTime )
     QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }
+
 
 SNF_gui::SNF_gui(QWidget *parent) :
     QWidget(parent),

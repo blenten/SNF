@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "ui_snf_gui.h"
 #include "classes/snf_minimizer/snf_minimizer.h"
+
 #include <QTime>
 
 #include "log.h"
