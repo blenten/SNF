@@ -1,5 +1,12 @@
 #include "snf_gui.h"
 
+void SNF_gui::sleep(unsigned int ms)
+{
+    QTime dieTime= QTime::currentTime().addMSecs(ms);
+    while( QTime::currentTime() < dieTime )
+    QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+}
+
 SNF_gui::SNF_gui(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SNF_gui)
@@ -22,7 +29,7 @@ void SNF_gui::on_minimizeButton_clicked()
     qsrand((uint)time.msec());
 
     ui->conditionLabel->setText("Парсинг...");
-    QTest::qWait(100 + qrand()%50);
+    sleep(100 + qrand()%50);
     if(snf.parse(input.toStdString()))
     {
         ui->conditionLabel->setText("Неудачно.");
@@ -34,13 +41,13 @@ void SNF_gui::on_minimizeButton_clicked()
     ui->progressBar->setValue(val);
     ///
     ui->conditionLabel->setText("Склейка...");
-    QTest::qWait(100 + qrand()%50);
+    sleep(100 + qrand()%50);
     snf.match();
     val += 30 + qrand()%14;
     ui->progressBar->setValue(val);
     ///
     ui->conditionLabel->setText("Проверка избыточности...");
-    QTest::qWait(100 + qrand()%50);
+    sleep(100 + qrand()%50);
     snf.delNeedless();
     ui->progressBar->setValue(100);
     ///

@@ -4,7 +4,6 @@
 #include <QWidget>
 #include "ui_snf_gui.h"
 #include "classes/snf_minimizer/snf_minimizer.h"
-#include <QtTest/QTest>
 #include <QTime>
 
 #include "log.h"
@@ -25,6 +24,8 @@ private slots:
     void on_minimizeButton_clicked();
 
     void on_stepsButton_clicked();
+
+    void sleep (unsigned int ms);
 
 private:
     Ui::SNF_gui *ui;
