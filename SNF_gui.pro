@@ -12,6 +12,7 @@ TARGET = SNF_gui
 TEMPLATE = app
 
 CONFIG += C++11
+CONFIG += qt
 QMAKE_LFLAGS += -fopenmp
 
 SOURCES += main.cpp\
@@ -20,7 +21,8 @@ SOURCES += main.cpp\
     classes/snf_generator/snf_generator.cpp \
     classes/snf_minimizer/snf_minimizer.cpp \
     classes/snf_parser/snf_parser.cpp \
-    log.cpp
+    log.cpp \
+    classes/localizator/localizator.cpp
 
 HEADERS  += snf_gui.h \
     classes/Exceptions/invalidfunctionexception.h \
@@ -28,7 +30,13 @@ HEADERS  += snf_gui.h \
     classes/snf_minimizer/snf_minimizer.h \
     classes/snf_parser/snf_parser.h \
     classes/lvar.h \
-    log.h
+    log.h \
+    classes/localizator/localizator.h
 
 FORMS    += snf_gui.ui \
     log.ui
+
+DISTFILES +=
+
+RESOURCES += \
+    localization/locale.qrc

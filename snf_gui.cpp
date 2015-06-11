@@ -13,7 +13,7 @@ SNF_gui::SNF_gui(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SNF_gui)
 {
-    ui->setupUi(this);
+    ui->setupUi(this);  
 }
 
 SNF_gui::~SNF_gui()
