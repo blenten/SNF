@@ -3,6 +3,7 @@
 
 #include"../snf_parser/snf_parser.h"
 #include <sstream>
+#include "classes/localizator/localizator.h"
 
 using namespace std;
 
@@ -22,6 +23,7 @@ public:
     void delNeedless();
     string res_toString();
     string getLog();
+    void putLog (string l);
 
     string minimize(string); //for generator only. needs fixing!
 

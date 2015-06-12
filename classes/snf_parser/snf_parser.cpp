@@ -6,15 +6,15 @@ FunctionType SNF_Parser::parse(std::string input, Expression &output)
         output.clear();
         _input=input;
          removeUnused();
-        if (_input.length()==0) throw InvalidFunctionException("Input string doesn't contain any variables or operands");
+        if (_input.length()==0) throw InvalidFunctionException("NoOperandsAndVariables");
         checkBrackets();
         insertConjunctionSymbols();
         checkInversions();
         std::vector <std::string> variables;
         ft= getVariables(variables);
-        if (variables.size()==0) throw InvalidFunctionException("Input string has no variables");
+        if (variables.size()==0) throw InvalidFunctionException("NoVariables");
 
-        if (isVariablesRepeat(variables)) throw InvalidFunctionException("Input string has repeating variables");
+        if (isVariablesRepeat(variables)) throw InvalidFunctionException("RepeatingVariables");
 
         fillExpressionVector(output, ft, variables);
 
@@ -77,12 +77,12 @@ void SNF_Parser::checkBrackets()
         {
             if (getSymbolType(_input[i])==SYMBOL_RBRACKET)
             {
-                if (lCount<=rCount) throw InvalidFunctionException("Brackets nesting is violated");
+                if (lCount<=rCount) throw InvalidFunctionException("BracketsNesting");
 
                 //like as: (x+y+)z
                 if (getSymbolType(_input[i-1])!=SYMBOL_OPERAND &&
                         getSymbolType(_input[i-1])!=SYMBOL_RBRACKET)
-                    throw InvalidFunctionException ("Operation before right bracket at position "+toString(i));
+                    throw InvalidFunctionException ("OperationBeforeRBracket%"+toString(i));
                 rCount++;
             }
             // y(+x)
@@ -90,11 +90,11 @@ void SNF_Parser::checkBrackets()
             {
                 if (getSymbolType(_input[i+1])!=SYMBOL_OPERAND&&
                     getSymbolType(_input[i+1])!=SYMBOL_INVERSE&&
-                    getSymbolType(_input[i+1]) !=SYMBOL_LBRACKET) throw InvalidFunctionException ("No operand after left bracket");
+                    getSymbolType(_input[i+1]) !=SYMBOL_LBRACKET) throw InvalidFunctionException ("NoOperandAfterLBracket");
                 lCount++;
             }
         }
-        if (lCount!=rCount)throw InvalidFunctionException ("Left brackets number is not equal that right brackets number");
+        if (lCount!=rCount)throw InvalidFunctionException ("BracketsNumberIsNotEqual");
 
   }
 
@@ -200,9 +200,9 @@ void SNF_Parser::checkInversions()
  int len=_input.size();
  for (int i=0;i<len-1;i++)   
      if (getSymbolType(_input[i])== SYMBOL_INVERSE && getSymbolType(_input[i+1])!=SYMBOL_OPERAND)
-         throw InvalidFunctionException ("No operand after inversion at position "+ toString(i));
+         throw InvalidFunctionException ("NoOperandAfterInversion%"+ toString(i));
 
- if (getSymbolType(_input[len-1])==SYMBOL_INVERSE) throw InvalidFunctionException("Last symbol in string is inversion");
+ if (getSymbolType(_input[len-1])==SYMBOL_INVERSE) throw InvalidFunctionException("LastSymbolIsInversion");
 
 }
 
@@ -260,11 +260,11 @@ void SNF_Parser::fillExpressionVector(Expression& expression, const FunctionType
             varIndex++;
         }
         else if (currVar!="")
-           throw InvalidFunctionException ("The sequence of variables is broken");
+           throw InvalidFunctionException ("SequenceOfVariablesIsBroken");
 
         if (_input[lena]=='\0')
         {
-           if (varIndex<variables.size()) throw InvalidFunctionException("Can't read all variables because of incorrect operation changing");
+           if (varIndex<variables.size()) throw InvalidFunctionException("IncorrectOperationChanging");
             return;
         }
 
@@ -279,7 +279,7 @@ void SNF_Parser::fillExpressionVector(Expression& expression, const FunctionType
                 operandIndex++;
             }
             else if (varIndex)
-               throw InvalidFunctionException ("The sequence of variables is broken");
+               throw InvalidFunctionException ("SequenceOfVariablesIsBroken");
 
         }
 

@@ -1,22 +1,31 @@
 #include "snf_minimizer.h"
 
 //------------SNF-------------//
-/// for generator only.
-string SNF_Minimizer::minimize(string s)
-{
-    return "your mamka";
-}
 
 string SNF_Minimizer::getLog()
 {
     return logs.str();
 }
 
+void SNF_Minimizer::putLog (string l)
+{
+   std::stringstream stream(l);
+   std::string output, temp;
+   std::getline(stream, temp,'%');
+   output+=Localizator::instance().getTranslation(QString(temp.c_str())).toStdString();
+   temp="";
+   std::getline(stream, temp);
+   if (temp!="") output+=temp;
+
+   output+="\n";
+   logs<<output;
+}
+
 void SNF_Minimizer::log()
 {
     if(exp.empty())
     {
-        logs<<"exp is empty!\n";
+        putLog("ExpressionIsEmpty");
     }else
     {
         int size = (int) exp.size();
@@ -50,12 +59,12 @@ bool SNF_Minimizer::parse(string input)
         expType = parser.parse(input, exp);
     }catch(InvalidFunctionException e)
     {
-        logs<<e.getError();
+        putLog(e.getError());
         return true;
     }
     if(exp.size()<=1)
     {
-        logs<<"Wrong input!\n";
+        putLog("Default");
         return true;
     }
     log();

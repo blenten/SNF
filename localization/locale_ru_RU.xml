@@ -29,5 +29,6 @@
 		 <LastSymbolIsInversion>Последний символ в строке - инверсия</LastSymbolIsInversion>
 		 <SequenceOfVariablesIsBroken>Нарушена последовательность переменных</SequenceOfVariablesIsBroken>
 		 <IncorrectOperationChanging>Невозможно прочитать все переменные из-за некорректной смены операции</IncorrectOperationChanging>
+		 <ExpressionIsEmpty>Выражение пусто!</ExpressionIsEmpty>
 	</Exception>	
 </Locale>

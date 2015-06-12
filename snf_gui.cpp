@@ -18,7 +18,6 @@ SNF_gui::SNF_gui(QWidget *parent) :
     Localizator::instance().loadLocale("ru_RU");
     this->setWindowTitle(Localizator::instance().getTranslation("Title"));
 
-
     QMenuBar* bar=new QMenuBar();
     ui->menuLayout->addWidget(bar);
     QMenu* langMenu=new QMenu("Language");

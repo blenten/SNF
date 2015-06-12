@@ -7,6 +7,6 @@ InvalidFunctionException::InvalidFunctionException(std::string error)
 
 InvalidFunctionException::InvalidFunctionException()
 {
-    errorText="Invalid function";
+    errorText="Default";
 
 }

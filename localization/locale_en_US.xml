@@ -29,5 +29,6 @@
 		 <LastSymbolIsInversion>Last symbol in string is inversion</LastSymbolIsInversion>
 		 <SequenceOfVariablesIsBroken>The sequence of variables is broken</SequenceOfVariablesIsBroken>
 		 <IncorrectOperationChanging>Can't read all variables because of incorrect operation changing</IncorrectOperationChanging>
+		 <ExpressionIsEmpty>Expression is empty!</ExpressionIsEmpty>
 	</Exception>	
 </Locale>
