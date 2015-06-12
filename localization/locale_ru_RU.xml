@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Locale>
 	<Main>
-		<Title>SNF Minimizer 0.1</Title>
-		<InputLabel>Функция ввода:</InputLabel>
-		<OutputLabel>Функция вывода:</OutputLabel>
-		<MinimizeButton>МИНИМИЗИРОВАТЬ</MinimizeButton>
-		<StepsButton>Пошагово</StepsButton>
-		<ConditionDefault>Сост.</ConditionDefault>
-		<ConditionParsing>Парсинг...</ConditionParsing>
-		<ConditionError>Неудачно.</ConditionError>		
-		<ConditionMatch>Склейка...</ConditionMatch>
-		<ConditionNessessity>Проверка избыточности...</ConditionNessessity>
-		<ConditionReady>Готово.</ConditionReady>
+		 <Title>SNF Minimizer 0.1</Title>
+		 <InputLabel>Функция ввода:</InputLabel>
+		 <OutputLabel>Функция вывода:</OutputLabel>
+		 <MinimizeButton>МИНИМИЗИРОВАТЬ</MinimizeButton>
+		 <StepsButton>Пошагово</StepsButton>
+		 <ConditionDefault>Сост.</ConditionDefault>
+		 <ConditionParsing>Парсинг...</ConditionParsing>
+		 <ConditionError>Неудачно.</ConditionError>		
+		 <ConditionMatch>Склейка...</ConditionMatch>
+		 <ConditionNessessity>Проверка избыточности...</ConditionNessessity>
+		 <ConditionReady>Готово.</ConditionReady>
  	</Main>
  	<Log>
- 		<Title>Лог</Title>
+ 		 <LogTitle>Лог</LogTitle>
  	</Log>
 	<Exception>
-		<Default>Некорректная функция</Default>
-		<NoOperandsAndVariables>Строка не содержит переменных и операндов</NoOperandsAndVariables>
-		<NoVariables>Строка не содержит переменных</NoVariables>
-		<RepeatingVariables>Строка содержит повторяющиеся переменные</RepeatingVariables>
-		<BracketsNesting>Нарушена вложенность скобок</BracketsNesting>
-		<OperationBeforeRBracket>Символ операции перед закрывающей скобкой на позиции </OperationBeforeRBracket>
-		<NoOperandAfterLBracket>Отсутствует операнд после открывающей скобки</NoOperandAfterLBracket>
-		<BracketsNumberIsNotEqual>Число открывающих скобок не равно числу закрывающих</BracketsNumberIsNotEqual>
-		<NoOperandAfterInversion>Нет операнда после символа инверсии на позиции </NoOperandAfterInversion>
-		<LastSymbolIsInversion>Последний символ в строке - инверсия</LastSymbolIsInversion>
-		<SequenceOfVariablesIsBroken>Нарушена последовательность переменных</SequenceOfVariablesIsBroken>
-		<IncorrectOperationChanging>Невозможно прочитать все переменные из-за некорректной смены операции</IncorrectOperationChanging>
+		 <Default>Некорректная функция</Default>
+		 <NoOperandsAndVariables>Строка не содержит переменных и операндов</NoOperandsAndVariables>
+		 <NoVariables>Строка не содержит переменных</NoVariables>
+		 <RepeatingVariables>Строка содержит повторяющиеся переменные</RepeatingVariables>
+		 <BracketsNesting>Нарушена вложенность скобок</BracketsNesting>
+		 <OperationBeforeRBracket>Символ операции перед закрывающей скобкой на позиции </OperationBeforeRBracket>
+		 <NoOperandAfterLBracket>Отсутствует операнд после открывающей скобки</NoOperandAfterLBracket>
+		 <BracketsNumberIsNotEqual>Число открывающих скобок не равно числу закрывающих</BracketsNumberIsNotEqual>
+		 <NoOperandAfterInversion>Нет операнда после символа инверсии на позиции </NoOperandAfterInversion>
+		 <LastSymbolIsInversion>Последний символ в строке - инверсия</LastSymbolIsInversion>
+		 <SequenceOfVariablesIsBroken>Нарушена последовательность переменных</SequenceOfVariablesIsBroken>
+		 <IncorrectOperationChanging>Невозможно прочитать все переменные из-за некорректной смены операции</IncorrectOperationChanging>
 	</Exception>	
 </Locale>

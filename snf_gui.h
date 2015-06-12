@@ -11,6 +11,7 @@
 
 #include "log.h"
 
+
 namespace Ui {
 class SNF_gui;
 }
@@ -18,6 +19,7 @@ class SNF_gui;
 class SNF_gui : public QWidget
 {
     Q_OBJECT
+
 
 public:
     explicit SNF_gui(QWidget *parent = 0);

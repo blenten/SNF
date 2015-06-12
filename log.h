@@ -2,6 +2,7 @@
 #define LOG_H
 
 #include <QDialog>
+#include "classes/localizator/localizator.h"
 
 namespace Ui {
 class Log;

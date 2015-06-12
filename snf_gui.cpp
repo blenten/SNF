@@ -13,7 +13,11 @@ SNF_gui::SNF_gui(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SNF_gui)
 {
-    ui->setupUi(this);  
+    ui->setupUi(this);
+
+    Localizator::instance().loadLocale("ru_RU");
+    this->setWindowTitle(Localizator::instance().getTranslation("Title"));
+
 
     QMenuBar* bar=new QMenuBar();
     ui->menuLayout->addWidget(bar);
@@ -41,33 +45,32 @@ void SNF_gui::on_minimizeButton_clicked()
     QString input = ui->inputText->toPlainText();
     QTime time = QTime::currentTime();
     int val=0;
-
     qsrand((uint)time.msec());
 
-    ui->conditionLabel->setText("Парсинг...");
+    ui->conditionLabel->setText(Localizator::instance().getTranslation("ConditionParsing"));
     sleep(100 + qrand()%50);
     if(snf.parse(input.toStdString()))
     {
-        ui->conditionLabel->setText("Неудачно.");
-        ui->outputLine->setText("Ошибка ввода.");
+        ui->conditionLabel->setText(Localizator::instance().getTranslation("ConditionError"));
+        ui->outputLine->setText(Localizator::instance().getTranslation("ConditionError"));
         log = snf.getLog().c_str();
         return;
     }
     val += 30 + qrand()%14;
     ui->progressBar->setValue(val);
     ///
-    ui->conditionLabel->setText("Склейка...");
+    ui->conditionLabel->setText(Localizator::instance().getTranslation("ConditionMatch"));
     sleep(100 + qrand()%50);
     snf.match();
     val += 30 + qrand()%14;
     ui->progressBar->setValue(val);
     ///
-    ui->conditionLabel->setText("Проверка избыточности...");
+    ui->conditionLabel->setText(Localizator::instance().getTranslation("ConditionNessessity"));
     sleep(100 + qrand()%50);
     snf.delNeedless();
     ui->progressBar->setValue(100);
     ///
-    ui->conditionLabel->setText("Готово.");
+    ui->conditionLabel->setText(Localizator::instance().getTranslation("ConditionReady"));
     ui->outputLine->setText(snf.res_toString().c_str());
     log = snf.getLog().c_str();
 }
@@ -91,7 +94,7 @@ void SNF_gui::on_langRu_clicked()
 
 void SNF_gui::setLocale (QString locale)
 {
-    Localizator l;
-    l.loadLocale(locale);
-    this->setWindowTitle(l.map["NoOperandsAndVariables"]);
+    Localizator::instance().loadLocale(locale);
+    Localizator::instance().localize(this->ui);
+    this->setWindowTitle(Localizator::instance().getTranslation("Title"));
 }

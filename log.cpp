@@ -10,6 +10,8 @@ Log::Log(QWidget *parent) :
 
 void Log::setlog(QString l)
 {
+    std::cerr<<Localizator::instance().getTranslation("LogTitle").toStdString();
+    this->setWindowTitle(Localizator::instance().getTranslation("LogTitle"));
     ui->logText->setText(l);
 }
 
