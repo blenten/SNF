@@ -9,6 +9,7 @@
 #include "snf_gui.h"
 #include "log.h"
 
+//singleton class for translating texts, states and errors
 class Localizator
 {
 private:
@@ -16,7 +17,6 @@ private:
    Localizator(){}
    ~Localizator(){}
    Localizator (const Localizator &);
-
 
 public:
 

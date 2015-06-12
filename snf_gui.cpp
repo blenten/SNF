@@ -93,7 +93,7 @@ void SNF_gui::on_langRu_clicked()
 
 void SNF_gui::setLocale (QString locale)
 {
-    Localizator::instance().loadLocale(locale);
-    Localizator::instance().localize(this->ui);
-    this->setWindowTitle(Localizator::instance().getTranslation("Title"));
+   Localizator::instance().loadLocale(locale);
+   Localizator::instance().localize(this->ui);
+   this->setWindowTitle(Localizator::instance().getTranslation("Title"));
 }

@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "classes/localizator/localizator.h"
 
+//logging class. Contains steps (some of steps represented by them name which will translate each time)
 namespace Ui {
 class Log;
 }
@@ -16,6 +17,8 @@ public:
     explicit Log(QWidget *parent = 0);
     ~Log();
     void setlog(QString);
+
+    QString translateLog(const QString &l);
 private:
     Ui::Log *ui;
 

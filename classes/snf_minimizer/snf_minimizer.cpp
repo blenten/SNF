@@ -7,25 +7,11 @@ string SNF_Minimizer::getLog()
     return logs.str();
 }
 
-void SNF_Minimizer::putLog (string l)
-{
-   std::stringstream stream(l);
-   std::string output, temp;
-   std::getline(stream, temp,'%');
-   output+=Localizator::instance().getTranslation(QString(temp.c_str())).toStdString();
-   temp="";
-   std::getline(stream, temp);
-   if (temp!="") output+=temp;
-
-   output+="\n";
-   logs<<output;
-}
-
 void SNF_Minimizer::log()
 {
     if(exp.empty())
     {
-        putLog("ExpressionIsEmpty");
+        logs<<"ExpressionIsEmpty"<<"\n";
     }else
     {
         int size = (int) exp.size();
@@ -59,12 +45,12 @@ bool SNF_Minimizer::parse(string input)
         expType = parser.parse(input, exp);
     }catch(InvalidFunctionException e)
     {
-        putLog(e.getError());
+         logs<<e.getError()<<"\n";
         return true;
     }
     if(exp.size()<=1)
     {
-        putLog("Default");
+        logs<<"Default"<<"\n";
         return true;
     }
     log();
