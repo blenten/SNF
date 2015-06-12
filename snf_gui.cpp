@@ -14,6 +14,20 @@ SNF_gui::SNF_gui(QWidget *parent) :
     ui(new Ui::SNF_gui)
 {
     ui->setupUi(this);  
+
+    QMenuBar* bar=new QMenuBar();
+    ui->menuLayout->addWidget(bar);
+    QMenu* langMenu=new QMenu("Language");
+    bar->addMenu(langMenu);
+    QAction* langRu,* langEn;
+    langRu=new QAction("Русский", this);
+    langEn=new QAction ("English", this);
+
+    connect (langRu, SIGNAL(triggered()), this, SLOT (on_langRu_clicked()));
+    connect (langEn, SIGNAL(triggered()), this, SLOT (on_LangEn_clicked()));
+
+    langMenu->addAction(langEn);
+    langMenu->addAction(langRu);
 }
 
 SNF_gui::~SNF_gui()
@@ -63,4 +77,21 @@ void SNF_gui::on_stepsButton_clicked()
     Log *logform = new Log(this);
     logform->setlog(log);
     logform->show();
+}
+
+void SNF_gui::on_LangEn_clicked()
+{
+   setLocale("en_US");
+}
+
+void SNF_gui::on_langRu_clicked()
+{
+    setLocale("ru_RU");
+}
+
+void SNF_gui::setLocale (QString locale)
+{
+    Localizator l;
+    l.loadLocale(locale);
+    this->setWindowTitle(l.map["NoOperandsAndVariables"]);
 }

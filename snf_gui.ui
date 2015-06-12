@@ -7,13 +7,16 @@
     <x>0</x>
     <y>0</y>
     <width>510</width>
-    <height>292</height>
+    <height>299</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string> SNF Minimizer 0.1</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QVBoxLayout" name="menuLayout"/>
+   </item>
    <item>
     <layout class="QVBoxLayout" name="inputLayout">
      <item>

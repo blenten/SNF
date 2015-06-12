@@ -2,8 +2,10 @@
 #define SNF_GUI_H
 
 #include <QWidget>
+#include <QMenuBar>
 #include "ui_snf_gui.h"
 #include "classes/snf_minimizer/snf_minimizer.h"
+#include "classes/localizator/localizator.h"
 
 #include <QTime>
 
@@ -24,6 +26,9 @@ public:
 private slots:
     void on_minimizeButton_clicked();
 
+    void on_LangEn_clicked();
+    void on_langRu_clicked();
+
     void on_stepsButton_clicked();
 
     void sleep (unsigned int ms);
@@ -32,6 +37,7 @@ private:
     Ui::SNF_gui *ui;
     QString log;
     bool logShown=false;
+    void setLocale (QString locale);
 };
 
 #endif // SNF_GUI_H

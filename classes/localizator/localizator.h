@@ -4,11 +4,16 @@
 #include <qxmlstream.h>
 #include <QFile>
 #include <QByteArray>
+#include <QMap>
 
 class Localizator
 {
-    void loadLocale();
+private:
 
+
+public:
+   void loadLocale(QString locale);
+   QMap <QString, QString> map;
 };
 
 #endif // LOCALIZATOR_H
