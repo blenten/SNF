@@ -82,7 +82,7 @@ void SNF_Parser::checkBrackets()
                 //like as: (x+y+)z
                 if (getSymbolType(_input[i-1])!=SYMBOL_OPERAND &&
                         getSymbolType(_input[i-1])!=SYMBOL_RBRACKET)
-                    throw InvalidFunctionException ("OperationBeforeRBracket%"+toString(i));
+                    throw InvalidFunctionException ("OperationBeforeRBracket@"+toString(i));
                 rCount++;
             }
             // y(+x)
@@ -200,7 +200,7 @@ void SNF_Parser::checkInversions()
  int len=_input.size();
  for (int i=0;i<len-1;i++)   
      if (getSymbolType(_input[i])== SYMBOL_INVERSE && getSymbolType(_input[i+1])!=SYMBOL_OPERAND)
-         throw InvalidFunctionException ("NoOperandAfterInversion%"+ toString(i));
+         throw InvalidFunctionException ("NoOperandAfterInversion@"+ toString(i));
 
  if (getSymbolType(_input[len-1])==SYMBOL_INVERSE) throw InvalidFunctionException("LastSymbolIsInversion");
 
@@ -282,11 +282,8 @@ void SNF_Parser::fillExpressionVector(Expression& expression, const FunctionType
                throw InvalidFunctionException ("SequenceOfVariablesIsBroken");
 
         }
-
     }
-
 }
-
 
 OperationState SNF_Parser::getNextState(int & lena, OperationState prevState)
 {
@@ -316,7 +313,6 @@ OperationState SNF_Parser::getNextState(int & lena, OperationState prevState)
             currState!=ConjunctionToDinsjunction && currState!=prevState)
        return (prevState==Conjunction)? Disjunction:Conjunction;
 }
-
 
 void SNF_Parser::addOperandToVector (Expression & expression)
 {

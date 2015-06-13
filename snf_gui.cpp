@@ -16,7 +16,7 @@ SNF_gui::SNF_gui(QWidget *parent) :
     ui->setupUi(this);
 
     Localizator::instance().loadLocale("ru_RU");
-    this->setWindowTitle(Localizator::instance().getTranslation("Title"));
+    this->setWindowTitle(Localizator::instance().getTranslation("%Title"));
 
     QMenuBar* bar=new QMenuBar();
     ui->menuLayout->addWidget(bar);
@@ -46,30 +46,30 @@ void SNF_gui::on_minimizeButton_clicked()
     int val=0;
     qsrand((uint)time.msec());
 
-    ui->conditionLabel->setText(Localizator::instance().getTranslation("ConditionParsing"));
+    ui->conditionLabel->setText(Localizator::instance().getTranslation("%ConditionParsing"));
     sleep(100 + qrand()%50);
     if(snf.parse(input.toStdString()))
     {
-        ui->conditionLabel->setText(Localizator::instance().getTranslation("ConditionError"));
-        ui->outputLine->setText(Localizator::instance().getTranslation("ConditionError"));
+        ui->conditionLabel->setText(Localizator::instance().getTranslation("%ConditionError"));
+        ui->outputLine->setText(Localizator::instance().getTranslation("%ConditionError"));
         log = snf.getLog().c_str();
         return;
     }
     val += 30 + qrand()%14;
     ui->progressBar->setValue(val);
     ///
-    ui->conditionLabel->setText(Localizator::instance().getTranslation("ConditionMatch"));
+    ui->conditionLabel->setText(Localizator::instance().getTranslation("%ConditionMatch"));
     sleep(100 + qrand()%50);
     snf.match();
     val += 30 + qrand()%14;
     ui->progressBar->setValue(val);
     ///
-    ui->conditionLabel->setText(Localizator::instance().getTranslation("ConditionNessessity"));
+    ui->conditionLabel->setText(Localizator::instance().getTranslation("%ConditionNessessity"));
     sleep(100 + qrand()%50);
     snf.delNeedless();
     ui->progressBar->setValue(100);
     ///
-    ui->conditionLabel->setText(Localizator::instance().getTranslation("ConditionReady"));
+    ui->conditionLabel->setText(Localizator::instance().getTranslation("%ConditionReady"));
     ui->outputLine->setText(snf.res_toString().c_str());
     log = snf.getLog().c_str();
 }
@@ -95,5 +95,5 @@ void SNF_gui::setLocale (QString locale)
 {
    Localizator::instance().loadLocale(locale);
    Localizator::instance().localize(this->ui);
-   this->setWindowTitle(Localizator::instance().getTranslation("Title"));
+   this->setWindowTitle(Localizator::instance().getTranslation("%Title"));
 }

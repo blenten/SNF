@@ -11,7 +11,7 @@ void SNF_Minimizer::log()
 {
     if(exp.empty())
     {
-        logs<<"ExpressionIsEmpty"<<"\n";
+        logs<<"%ExpressionIsEmpty"<<"\n";
     }else
     {
         int size = (int) exp.size();
@@ -45,12 +45,12 @@ bool SNF_Minimizer::parse(string input)
         expType = parser.parse(input, exp);
     }catch(InvalidFunctionException e)
     {
-         logs<<e.getError()<<"\n";
+         logs<<"%"<<e.getError()<<"\n";
         return true;
     }
     if(exp.size()<=1)
     {
-        logs<<"Default"<<"\n";
+        logs<<"%Default"<<"\n";
         return true;
     }
     log();

@@ -13,7 +13,7 @@ void Localizator::loadLocale(QString locale)
     QString currName;
     while (!reader.atEnd() && !reader.hasError())
     {
-         QXmlStreamReader::TokenType token =  reader.readNext();
+         QXmlStreamReader::TokenType token = reader.readNext();
          if (token == QXmlStreamReader::StartDocument) continue;
 
          if (reader.name()=="Main" || reader.name()=="Exception" || reader.name()=="Log") continue;
@@ -28,14 +28,18 @@ void Localizator::loadLocale(QString locale)
 
 QString Localizator::getTranslation(QString name)
 {
+    if (name[0]!='%') return "";
+    name.remove(0,1);
     return map[name];
 }
 
 void Localizator::localize(Ui::SNF_gui* ui)
 {
-   ui->label_2->setText(getTranslation("InputLabel"));
-   ui->label->setText(getTranslation("OutputLabel"));
-   ui->minimizeButton->setText(getTranslation("MinimizeButton"));
-   ui->stepsButton->setText(getTranslation("StepsButton"));
-   ui->conditionLabel->setText(getTranslation("ConditionDefault"));
+   ui->label_2->setText(getTranslation("%InputLabel"));
+   ui->label->setText(getTranslation("%OutputLabel"));
+   ui->minimizeButton->setText(getTranslation("%MinimizeButton"));
+   ui->stepsButton->setText(getTranslation("%StepsButton"));
+   ui->conditionLabel->setText(getTranslation("%ConditionDefault"));
 }
+
+

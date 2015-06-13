@@ -16,21 +16,25 @@ private:
    QMap <QString, QString> map;
    Localizator(){}
    ~Localizator(){}
-   Localizator (const Localizator &);
+   Localizator (const Localizator &){}
+   Localizator& operator=(const Localizator&){}
 
 public:
 
    void loadLocale(QString locale);
 
+   //will find translation for text by its name. Name must begin by '%' symbol
    QString getTranslation (QString name);
 
+   //main window localization ()
    void localize (Ui::SNF_gui* ui);
 
-    static Localizator& instance()
-    {
-        static Localizator l;
-        return l;
-    }
+   //singleton
+   static Localizator& instance()
+   {
+       static Localizator l;
+       return l;
+   }
 };
 
 #endif // LOCALIZATOR_H
