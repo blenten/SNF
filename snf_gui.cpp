@@ -8,16 +8,8 @@ void SNF_gui::sleep(unsigned int ms)
     QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }
 
-
-SNF_gui::SNF_gui(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::SNF_gui)
+void SNF_gui::createMenubar()
 {
-    ui->setupUi(this);
-
-    Localizator::instance().loadLocale("ru_RU");
-    this->setWindowTitle(Localizator::instance().getTranslation("%Title"));
-
     QMenuBar* bar=new QMenuBar();
     ui->menuLayout->addWidget(bar);
     QMenu* langMenu=new QMenu("Language");
@@ -33,6 +25,17 @@ SNF_gui::SNF_gui(QWidget *parent) :
     langMenu->addAction(langRu);
 }
 
+SNF_gui::SNF_gui(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::SNF_gui)
+{
+    ui->setupUi(this);
+
+    Localizator::instance().loadLocale("ru_RU");
+    this->setWindowTitle(Localizator::instance().getTranslation("%Title"));
+    createMenubar();
+}
+
 SNF_gui::~SNF_gui()
 {
     delete ui;
@@ -42,6 +45,8 @@ void SNF_gui::on_minimizeButton_clicked()
 {
     SNF_Minimizer snf;
     QString input = ui->inputText->toPlainText();
+  //  input.append('\n');
+
     QTime time = QTime::currentTime();
     int val=0;
     qsrand((uint)time.msec());

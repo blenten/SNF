@@ -40,6 +40,7 @@ private:
     QString log;
     bool logShown=false;
     void setLocale (QString locale);
+    void createMenubar();
 };
 
 #endif // SNF_GUI_H
