@@ -45,7 +45,7 @@ bool SNF_Minimizer::parse(string input)
         expType = parser.parse(input, exp);
     }catch(InvalidFunctionException e)
     {
-         logs<<"%"<<e.getError()<<"\n";
+         logs<<e.getError()<<"\n";
         return true;
     }
     if(exp.size()<=1)

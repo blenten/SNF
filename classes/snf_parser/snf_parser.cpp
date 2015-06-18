@@ -6,15 +6,15 @@ FunctionType SNF_Parser::parse(std::string input, Expression &output)
     output.clear();
     _input=input;
      removeUnused();
-    if (_input.length()==0) throw InvalidFunctionException("NoOperandsAndVariables");
+    if (_input.length()==0) throw InvalidFunctionException("%NoOperandsAndVariables");
     checkBrackets();
     insertConjunctionSymbols();
     checkInversions();
     std::vector <std::string> variables;
     ft= getVariables(variables);
-    if (variables.size()==0) throw InvalidFunctionException("NoVariables");
+    if (variables.size()==0) throw InvalidFunctionException("%NoVariables");
 
-    if (isVariablesRepeat(variables)) throw InvalidFunctionException("RepeatingVariables");
+    if (isVariablesRepeat(variables)) throw InvalidFunctionException("%RepeatingVariables");
 
     fillExpressionVector(output, ft, variables);
 
@@ -71,12 +71,12 @@ void SNF_Parser::checkBrackets()
      {
          if (getSymbolType(_input[i])==SYMBOL_RBRACKET)
          {
-             if (lCount<=rCount) throw InvalidFunctionException("BracketsNesting");
+             if (lCount<=rCount) throw InvalidFunctionException("%BracketsNesting");
 
              //like as: (x+y+)z
              if (getSymbolType(_input[i-1])!=SYMBOL_OPERAND &&
                      getSymbolType(_input[i-1])!=SYMBOL_RBRACKET)
-                 throw InvalidFunctionException ("OperationBeforeRBracket@"+toString(i));
+                 throw InvalidFunctionException ("%OperationBeforeRBracket@"+std::to_string(i));
              rCount++;
          }
          // y(+x)
@@ -84,11 +84,11 @@ void SNF_Parser::checkBrackets()
          {
              if (getSymbolType(_input[i+1])!=SYMBOL_OPERAND&&
                  getSymbolType(_input[i+1])!=SYMBOL_INVERSE&&
-                 getSymbolType(_input[i+1]) !=SYMBOL_LBRACKET) throw InvalidFunctionException ("NoOperandAfterLBracket");
+                 getSymbolType(_input[i+1]) !=SYMBOL_LBRACKET) throw InvalidFunctionException ("%NoOperandAfterLBracket");
              lCount++;
          }
      }
-     if (lCount!=rCount)throw InvalidFunctionException ("BracketsNumberIsNotEqual");
+     if (lCount!=rCount)throw InvalidFunctionException ("%BracketsNumberIsNotEqual");
 }
 
 void SNF_Parser::removeUnused()
@@ -122,6 +122,7 @@ std::string SNF_Parser::getOperand (int &index)
 
         index++;
     }
+    if (getSymbolType(_input[index])!=SYMBOL_ZERO)
     index++;
    return output;
 }
@@ -181,9 +182,9 @@ void SNF_Parser::checkInversions()
  int len=_input.size();
  for (int i=0;i<len-1;i++)   
      if (getSymbolType(_input[i])== SYMBOL_INVERSE && getSymbolType(_input[i+1])!=SYMBOL_OPERAND)
-         throw InvalidFunctionException ("NoOperandAfterInversion@"+ toString(i));
+         throw InvalidFunctionException ("%NoOperandAfterInversion@"+ std::to_string(i));
 
- if (getSymbolType(_input[len-1])==SYMBOL_INVERSE) throw InvalidFunctionException("LastSymbolIsInversion");
+ if (getSymbolType(_input[len-1])==SYMBOL_INVERSE) throw InvalidFunctionException("%LastSymbolIsInversion");
 
 }
 
@@ -237,11 +238,11 @@ void SNF_Parser::fillExpressionVector(Expression& expression, const FunctionType
             varIndex++;
         }
         else if (currVar!="")
-           throw InvalidFunctionException ("SequenceOfVariablesIsBroken");
+           throw InvalidFunctionException ("%SequenceOfVariablesIsBroken");
 
         if (_input[lena]=='\0')
         {
-           if (varIndex<variables.size()) throw InvalidFunctionException("IncorrectOperationChanging");
+           if (varIndex<variables.size()) throw InvalidFunctionException("%IncorrectOperationChanging");
             return;
         }
         currState=getNextState(lena, currState);
@@ -254,7 +255,7 @@ void SNF_Parser::fillExpressionVector(Expression& expression, const FunctionType
                 operandIndex++;
             }
             else if (varIndex)
-               throw InvalidFunctionException ("SequenceOfVariablesIsBroken");
+               throw InvalidFunctionException ("%SequenceOfVariablesIsBroken");
         }
     }
 }

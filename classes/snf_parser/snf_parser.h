@@ -71,16 +71,7 @@ private:
                               std::vector<std::string> & variables);
     void addOperandToVector (Expression & expression);
 
-
     OperationState getNextState(int & lena, OperationState prevState);
-
-    template < typename T > std::string toString( const T& n )
-    {
-        std::ostringstream stm ;
-        stm << n ;
-        return stm.str() ;
-    }
-
 
 public:
 

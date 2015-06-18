@@ -45,7 +45,6 @@ void SNF_gui::on_minimizeButton_clicked()
 {
     SNF_Minimizer snf;
     QString input = ui->inputText->toPlainText();
-  //  input.append('\n');
 
     QTime time = QTime::currentTime();
     int val=0;
