@@ -28,7 +28,7 @@ void Localizator::loadLocale(QString locale)
 
 QString Localizator::getTranslation(QString name)
 {
-    if (name[0]!='%') return "";
+    if (name[0]!='%') return name;
     name.remove(0,1);
     return map[name];
 }
