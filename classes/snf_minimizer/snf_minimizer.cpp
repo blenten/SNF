@@ -82,29 +82,15 @@ void SNF_Minimizer::match()
 {
     int size = (int)exp.size();
     vector<Operand> temp;
-    vector<bool> mergedlist;
-    mergedlist.resize(size);
+
     for(int i=0; i<size-1; i++)
     {
         for(int j=i+1; j<size; j++)
         {
-            bool merged = false;
-            merged = matchOperands(exp[i], exp[j], temp);
+            matchOperands(exp[i], exp[j], temp);
+        }
+    }
 
-            if(merged)
-            {
-                mergedlist[i] = true;
-                mergedlist[j] = true;
-            }
-        }
-    }
-    for(int i=0; i<size;i++)
-    {
-        if(mergedlist[i]==false)
-        {
-            temp.push_back(exp[i]);
-        }
-    }
     if(!temp.empty())
     {
         exp.clear();
