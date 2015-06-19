@@ -215,7 +215,8 @@ void SNF_Parser::fillExpressionVector(Expression& expression, const FunctionType
     int lena=0, operandIndex=0, varIndex=0;
 
     while (getSymbolType(_input[lena])!=SYMBOL_OPERAND &&
-           getSymbolType(_input[lena])!=SYMBOL_ZERO){lena++;}
+           getSymbolType(_input[lena])!=SYMBOL_ZERO &&
+           getSymbolType(_input[lena])!=SYMBOL_INVERSE){lena++;}
     OperationState currState=os;
 
     addOperandToVector(expression);
