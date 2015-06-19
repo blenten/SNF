@@ -5,7 +5,7 @@ FunctionType SNF_Parser::parse(std::string input, Expression &output)
     FunctionType ft=OTHER;
     output.clear();
     _input=input;
-     removeUnused();
+    removeUnused();
     if (_input.length()==0) throw InvalidFunctionException("%NoOperandsAndVariables");
     checkBrackets();
     insertConjunctionSymbols();
