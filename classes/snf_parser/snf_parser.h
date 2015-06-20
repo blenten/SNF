@@ -57,8 +57,7 @@ private:
 
     //gets an operand and increase index to position after delim
     std::string getOperand (int &index);
-    //same as previous but reads inversions
-    std::string getOperandToFill (int &index);
+
    FunctionType getVariables (std::vector<std::string> & variables);
 
     void checkInversions();

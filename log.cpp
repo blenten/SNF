@@ -27,6 +27,7 @@ QString Log::translateLog (const QString &l)
     for (QStringList::iterator iter=list.begin();iter<list.end();iter++)
     {
         QStringList currList=(*iter).split('@');
+
         (*iter)= Localizator::instance().getTranslation(currList[0]);
 
         if (currList.size()>1) (*iter)+=currList[1]; // if input string has "@" delim and symbols after it (ex: %SomeError@SomePosition)
