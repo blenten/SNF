@@ -56,21 +56,21 @@ private:
     void removeUnused();
 
     //gets an operand and increase index to position after delim
-    std::string getOperand (int &index);
+    std::string getOperand (size_t &index);
 
    FunctionType getVariables (std::vector<std::string> & variables);
 
     void checkInversions();
-    //inserts '&' instead of double inversion and after operand before left bracket
+    //inserts '&' instead of double inversion and after operand before left bracket and before invertion after right bracket or operand
     void insertConjunctionSymbols();
-    OperationState getOperationStateAfterLBracket(int index, OperationState currState);
+    OperationState getOperationStateAfterLBracket(size_t index, OperationState currState);
     bool isVariablesRepeat(std::vector<std::string> &variables);
 
     void fillExpressionVector(Expression& expression, const FunctionType &ft,
                               std::vector<std::string> & variables);
     void addOperandToVector (Expression & expression);
 
-    OperationState getNextState(int & lena, OperationState prevState);
+    OperationState getNextState(size_t &lena, OperationState prevState);
 
 public:
 

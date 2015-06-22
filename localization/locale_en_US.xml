@@ -21,14 +21,14 @@
 		 <NoOperandsAndVariables>Input string doesn't contain any variables or operands</NoOperandsAndVariables>
 		 <NoVariables>Input string has no variables</NoVariables>
 		 <RepeatingVariables>Input string has repeating variables</RepeatingVariables>
- 		 <BracketsNesting>Brackets nesting is violated</BracketsNesting>
+                 <BracketsNesting>Brackets nesting is violated at position </BracketsNesting>
  		 <OperationBeforeRBracket>Operation before right bracket at position </OperationBeforeRBracket>
-		 <NoOperandAfterLBracket>No operand after left bracket</NoOperandAfterLBracket>
+                 <NoOperandAfterLBracket>No operand after left bracket at position </NoOperandAfterLBracket>
 		 <BracketsNumberIsNotEqual>Left brackets number is not equal that right brackets number</BracketsNumberIsNotEqual>
 		 <NoOperandAfterInversion>No operand after inversion at position </NoOperandAfterInversion>
 		 <LastSymbolIsInversion>Last symbol in string is inversion</LastSymbolIsInversion>
-		 <SequenceOfVariablesIsBroken>The sequence of variables is broken</SequenceOfVariablesIsBroken>
-		 <IncorrectOperationChanging>Can't read all variables because of incorrect operation changing</IncorrectOperationChanging>
+                 <SequenceOfVariablesIsBroken>The sequence of variables is broken at position </SequenceOfVariablesIsBroken>
+                 <IncorrectOperationChanging>Can't read all variables because of incorrect operation changing at position </IncorrectOperationChanging>
 		 <ExpressionIsEmpty>Expression is empty!</ExpressionIsEmpty>
 	</Exception>	
 </Locale>

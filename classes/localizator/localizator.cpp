@@ -42,4 +42,3 @@ void Localizator::localize(Ui::SNF_gui* ui)
    ui->conditionLabel->setText(getTranslation("%ConditionDefault"));
 }
 
-

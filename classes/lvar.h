@@ -20,7 +20,7 @@ typedef vector<Operand> Expression;
 
 ///----------------///
 
-inline Variable::Variable(string name = "non", bool invertion=false)
+inline Variable::Variable(string name = "", bool invertion=false)
 {
     this->name = name;
     this->invertion = invertion;

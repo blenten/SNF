@@ -17,7 +17,7 @@ private:
    Localizator(){}
    ~Localizator(){}
    Localizator (const Localizator &){}
-   Localizator& operator=(const Localizator&){}
+   Localizator& operator=(const Localizator&);
 
 public:
 
@@ -26,7 +26,7 @@ public:
    //will find translation for text by its name. Name must begin by '%' symbol
    QString getTranslation (QString name);
 
-   //main window localization ()
+   //main window localization (except title)
    void localize (Ui::SNF_gui* ui);
 
    //singleton
