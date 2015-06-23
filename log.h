@@ -4,7 +4,7 @@
 #include <QDialog>
 #include "classes/localizator/localizator.h"
 
-//logging class. Contains steps (some of steps represented by them name which will translate each time)
+//logging class. Contains steps (some of steps represented by their name which will translate each time)
 namespace Ui {
 class Log;
 }

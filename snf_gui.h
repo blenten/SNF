@@ -28,8 +28,8 @@ public:
 private slots:
     void on_minimizeButton_clicked();
 
-    void on_LangEn_clicked();
-    void on_langRu_clicked();
+    void langEn_clicked();
+    void langRu_clicked();
 
     void on_stepsButton_clicked();
 

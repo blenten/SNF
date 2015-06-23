@@ -12,14 +12,16 @@ void SNF_gui::createMenubar()
 {
     QMenuBar* bar=new QMenuBar();
     ui->menuLayout->addWidget(bar);
+
     QMenu* langMenu=new QMenu("Language");
     bar->addMenu(langMenu);
-    QAction* langRu,* langEn;
-    langRu=new QAction("Русский", this);
-    langEn=new QAction ("English", this);
 
-    connect (langRu, SIGNAL(triggered()), this, SLOT (on_langRu_clicked()));
-    connect (langEn, SIGNAL(triggered()), this, SLOT (on_LangEn_clicked()));
+    QAction* langRu,* langEn;
+    langEn=new QAction ("English", this);
+    langRu=new QAction("Русский", this);
+
+    connect (langEn, SIGNAL(triggered()), this, SLOT (langEn_clicked()));
+    connect (langRu, SIGNAL(triggered()), this, SLOT (langRu_clicked()));
 
     langMenu->addAction(langEn);
     langMenu->addAction(langRu);
@@ -85,12 +87,12 @@ void SNF_gui::on_stepsButton_clicked()
     logform->show();
 }
 
-void SNF_gui::on_LangEn_clicked()
+void SNF_gui::langEn_clicked()
 {
    setLocale("en_US");
 }
 
-void SNF_gui::on_langRu_clicked()
+void SNF_gui::langRu_clicked()
 {
     setLocale("ru_RU");
 }

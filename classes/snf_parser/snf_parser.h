@@ -55,8 +55,11 @@ private:
     void checkBrackets();
     void removeUnused();
 
-    //gets an operand and increase index to position after delim
+    //gets an operand and increase index to position after it
     std::string getOperand (size_t &index);
+
+    //increases to invertion/operand/zero symbol
+    void increaseIndexToVariable(size_t &index);
 
    FunctionType getVariables (std::vector<std::string> & variables);
 

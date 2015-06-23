@@ -42,15 +42,15 @@ FunctionType SNF_Parser::getVariables(std::vector<std::string> &variables)
      size_t lena=0;
      OperationState prevState=Undefined, currState=Undefined;
 
-     while (getSymbolType(_input[lena])!=SYMBOL_OPERAND &&
-            getSymbolType(_input[lena])!=SYMBOL_ZERO &&
-            getSymbolType(_input[lena])!=SYMBOL_INVERSE){lena++;} //if there is a bracket
+    increaseIndexToVariable(lena);
 
      while (getSymbolType(_input[lena])!=SYMBOL_ZERO)
      {
         if(currState!=Undefined) prevState=currState;
 
          currVar=getOperand(lena);
+         if (getSymbolType(_input[lena])!=SYMBOL_ZERO) lena++;
+
          if (getSymbolType(currVar[0])==SYMBOL_INVERSE) currVar.erase(0,1);
 
          if (currVar!="")
@@ -118,14 +118,21 @@ std::string SNF_Parser::getOperand (size_t &index)
             output+=_input[index];
             index++;
      }
-     if (getSymbolType(_input[index])!=SYMBOL_ZERO)
-     index++;
     return output;
+}
+
+void SNF_Parser::increaseIndexToVariable(size_t &index)
+{
+    while (getSymbolType(_input[index])!=SYMBOL_OPERAND &&
+           getSymbolType(_input[index])!=SYMBOL_ZERO &&
+           getSymbolType(_input[index])!=SYMBOL_INVERSE){index++;}
 }
 
 OperationState SNF_Parser::getOperationStateAfterLBracket(size_t index, OperationState currState)
 {
        getOperand(index);
+       if (getSymbolType(_input[index])!=SYMBOL_ZERO) index++;
+
        if (getSymbolType(_input[index-1])==SYMBOL_DISJUNCTION)
        {
            if (currState==Conjunction) return ConjunctionToDinsjunction;
@@ -200,15 +207,13 @@ void SNF_Parser::fillExpressionVector(Expression& expression, const FunctionType
     size_t lena=0, operandIndex=0, varIndex=0;
     size_t variablesNumber=variables.size();
 
-    while (getSymbolType(_input[lena])!=SYMBOL_OPERAND &&
-           getSymbolType(_input[lena])!=SYMBOL_ZERO &&
-           getSymbolType(_input[lena])!=SYMBOL_INVERSE){lena++;}
-
     addOperandToVector(expression);
 
     while (getSymbolType(_input[lena])!=SYMBOL_ZERO)
     {
         std::string currVar = getOperand(lena);
+        increaseIndexToVariable(lena);
+
         Variable var;
         if (getSymbolType(currVar[0])==SYMBOL_INVERSE)
         {
@@ -227,7 +232,7 @@ void SNF_Parser::fillExpressionVector(Expression& expression, const FunctionType
 
         if (getSymbolType(_input[lena])==SYMBOL_ZERO)
         {
-           if (varIndex<variablesNumber) throw InvalidFunctionException("%IncorrectOperationChanging@"+std::to_string(lena));
+           if (varIndex<variablesNumber)throw InvalidFunctionException("%IncorrectOperationChanging@"+std::to_string(lena));
             return;
         }
 
@@ -243,7 +248,7 @@ void SNF_Parser::fillExpressionVector(Expression& expression, const FunctionType
             else if (varIndex)
                throw InvalidFunctionException ("%SequenceOfVariablesIsBroken@"+std::to_string(lena));
         }
-        else if (currState!=os && currState!=Undefined && currVar!="") throw InvalidFunctionException("%IncorrectOperationChanging@"+std::to_string(lena));
+        else if (currState!=os && currState!=Undefined && currVar!="")throw InvalidFunctionException("%IncorrectOperationChanging@"+std::to_string(lena));
     }
 }
 
