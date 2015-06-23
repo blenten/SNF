@@ -52,6 +52,7 @@ void SNF_gui::on_minimizeButton_clicked()
     int val=0;
     qsrand((uint)time.msec());
 
+    ui->progressBar->setValue(0);
     ui->conditionLabel->setText(Localizator::instance().getTranslation("%ConditionParsing"));
     sleep(100 + qrand()%50);
     if(snf.parse(input.toStdString()))

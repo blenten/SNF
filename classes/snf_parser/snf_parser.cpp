@@ -42,7 +42,7 @@ FunctionType SNF_Parser::getVariables(std::vector<std::string> &variables)
      size_t lena=0;
      OperationState prevState=Undefined, currState=Undefined;
 
-    increaseIndexToVariable(lena);
+     lena = increaseIndexToVariable(lena);
 
      while (getSymbolType(_input[lena])!=SYMBOL_ZERO)
      {
@@ -121,33 +121,34 @@ std::string SNF_Parser::getOperand (size_t &index)
     return output;
 }
 
-void SNF_Parser::increaseIndexToVariable(size_t &index)
+size_t SNF_Parser::increaseIndexToVariable(size_t index)
 {
     while (getSymbolType(_input[index])!=SYMBOL_OPERAND &&
            getSymbolType(_input[index])!=SYMBOL_ZERO &&
            getSymbolType(_input[index])!=SYMBOL_INVERSE){index++;}
+    return index;
 }
 
 OperationState SNF_Parser::getOperationStateAfterLBracket(size_t index, OperationState currState)
 {
-       getOperand(index);
-       if (getSymbolType(_input[index])!=SYMBOL_ZERO) index++;
+    getOperand(index);
+    if (getSymbolType(_input[index])!=SYMBOL_ZERO) index++;
 
-       if (getSymbolType(_input[index-1])==SYMBOL_DISJUNCTION)
-       {
-           if (currState==Conjunction) return ConjunctionToDinsjunction;
-           else if (currState==Undefined) return UndefinedToDisjunction;
-           else return Disjunction;
-       }
-       else if (getSymbolType(_input[index-1])==SYMBOL_CONJUNCTION)
-       {
-           if (currState==Disjunction) return DisjunctionToConjunction;
-           else if (currState==Undefined) return UndefinedToConjunction;
-           else return Conjunction;
-       }
+    if (getSymbolType(_input[index-1])==SYMBOL_DISJUNCTION)
+    {
+        if (currState==Conjunction) return ConjunctionToDinsjunction;
+        else if (currState==Undefined) return UndefinedToDisjunction;
+        else return Disjunction;
+    }
+    else if (getSymbolType(_input[index-1])==SYMBOL_CONJUNCTION)
+    {
+        if (currState==Disjunction) return DisjunctionToConjunction;
+        else if (currState==Undefined) return UndefinedToConjunction;
+        else return Conjunction;
+    }
 
-       else if (currState==Undefined) return Conjunction;
-       return currState;
+    else if (currState==Undefined) return Conjunction;
+    return currState;
 }
 
 bool SNF_Parser::isVariablesRepeat(std::vector<std::string> &variables)
@@ -164,12 +165,12 @@ bool SNF_Parser::isVariablesRepeat(std::vector<std::string> &variables)
 
 void SNF_Parser::checkInversions()
 {
- size_t len=_input.size();
- for (size_t i=0;i<len-1;i++)
-     if (getSymbolType(_input[i])== SYMBOL_INVERSE && getSymbolType(_input[i+1])!=SYMBOL_OPERAND)
-         throw InvalidFunctionException ("%NoOperandAfterInversion@"+ std::to_string(i));
+    size_t len=_input.size();
+    for (size_t i=0;i<len-1;i++)
+        if (getSymbolType(_input[i])== SYMBOL_INVERSE && getSymbolType(_input[i+1])!=SYMBOL_OPERAND)
+            throw InvalidFunctionException ("%NoOperandAfterInversion@"+ std::to_string(i));
 
- if (getSymbolType(_input[len-1])==SYMBOL_INVERSE) throw InvalidFunctionException("%LastSymbolIsInversion");
+    if (getSymbolType(_input[len-1])==SYMBOL_INVERSE) throw InvalidFunctionException("%LastSymbolIsInversion");
 
 }
 
@@ -212,7 +213,7 @@ void SNF_Parser::fillExpressionVector(Expression& expression, const FunctionType
     while (getSymbolType(_input[lena])!=SYMBOL_ZERO)
     {
         std::string currVar = getOperand(lena);
-        increaseIndexToVariable(lena);
+        lena = increaseIndexToVariable(lena);
 
         Variable var;
         if (getSymbolType(currVar[0])==SYMBOL_INVERSE)

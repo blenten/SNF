@@ -15,7 +15,7 @@
 //brackets: (x1)(x2), (x1+x2)(x1+!x2), this will interpret as conjunction
 //inverse: x1!x2!x3 as conjunction
 //all spaces and unused symbols will be removed
-//double inversions will be removed
+//double inversions will be removed and replaced by conjunction symbol
 
 enum FunctionType {
     OTHER=-1, SNDF, SNKF
@@ -59,7 +59,7 @@ private:
     std::string getOperand (size_t &index);
 
     //increases to invertion/operand/zero symbol
-    void increaseIndexToVariable(size_t &index);
+    size_t increaseIndexToVariable(size_t index);
 
    FunctionType getVariables (std::vector<std::string> & variables);
 
