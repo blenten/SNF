@@ -19,7 +19,7 @@ class SNF_gui;
 class SNF_gui : public QWidget
 {
     Q_OBJECT
-
+    friend class Localizator;
 
 public:
     explicit SNF_gui(QWidget *parent = 0);

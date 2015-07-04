@@ -2,22 +2,22 @@
 <Locale>
 	<Main>
 		 <Title>SNF Minimizer 0.1</Title>
-         <InputLabel>Input function:</InputLabel>
-         <OutputLabel>Output function:</OutputLabel>
-         <MinimizeButton>MINIMIZE</MinimizeButton>
-         <StepsButton>Show steps</StepsButton>
-         <ConditionDefault>Cond.</ConditionDefault>
-         <ConditionParsing>Parsing...</ConditionParsing>
-         <ConditionError>Error.</ConditionError>
-         <ConditionMatch>Matching...</ConditionMatch>
-         <ConditionNessessity>Nessessity checking...</ConditionNessessity>
-         <ConditionReady>Ready.</ConditionReady>
+                 <InputLabel>Input function:</InputLabel>
+                 <OutputLabel>Output function:</OutputLabel>
+                 <MinimizeButton>MINIMIZE</MinimizeButton>
+                 <StepsButton>Show steps</StepsButton>
+                 <ConditionDefault>Cond.</ConditionDefault>
+                 <ConditionParsing>Parsing...</ConditionParsing>
+                 <ConditionError>Error.</ConditionError>
+                 <ConditionMatch>Matching...</ConditionMatch>
+                 <ConditionNessessity>Nessessity checking...</ConditionNessessity>
+                 <ConditionReady>Ready.</ConditionReady>
  	</Main>
  	<Log>
-         <LogTitle>Log</LogTitle>
+                 <LogTitle>Log</LogTitle>
  	</Log>
 	<Exception>
-         <Default>Invalid function</Default>
+                 <Default>Invalid function</Default>
 		 <NoOperandsAndVariables>Input string doesn't contain any variables or operands</NoOperandsAndVariables>
 		 <NoVariables>Input string has no variables</NoVariables>
 		 <RepeatingVariables>Input string has repeating variables</RepeatingVariables>

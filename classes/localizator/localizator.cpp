@@ -33,12 +33,39 @@ QString Localizator::getTranslation(QString name)
     return map[name];
 }
 
-void Localizator::localize(Ui::SNF_gui* ui)
+QString Localizator::translateLog (const QString &l)
 {
-   ui->label_2->setText(getTranslation("%InputLabel"));
-   ui->label->setText(getTranslation("%OutputLabel"));
-   ui->minimizeButton->setText(getTranslation("%MinimizeButton"));
-   ui->stepsButton->setText(getTranslation("%StepsButton"));
-   ui->conditionLabel->setText(getTranslation("%ConditionDefault"));
+    QString output;
+    QStringList list= l.split('\n');
+
+    for (QStringList::iterator iter=list.begin();iter<list.end();iter++)
+    {
+        QStringList currList=(*iter).split('@');
+
+        (*iter)= getTranslation(currList[0]);
+
+        if (currList.size()>1) (*iter)+=currList[1]; // if input string has "@" delim and symbols after it (ex: %SomeError@SomePosition)
+
+        output+=(*iter);
+        if (iter!=list.end()-1) output+="\n";
+    }
+    return output;
 }
 
+void Localizator::localize(SNF_gui *window)
+{
+    window->ui->label_2->setText(getTranslation("%InputLabel"));
+    window->ui->label->setText(getTranslation("%OutputLabel"));
+    window->ui->minimizeButton->setText(getTranslation("%MinimizeButton"));
+    window->ui->stepsButton->setText(getTranslation("%StepsButton"));
+    window->ui->conditionLabel->setText(getTranslation("%ConditionDefault"));
+
+    window->setWindowTitle(getTranslation("%Title"));
+}
+
+void Localizator::localize(Log *window)
+{
+    window->ui->logText->setText(translateLog(window->log));
+
+    window->setWindowTitle(getTranslation("%LogTitle"));
+}

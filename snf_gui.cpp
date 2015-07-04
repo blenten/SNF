@@ -1,6 +1,5 @@
 #include "snf_gui.h"
 
-
 void SNF_gui::sleep(unsigned int ms)
 {
     QTime dieTime= QTime::currentTime().addMSecs(ms);
@@ -33,9 +32,10 @@ SNF_gui::SNF_gui(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    Localizator::instance().loadLocale("ru_RU");
-    this->setWindowTitle(Localizator::instance().getTranslation("%Title"));
     createMenubar();
+
+    Localizator::instance().loadLocale("ru_RU");
+    Localizator::instance().localize(this);
 }
 
 SNF_gui::~SNF_gui()
@@ -101,6 +101,5 @@ void SNF_gui::langRu_clicked()
 void SNF_gui::setLocale (QString locale)
 {
    Localizator::instance().loadLocale(locale);
-   Localizator::instance().localize(this->ui);
-   this->setWindowTitle(Localizator::instance().getTranslation("%Title"));
+   Localizator::instance().localize(this);
 }

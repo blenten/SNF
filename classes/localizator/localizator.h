@@ -9,6 +9,9 @@
 #include "snf_gui.h"
 #include "log.h"
 
+class SNF_gui;
+class Log;
+
 //singleton class for translating texts, states and errors
 class Localizator
 {
@@ -26,8 +29,11 @@ public:
    //will find translation for text by its name. Name must begin by '%' symbol
    QString getTranslation (QString name);
 
-   //main window localization (except title)
-   void localize (Ui::SNF_gui* ui);
+   QString translateLog(const QString &l);
+
+   //windows localization
+   void localize(SNF_gui* window);
+   void localize (Log* window);
 
    //singleton
    static Localizator& instance()
