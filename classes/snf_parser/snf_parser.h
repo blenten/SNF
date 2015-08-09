@@ -8,6 +8,8 @@
 #include <sstream>
 #include "../lvar.h"
 #include "../Exceptions/invalidfunctionexception.h"
+#include "classes/snf_parser/shortformconverter.h"
+#include "../Types/types.h"
 
 //Parser of string with SNF function
 //NOTE: variables may delim by:
@@ -17,11 +19,8 @@
 //all spaces and unused symbols will be removed
 //double inversions will be removed and replaced by conjunction symbol
 
-enum FunctionType {
-    OTHER=-1, SNDF, SNKF
-};
-
-enum OperationState {
+enum OperationState
+{
     UndefinedToDisjunction=-5,
     UndefinedToConjunction=-4,
     ConjunctionToDinsjunction=-3,
@@ -31,19 +30,6 @@ enum OperationState {
     Disjunction=1
 };
 
-enum SymbolType
-{
-    SYMBOL_CONJUNCTION,
-    SYMBOL_DISJUNCTION,
-    SYMBOL_LBRACKET,
-    SYMBOL_RBRACKET,
-    SYMBOL_INVERSE,
-    SYMBOL_OPERAND,
-    SYMBOL_ZERO,
-    SYMBOL_SPACE,
-    SYMBOL_OTHER
-};
-
 ///PARSER
 class SNF_Parser
 {
@@ -51,34 +37,37 @@ private:
 
     std::string _input;
 
-    SymbolType getSymbolType(char symb);
-    void checkBrackets();
     void removeUnused();
 
-    //gets an operand and increase index to position after it
-    std::string getOperand (size_t &index);
+    void checkBrackets();
+
+    //inserts '&' instead of double invertion and after operand before left bracket or invertion and after right bracket before invertion
+    void insertConjunctionSymbols();
+
+    void checkInversions();
+
+    FunctionType getVariables (std::vector<std::string> & variables);
 
     //increases to invertion/operand/zero symbol
     size_t increaseIndexToVariable(size_t index);
 
-   FunctionType getVariables (std::vector<std::string> & variables);
-
-    void checkInversions();
-    //inserts '&' instead of double inversion and after operand before left bracket and before invertion after right bracket or operand
-    void insertConjunctionSymbols();
-    OperationState getOperationStateAfterLBracket(size_t index, OperationState currState);
     bool isVariablesRepeat(std::vector<std::string> &variables);
+
+    //gets an operand and increase index to position after it
+    std::string getOperand (size_t &index);
+
+    OperationState getNextState(size_t &lena, OperationState prevState);
+
+    OperationState getOperationStateAfterLBracket(size_t index, OperationState currState);
 
     void fillExpressionVector(Expression& expression, const FunctionType &ft,
                               std::vector<std::string> & variables);
-    void addOperandToVector (Expression & expression);
 
-    OperationState getNextState(size_t &lena, OperationState prevState);
+    void addOperandToVector (Expression & expression);
 
 public:
 
     FunctionType parse (std::string input, Expression &output);
-
 };
 
 #endif // SNF_PARSER_H

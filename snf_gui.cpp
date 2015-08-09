@@ -11,7 +11,6 @@ void SNF_gui::createMenubar()
 {
     QMenuBar* bar=new QMenuBar();
     ui->menuLayout->addWidget(bar);
-
     QMenu* langMenu=new QMenu("Language");
     bar->addMenu(langMenu);
 

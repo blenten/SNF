@@ -30,5 +30,6 @@
                  <SequenceOfVariablesIsBroken>Нарушена последовательность переменных на позиции </SequenceOfVariablesIsBroken>
                  <IncorrectOperationChanging>Невозможно прочитать все переменные из-за некорректной смены операции на позиции </IncorrectOperationChanging>
 		 <ExpressionIsEmpty>Выражение пусто!</ExpressionIsEmpty>
+                 <IncorrectShortForm>Некорректная сокращенная форма</IncorrectShortForm>
 	</Exception>	
 </Locale>

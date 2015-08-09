@@ -30,5 +30,6 @@
                  <SequenceOfVariablesIsBroken>The sequence of variables is broken at position </SequenceOfVariablesIsBroken>
                  <IncorrectOperationChanging>Can't read all variables because of incorrect operation changing at position </IncorrectOperationChanging>
 		 <ExpressionIsEmpty>Expression is empty!</ExpressionIsEmpty>
+                 <IncorrectShortForm>Short form is written incorrectly</IncorrectShortForm>
 	</Exception>	
 </Locale>

@@ -26,14 +26,14 @@ public:
 
    void loadLocale(QString locale);
 
+   //windows localization
+   void localize(SNF_gui* window);
+   void localize (Log* window);
+
    //will find translation for text by its name. Name must begin by '%' symbol
    QString getTranslation (QString name);
 
    QString translateLog(const QString &l);
-
-   //windows localization
-   void localize(SNF_gui* window);
-   void localize (Log* window);
 
    //singleton
    static Localizator& instance()

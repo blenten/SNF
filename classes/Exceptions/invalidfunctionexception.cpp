@@ -8,5 +8,4 @@ InvalidFunctionException::InvalidFunctionException(std::string error)
 InvalidFunctionException::InvalidFunctionException()
 {
     errorText="Default";
-
 }

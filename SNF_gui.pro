@@ -22,7 +22,9 @@ SOURCES += main.cpp\
     classes/snf_minimizer/snf_minimizer.cpp \
     classes/snf_parser/snf_parser.cpp \
     log.cpp \
-    classes/localizator/localizator.cpp
+    classes/localizator/localizator.cpp \
+    classes/snf_parser/shortformconverter.cpp \
+    classes/Types/types.cpp
 
 HEADERS  += snf_gui.h \
     classes/Exceptions/invalidfunctionexception.h \
@@ -31,7 +33,9 @@ HEADERS  += snf_gui.h \
     classes/snf_parser/snf_parser.h \
     classes/lvar.h \
     log.h \
-    classes/localizator/localizator.h
+    classes/localizator/localizator.h \
+    classes/snf_parser/shortformconverter.h \
+    classes/Types/types.h
 
 FORMS    += snf_gui.ui \
     log.ui

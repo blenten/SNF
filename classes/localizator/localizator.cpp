@@ -26,6 +26,24 @@ void Localizator::loadLocale(QString locale)
     }
 }
 
+void Localizator::localize(SNF_gui *window)
+{
+    window->ui->label_2->setText(getTranslation("%InputLabel"));
+    window->ui->label->setText(getTranslation("%OutputLabel"));
+    window->ui->minimizeButton->setText(getTranslation("%MinimizeButton"));
+    window->ui->stepsButton->setText(getTranslation("%StepsButton"));
+    window->ui->conditionLabel->setText(getTranslation("%ConditionDefault"));
+
+    window->setWindowTitle(getTranslation("%Title"));
+}
+
+void Localizator::localize(Log *window)
+{
+    window->ui->logText->setText(translateLog(window->log));
+
+    window->setWindowTitle(getTranslation("%LogTitle"));
+}
+
 QString Localizator::getTranslation(QString name)
 {
     if (name[0]!='%') return name;
@@ -50,22 +68,4 @@ QString Localizator::translateLog (const QString &l)
         if (iter!=list.end()-1) output+="\n";
     }
     return output;
-}
-
-void Localizator::localize(SNF_gui *window)
-{
-    window->ui->label_2->setText(getTranslation("%InputLabel"));
-    window->ui->label->setText(getTranslation("%OutputLabel"));
-    window->ui->minimizeButton->setText(getTranslation("%MinimizeButton"));
-    window->ui->stepsButton->setText(getTranslation("%StepsButton"));
-    window->ui->conditionLabel->setText(getTranslation("%ConditionDefault"));
-
-    window->setWindowTitle(getTranslation("%Title"));
-}
-
-void Localizator::localize(Log *window)
-{
-    window->ui->logText->setText(translateLog(window->log));
-
-    window->setWindowTitle(getTranslation("%LogTitle"));
 }
