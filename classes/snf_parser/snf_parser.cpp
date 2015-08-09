@@ -2,20 +2,24 @@
 
 FunctionType SNF_Parser::parse(std::string input, Expression &output)
 {   
-    FunctionType ft=OTHER;
     output.clear();
     _input=input;
     removeUnused();
     if (_input.length()==0) throw InvalidFunctionException("%NoOperandsAndVariables");
     checkBrackets();
 
-    _input=ShortFormConverter::tryConvertToExpandedForm(_input);
+    if (isFunctionSeemsInShortForm())
+    {
+       _input= ShortFormConverter::convertToExpandedForm(_input);
+    }
 
     insertConjunctionSymbols();
     checkInversions();
 
     std::vector <std::string> variables;
-    ft= getVariables(variables);
+    FunctionType ft=OTHER;
+    ft = getVariables(variables);
+
     if (variables.size()==0) throw InvalidFunctionException("%NoVariables");
 
     if (isVariablesRepeat(variables)) throw InvalidFunctionException("%RepeatingVariables");
@@ -63,6 +67,12 @@ void SNF_Parser::checkBrackets()
          }
      }
      if (lCount!=rCount)throw InvalidFunctionException ("%BracketsNumberIsNotEqual");
+}
+
+bool SNF_Parser::isFunctionSeemsInShortForm()
+{
+     if (!ShortFormConverter::checkOperation(_input)) return false;
+     return true;
 }
 
 void SNF_Parser::insertConjunctionSymbols()

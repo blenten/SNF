@@ -46,6 +46,8 @@ private:
 
     void checkInversions();
 
+    bool isFunctionSeemsInShortForm();
+
     FunctionType getVariables (std::vector<std::string> & variables);
 
     //increases to invertion/operand/zero symbol
