@@ -4,29 +4,20 @@ FunctionType SNF_Parser::parse(std::string input, Expression &output)
 {   
     output.clear();
     _input=input;
-    removeUnused();
-    if (_input.length()==0) throw InvalidFunctionException("%NoOperandsAndVariables");
-    checkBrackets();
+    initialChecking();
 
     if (isFunctionSeemsInShortForm())
     {
-       _input= ShortFormConverter::convertToExpandedForm(_input);
+        return parseShortForm(output);
     }
+    return parseExpandedForm(output);
+}
 
-    insertConjunctionSymbols();
-    checkInversions();
-
-    std::vector <std::string> variables;
-    FunctionType ft=OTHER;
-    ft = getVariables(variables);
-
-    if (variables.size()==0) throw InvalidFunctionException("%NoVariables");
-
-    if (isVariablesRepeat(variables)) throw InvalidFunctionException("%RepeatingVariables");
-
-    fillExpressionVector(output, ft, variables);
-
-    return ft;
+void SNF_Parser::initialChecking()
+{
+    removeUnused();
+    if (_input.length()==0) throw InvalidFunctionException("%NoOperandsAndVariables");
+    checkBrackets();
 }
 
 void SNF_Parser::removeUnused()
@@ -74,6 +65,49 @@ bool SNF_Parser::isFunctionSeemsInShortForm()
      if (!ShortFormConverter::checkOperation(_input)) return false;
      return true;
 }
+
+FunctionType SNF_Parser::parseShortForm(Expression &output)
+{
+    _input= ShortFormConverter::convertToExpandedForm(_input);
+    std::vector <std::string> variables;
+    FunctionType ft=OTHER;
+    ft = getVariables(variables);
+    fillExpressionVector(output, ft, variables);
+
+    return ft;
+}
+
+FunctionType SNF_Parser::parseExpandedForm(Expression &output)
+{
+    removeCommas();
+
+    insertConjunctionSymbols();
+    checkInversions();
+
+    std::vector <std::string> variables;
+    FunctionType ft=OTHER;
+    ft = getVariables(variables);
+
+    if (variables.size()==0) throw InvalidFunctionException("%NoVariables");
+
+    if (isVariablesRepeat(variables)) throw InvalidFunctionException("%RepeatingVariables");
+
+    fillExpressionVector(output, ft, variables);
+
+    return ft;
+}
+
+void SNF_Parser::removeCommas()
+{
+    size_t i=0;
+    while (getSymbolType(_input[i])!=SYMBOL_ZERO)
+    {
+        if (getSymbolType(_input[i])==SYMBOL_COMMA)
+            _input.erase(i,1);
+        else i++;
+    }
+}
+
 
 void SNF_Parser::insertConjunctionSymbols()
 {
@@ -241,7 +275,7 @@ bool SNF_Parser::isVariablesRepeat(std::vector<std::string> &variables)
 }
 
 void SNF_Parser::fillExpressionVector(Expression& expression, const FunctionType& ft,
-                                      std::vector<std::string> & variables)
+                                      const std::vector<std::string> & variables)
 {
     OperationState os=(ft==SNKF)? Disjunction: Conjunction;
     OperationState currState=os;

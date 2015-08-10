@@ -37,7 +37,10 @@ private:
 
     std::string _input;
 
+    void initialChecking();
+
     void removeUnused();
+    void removeCommas();
 
     void checkBrackets();
 
@@ -47,6 +50,9 @@ private:
     void checkInversions();
 
     bool isFunctionSeemsInShortForm();
+
+    FunctionType parseShortForm(Expression &output);
+    FunctionType parseExpandedForm(Expression &output);
 
     FunctionType getVariables (std::vector<std::string> & variables);
 
@@ -63,7 +69,7 @@ private:
     OperationState getOperationStateAfterLBracket(size_t index, OperationState currState);
 
     void fillExpressionVector(Expression& expression, const FunctionType &ft,
-                              std::vector<std::string> & variables);
+                              const std::vector<string> &variables);
 
     void addOperandToVector (Expression & expression);
 

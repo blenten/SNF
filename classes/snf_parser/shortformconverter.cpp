@@ -100,7 +100,7 @@ void ShortFormConverter::removeDoubleCommas()
 {
      size_t len=_input.length();
 
-    for (size_t i=2;i<len-1;i++)
+    for (size_t i=firstDigitPos;i<len-1;i++)
     {
         if (getSymbolType(_input[i])==SYMBOL_COMMA && getSymbolType(_input[i+1])==SYMBOL_COMMA)
         {
