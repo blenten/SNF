@@ -2,19 +2,21 @@
 
 FunctionType SNF_Parser::parse(std::string input, Expression &output)
 {   
-    output.clear();
+     expression=&output;
     _input=input;
     initialChecking();
 
     if (isFunctionSeemsInShortForm())
     {
-        return parseShortForm(output);
+        return parseShortForm();
     }
-    return parseExpandedForm(output);
+    return parseExpandedForm();
 }
 
 void SNF_Parser::initialChecking()
 {
+    expression->clear();
+    variables.clear();
     removeUnused();
     if (_input.length()==0) throw InvalidFunctionException("%NoOperandsAndVariables");
     checkBrackets();
@@ -66,33 +68,31 @@ bool SNF_Parser::isFunctionSeemsInShortForm()
      return true;
 }
 
-FunctionType SNF_Parser::parseShortForm(Expression &output)
+FunctionType SNF_Parser::parseShortForm()
 {
     _input= ShortFormConverter::convertToExpandedForm(_input);
-    std::vector <std::string> variables;
     FunctionType ft=OTHER;
-    ft = getVariables(variables);
-    fillExpressionVector(output, ft, variables);
+    ft = getVariables();
+    fillExpressionVector(ft);
 
     return ft;
 }
 
-FunctionType SNF_Parser::parseExpandedForm(Expression &output)
+FunctionType SNF_Parser::parseExpandedForm()
 {
     removeCommas();
 
     insertConjunctionSymbols();
     checkInversions();
 
-    std::vector <std::string> variables;
     FunctionType ft=OTHER;
-    ft = getVariables(variables);
+    ft = getVariables();
 
     if (variables.size()==0) throw InvalidFunctionException("%NoVariables");
 
-    if (isVariablesRepeat(variables)) throw InvalidFunctionException("%RepeatingVariables");
+    if (isVariablesRepeat()) throw InvalidFunctionException("%RepeatingVariables");
 
-    fillExpressionVector(output, ft, variables);
+    fillExpressionVector(ft);
 
     return ft;
 }
@@ -145,7 +145,7 @@ void SNF_Parser::checkInversions()
 
 }
 
-FunctionType SNF_Parser::getVariables(std::vector<std::string> &variables)
+FunctionType SNF_Parser::getVariables()
 {
      variables.clear();
      std::string currVar="";
@@ -182,7 +182,6 @@ size_t SNF_Parser::increaseIndexToVariable(size_t index)
     return index;
 }
 
-
 std::string SNF_Parser::getOperand (size_t &index)
 {
      std::string output;
@@ -213,6 +212,8 @@ OperationState SNF_Parser::getNextState(size_t & lena, OperationState prevState)
     else if (currType==SYMBOL_RBRACKET && getSymbolType(_input[lena])==SYMBOL_DISJUNCTION)
         return Disjunction;
 
+    else if (currType==SYMBOL_DISJUNCTION) return Disjunction;
+
     else if (currType==SYMBOL_LBRACKET && getSymbolType(_input[lena])==SYMBOL_OPERAND)
     {
        currState=getOperationStateAfterLBracket(lena, prevState);
@@ -223,7 +224,6 @@ OperationState SNF_Parser::getNextState(size_t & lena, OperationState prevState)
        else if (currState==UndefinedToConjunction) return Conjunction;
     }
 
-    else if (currType==SYMBOL_DISJUNCTION) return Disjunction;
     else currState = Undefined;
 
     if(currState!=Undefined && prevState!=Undefined &&
@@ -256,13 +256,7 @@ OperationState SNF_Parser::getOperationStateAfterLBracket(size_t index, Operatio
     return currState;
 }
 
-void SNF_Parser::addOperandToVector (Expression & expression)
-{
-    Operand op;
-    expression.push_back(op);
-}
-
-bool SNF_Parser::isVariablesRepeat(std::vector<std::string> &variables)
+bool SNF_Parser::isVariablesRepeat()
 {
     size_t len=variables.size();
     if (len==1) return 0;
@@ -274,8 +268,7 @@ bool SNF_Parser::isVariablesRepeat(std::vector<std::string> &variables)
     return 0;
 }
 
-void SNF_Parser::fillExpressionVector(Expression& expression, const FunctionType& ft,
-                                      const std::vector<std::string> & variables)
+void SNF_Parser::fillExpressionVector(const FunctionType& ft)
 {
     OperationState os=(ft==SNKF)? Disjunction: Conjunction;
     OperationState currState=os;
@@ -283,24 +276,18 @@ void SNF_Parser::fillExpressionVector(Expression& expression, const FunctionType
     size_t lena=0, operandIndex=0, varIndex=0;
     size_t variablesNumber=variables.size();
 
-    addOperandToVector(expression);
+    addOperandToExpression();
 
     while (getSymbolType(_input[lena])!=SYMBOL_ZERO)
     {
         std::string currVar = getOperand(lena);
         lena = increaseIndexToVariable(lena);
 
-        Variable var;
-        if (getSymbolType(currVar[0])==SYMBOL_INVERSE)
-        {
-            var.invertion=true;
-            currVar.erase(0,1);
-        }
-        var.name=currVar;
+        Variable var = parseVariable(currVar);
 
         if (varIndex<variablesNumber && currVar!="" && currVar == variables[varIndex])
         {
-            expression.at(operandIndex).push_back(var);
+            expression->at(operandIndex).push_back(var);
             varIndex++;
         }
         else if (currVar!="")
@@ -318,7 +305,7 @@ void SNF_Parser::fillExpressionVector(Expression& expression, const FunctionType
             if(varIndex>=variablesNumber-1)
             {
                 varIndex=0;
-                addOperandToVector(expression);
+                addOperandToExpression();
                 operandIndex++;
             }
             else if (varIndex)
@@ -326,4 +313,23 @@ void SNF_Parser::fillExpressionVector(Expression& expression, const FunctionType
         }
         else if (currState!=os && currState!=Undefined && currVar!="")throw InvalidFunctionException("%IncorrectOperationChanging@"+std::to_string(lena));
     }
+}
+
+void SNF_Parser::addOperandToExpression ()
+{
+    Operand op;
+    expression->push_back(op);
+}
+
+Variable SNF_Parser::parseVariable(std::string &currVar)
+{
+    Variable var;
+    if (getSymbolType(currVar[0])==SYMBOL_INVERSE)
+    {
+        var.invertion=true;
+        currVar.erase(0,1);
+    }
+    var.name=currVar;
+
+    return var;
 }

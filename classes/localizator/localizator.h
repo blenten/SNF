@@ -23,7 +23,6 @@ private:
    Localizator& operator=(const Localizator&);
 
 public:
-
    void loadLocale(QString locale);
 
    //windows localization

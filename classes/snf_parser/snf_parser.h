@@ -18,6 +18,7 @@
 //inverse: x1!x2!x3 as conjunction
 //all spaces and unused symbols will be removed
 //double inversions will be removed and replaced by conjunction symbol
+//function can be inputted in short form (e.g. +(1,3,5) means !x1*!x2*x3 + !x1*x2*x3 + x1*!x2*x3)
 
 enum OperationState
 {
@@ -34,8 +35,10 @@ enum OperationState
 class SNF_Parser
 {
 private:
-
     std::string _input;
+
+    Expression *expression;
+    std::vector<std::string> variables;
 
     void initialChecking();
 
@@ -51,15 +54,15 @@ private:
 
     bool isFunctionSeemsInShortForm();
 
-    FunctionType parseShortForm(Expression &output);
-    FunctionType parseExpandedForm(Expression &output);
+    FunctionType parseShortForm();
+    FunctionType parseExpandedForm();
 
-    FunctionType getVariables (std::vector<std::string> & variables);
+    FunctionType getVariables ();
 
     //increases to invertion/operand/zero symbol
     size_t increaseIndexToVariable(size_t index);
 
-    bool isVariablesRepeat(std::vector<std::string> &variables);
+    bool isVariablesRepeat();
 
     //gets an operand and increase index to position after it
     std::string getOperand (size_t &index);
@@ -68,13 +71,13 @@ private:
 
     OperationState getOperationStateAfterLBracket(size_t index, OperationState currState);
 
-    void fillExpressionVector(Expression& expression, const FunctionType &ft,
-                              const std::vector<string> &variables);
+    void fillExpressionVector(const FunctionType &ft);
 
-    void addOperandToVector (Expression & expression);
+    void addOperandToExpression ();
+
+    Variable parseVariable(std::string &currVar);
 
 public:
-
     FunctionType parse (std::string input, Expression &output);
 };
 
