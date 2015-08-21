@@ -1,5 +1,4 @@
 #include "snf_minimizer.h"
-
 //------------SNF-------------//
 
 string SNF_Minimizer::getLog()

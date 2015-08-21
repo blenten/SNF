@@ -28,6 +28,7 @@ private:
 
 public:
     static bool checkOperation(const std::string & input);
+
     static std::string convertToExpandedForm(std::string input);
 };
 
