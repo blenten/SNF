@@ -16,6 +16,8 @@ void ExpandedFormParser::initialChecking()
     removeUnused();
     if (_input.length()==0) throw InvalidFunctionException("%NoOperandsAndVariables");
     checkBrackets();
+    insertConjunctionSymbols();
+    checkInversions();
 }
 
 void ExpandedFormParser::removeUnused()
@@ -23,7 +25,7 @@ void ExpandedFormParser::removeUnused()
     size_t i=0;
     while (getSymbolType(_input[i])!=SYMBOL_ZERO)
     {
-        if (getSymbolType(_input[i])==SYMBOL_OTHER || getSymbolType(_input[i])==SYMBOL_SPACE)
+        if (getSymbolType(_input[i])==SYMBOL_OTHER || getSymbolType(_input[i])==SYMBOL_SPACE || getSymbolType(_input[i])==SYMBOL_COMMA)
             _input.erase(i,1);
         else i++;
     }
@@ -60,11 +62,6 @@ void ExpandedFormParser::checkBrackets()
 
 FunctionType ExpandedFormParser::parseExpandedForm()
 {
-    removeCommas();
-
-    insertConjunctionSymbols();
-    checkInversions();
-
     FunctionType ft=OTHER;
     ft = getVariables();
 
@@ -72,22 +69,10 @@ FunctionType ExpandedFormParser::parseExpandedForm()
 
     if (isVariablesRepeat()) throw InvalidFunctionException("%RepeatingVariables");
 
-    fillExpressionVector(ft);
+    fillExpression(ft);
 
     return ft;
 }
-
-void ExpandedFormParser::removeCommas()
-{
-    size_t i=0;
-    while (getSymbolType(_input[i])!=SYMBOL_ZERO)
-    {
-        if (getSymbolType(_input[i])==SYMBOL_COMMA)
-            _input.erase(i,1);
-        else i++;
-    }
-}
-
 
 void ExpandedFormParser::insertConjunctionSymbols()
 {
@@ -248,7 +233,7 @@ bool ExpandedFormParser::isVariablesRepeat()
     return 0;
 }
 
-void ExpandedFormParser::fillExpressionVector(const FunctionType& ft)
+void ExpandedFormParser::fillExpression(const FunctionType& ft)
 {
     OperationState os=(ft==SNKF)? Disjunction: Conjunction;
     OperationState currState=os;

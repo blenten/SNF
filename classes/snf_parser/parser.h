@@ -14,7 +14,7 @@
 //double inversions will be removed and replaced by conjunction symbol
 //function can be inputted in short form (e.g. +(1,3,5) means !x1*!x2*x3 + !x1*x2*x3 + x1*!x2*x3)
 
-class SNF_Parser
+class Parser
 {
 protected:
     std::string _input;
@@ -22,12 +22,9 @@ protected:
     Expression *expression;
     std::vector<std::string> variables;
 
-    void removeUnused();
-
 public:
-    static bool checkOperation(const std::string & input);
-
     virtual FunctionType parse (std::string input, Expression &output)=0;
+    virtual ~Parser();
 };
 
 #endif // SNF_PARSER_H

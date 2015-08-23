@@ -1,7 +1,7 @@
 #ifndef EXPANDEDFORMPARSER_H
 #define EXPANDEDFORMPARSER_H
 
-#include "snf_parser.h"
+#include "parser.h"
 
 enum OperationState
 {
@@ -14,13 +14,12 @@ enum OperationState
     Disjunction=1
 };
 
-class ExpandedFormParser:public SNF_Parser
+class ExpandedFormParser:public Parser
 {
 private:    
     void initialChecking();
 
     void removeUnused();
-    void removeCommas();
 
     void checkBrackets();
 
@@ -45,7 +44,7 @@ private:
 
     OperationState getOperationStateAfterLBracket(size_t index, OperationState currState);
 
-    void fillExpressionVector(const FunctionType &ft);
+    void fillExpression(const FunctionType &ft);
 
     void addOperandToExpression ();
 

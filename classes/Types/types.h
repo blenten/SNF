@@ -2,6 +2,7 @@
 #define TYPES_H
 
 #include "ctype.h"
+#include <string>
 
 enum FunctionType {
     OTHER=-1, SNDF, SNKF
@@ -22,6 +23,7 @@ enum SymbolType
 };
 
 SymbolType getSymbolType(char symb);
+
 
 
 #endif //TYPES_H

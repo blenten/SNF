@@ -1,7 +1,7 @@
 #ifndef SNF_MINIMIZER_H
 #define SNF_MINIMIZER_H
 
-#include"../snf_parser/snf_parser_old.h"
+#include "../snf_parser/snf_parserdecorator.h"
 #include <sstream>
 #include "classes/localizator/localizator.h"
 
@@ -34,7 +34,7 @@ private:
     void log();         //creating log for "steps"
     stringstream logs;
 
-    SNF_ParserOld parser; //olerapx
+    SNF_ParserDecorator parser; //olerapx
     Expression exp;
     FunctionType expType;
 };

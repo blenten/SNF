@@ -11,39 +11,16 @@ FunctionType ShortFormParser::parse(string input, Expression &output)
     _input.erase(0,2);
     _input.erase(_input.length()-1,1);
 
-    std::vector<int> numbers;
     parseNumbers(numbers);
-
-    unsigned int varCount = calculateVariablesCount(numbers);
-    unsigned int operandCount = numbers.size();
 
     FunctionType ft = (getSymbolType(operation)==SYMBOL_CONJUNCTION)? SNKF:SNDF;
 
-    for (unsigned int i=0;i<operandCount;i++)
-    {
-        Operand op;
-
-
-        std::string str=numberToBinary(numbers[i], varCount);
-        for (unsigned int j=0;j<varCount;j++)
-        {
-            Variable var;
-            std::string currVar = 'x'+std::to_string(j+1);
-            var.name=currVar;
-
-            if (str[j]=='0') var.invertion=true;
-            else var.invertion=false;
-            op.push_back(var);
-        }
-       expression->push_back(op);
-    }
+    fillExpression();
     return ft;
 }
 
 void ShortFormParser::checkCorrectness()
 {
-    if (!checkOperation(_input)) throw InvalidFunctionException ("%IncorrectShortForm");
-
     expression->clear();
     variables.clear();
     removeUnused();
@@ -52,6 +29,25 @@ void ShortFormParser::checkCorrectness()
     checkDigitsAndCommas();
     removeDoubleCommas();
 }
+
+void ShortFormParser::removeUnused()
+{
+    size_t i=0;
+    while (getSymbolType(_input[i])!=SYMBOL_ZERO)
+    {
+        if (getSymbolType(_input[i])==SYMBOL_OTHER || getSymbolType(_input[i])==SYMBOL_SPACE)
+            _input.erase(i,1);
+        else i++;
+    }
+}
+
+bool ShortFormParser::hasOperationSymbolAtBeginning(const std::string & input)
+{
+  if (getSymbolType(input[0])!=SYMBOL_CONJUNCTION && getSymbolType(input[0])!=SYMBOL_DISJUNCTION)
+     return false;
+  return true;
+}
+
 
 void ShortFormParser::checkBrackets()
 {
@@ -135,4 +131,30 @@ std::string ShortFormParser::numberToBinary(int number, int size)
     for (int j = 0; j < size; j++)
             str = ((number & (1 << j))? "1" : "0") + str;
     return str;
+}
+
+void ShortFormParser::fillExpression()
+{
+    unsigned int varCount = calculateVariablesCount(numbers);
+    unsigned int operandCount = numbers.size();
+
+    for (unsigned int i=0;i<operandCount;i++)
+    {
+        Operand op;
+
+        std::string str=numberToBinary(numbers[i], varCount);
+
+        for (unsigned int j=0;j<varCount;j++)
+        {
+            Variable var;
+            std::string currVar = 'x'+std::to_string(j+1);
+            var.name=currVar;
+
+            if (str[j]=='0') var.invertion=true;
+            else var.invertion=false;
+
+            op.push_back(var);
+        }
+       expression->push_back(op);
+    }
 }
