@@ -23,14 +23,14 @@ void ShortFormParser::checkCorrectness()
 {
     expression->clear();
     variables.clear();
-    removeUnused();
+    removeUseless();
 
     checkBrackets();
     checkDigitsAndCommas();
     removeDoubleCommas();
 }
 
-void ShortFormParser::removeUnused()
+void ShortFormParser::removeUseless()
 {
     size_t i=0;
     while (getSymbolType(_input[i])!=SYMBOL_ZERO)
@@ -40,14 +40,6 @@ void ShortFormParser::removeUnused()
         else i++;
     }
 }
-
-bool ShortFormParser::hasOperationSymbolAtBeginning(const std::string & input)
-{
-  if (getSymbolType(input[0])!=SYMBOL_CONJUNCTION && getSymbolType(input[0])!=SYMBOL_DISJUNCTION)
-     return false;
-  return true;
-}
-
 
 void ShortFormParser::checkBrackets()
 {
@@ -78,12 +70,12 @@ void ShortFormParser::checkDigitsAndCommas()
 {
     size_t len=_input.length();
 
+    if (getSymbolType(_input[firstDigitPos])==SYMBOL_COMMA || getSymbolType(_input[len-2])==SYMBOL_COMMA)
+        throw InvalidFunctionException ("%IncorrectShortForm");
+
     for (size_t i=firstDigitPos;i<len-1;i++)
         if (!isdigit(_input[i]) && getSymbolType(_input[i])!=SYMBOL_COMMA)
             throw InvalidFunctionException ("%IncorrectShortForm");
-
-    if (getSymbolType(_input[firstDigitPos])==SYMBOL_COMMA || getSymbolType(_input[len-2])==SYMBOL_COMMA)
-        throw InvalidFunctionException ("%IncorrectShortForm");
 }
 
 void ShortFormParser::removeDoubleCommas()
@@ -120,17 +112,7 @@ unsigned int ShortFormParser::calculateVariablesCount(const std::vector<int> &nu
         if (numbers[i]>max) max=numbers[i];
     if (max==0) return 1;
 
-    double logmax = log2(max);
-
-    return floor(logmax)+1;
-}
-
-std::string ShortFormParser::numberToBinary(int number, int size)
-{
-    std::string str;
-    for (int j = 0; j < size; j++)
-            str = ((number & (1 << j))? "1" : "0") + str;
-    return str;
+    return floor(log2(max))+1;
 }
 
 void ShortFormParser::fillExpression()
@@ -157,4 +139,12 @@ void ShortFormParser::fillExpression()
         }
        expression->push_back(op);
     }
+}
+
+std::string ShortFormParser::numberToBinary(int number, int size)
+{
+    std::string str;
+    for (int j = 0; j < size; j++)
+            str = ((number & (1 << j))? "1" : "0") + str;
+    return str;
 }

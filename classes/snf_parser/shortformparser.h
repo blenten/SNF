@@ -10,23 +10,22 @@
 class ShortFormParser: public Parser
 {
 private:
-    std::string numberToBinary(int number, int size);
-
     const size_t firstDigitPos=2;
 
     std::vector<int> numbers;
 
     void checkCorrectness();
-    void removeUnused();
-    bool hasOperationSymbolAtBeginning(const std::string & input); //MOVE TO PARSER CHANGER
+    void removeUseless();
     void checkBrackets();
     void checkDigitsAndCommas();
     void removeDoubleCommas();
 
     void parseNumbers(std::vector<int> &numbers);
+
     unsigned int calculateVariablesCount (const std::vector<int> &numbers);
 
     void fillExpression();
+    std::string numberToBinary(int number, int size);
 
 public:
     FunctionType parse (std::string input, Expression &output);

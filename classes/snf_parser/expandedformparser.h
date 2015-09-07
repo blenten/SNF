@@ -18,14 +18,10 @@ class ExpandedFormParser:public Parser
 {
 private:    
     void initialChecking();
-
-    void removeUnused();
-
+    void removeUseless();
     void checkBrackets();
-
     //inserts '&' instead of double invertion and after operand before left bracket or invertion and after right bracket before invertion
     void insertConjunctionSymbols();
-
     void checkInversions();
 
     FunctionType parseExpandedForm();

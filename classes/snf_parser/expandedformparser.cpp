@@ -13,14 +13,14 @@ void ExpandedFormParser::initialChecking()
 {
     expression->clear();
     variables.clear();
-    removeUnused();
+    removeUseless();
     if (_input.length()==0) throw InvalidFunctionException("%NoOperandsAndVariables");
     checkBrackets();
     insertConjunctionSymbols();
     checkInversions();
 }
 
-void ExpandedFormParser::removeUnused()
+void ExpandedFormParser::removeUseless()
 {
     size_t i=0;
     while (getSymbolType(_input[i])!=SYMBOL_ZERO)
