@@ -4,7 +4,7 @@
 
 int main(int argc, char *argv[])
 {
-    SNF_Generator::testMinimizing("log.txt", 1, 3, 1, 3, 1, 1, std::cerr);
+    SNF_Generator::testMinimizing("log.txt", 1, 3, 1, 5, 1, 1, std::cerr);
     QApplication a(argc, argv);
     SNF_gui w;
     w.show();

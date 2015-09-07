@@ -11,7 +11,6 @@ void SNF_Generator::testMinimizing(std::string logPath,
 {
     logStream.open(logPath);
     infoStream=&infoOutputStream;
-    generatedOperands.clear();
 
     (*infoStream)<<"Testing...\n";
 
@@ -23,7 +22,10 @@ void SNF_Generator::testMinimizing(std::string logPath,
     srand (QDateTime::currentMSecsSinceEpoch());
     for (unsigned int i=downVariablesNumber;i<=upVariablesNumber;i+=variablesStep)
     {
-        for (unsigned int j=downOperandsNumber;j<=upOperandsNumber;j+=operandsStep)
+        unsigned int maxOperandsNumber = pow (2,i);
+        if (maxOperandsNumber>upOperandsNumber) maxOperandsNumber=upOperandsNumber;
+
+        for (unsigned int j=downOperandsNumber;j<=maxOperandsNumber;j+=operandsStep)
         {
             std::string func;
             if(getRandom(1)) func=generateFunction(i,j, SNDF);
@@ -46,18 +48,17 @@ int SNF_Generator::getRandom(int max)
 std::string SNF_Generator::generateFunction(unsigned int variablesNumber, unsigned int operandsNumber, FunctionType ft)
 {
     std::string output="";
+    generatedOperands.clear();
 
     for (unsigned int i=0; i<operandsNumber; i++)
     {
-        output+="(";
-        for (unsigned int j=0; j<variablesNumber; j++)
-        {
-           output+= SNF_Generator::generateOperand(j, variablesNumber, ft);
-        }
+        output += "(";
+        output+=SNF_Generator::generateOperand(variablesNumber,ft);
         output += ")";
+
         if (i != operandsNumber-1)
         {
-            if (ft==SNDF) output += "+";
+            if (ft == SNDF) output += "+";
             else output += "*";
         }
     }
@@ -65,23 +66,24 @@ std::string SNF_Generator::generateFunction(unsigned int variablesNumber, unsign
     return output;
 }
 
-std::string SNF_Generator::generateOperand(int currentVariablesNumber, int variablesNumber, FunctionType ft)
+std::string SNF_Generator::generateOperand(unsigned int variablesNumber, FunctionType ft)
 {
     std::string output;
     do
     {
         output="";
-        if (getRandom(1)) output += "!";
-        output += ("x"+std::to_string(currentVariablesNumber+1));
-
-        if(currentVariablesNumber != variablesNumber-1)
+        for (unsigned int i=0; i<variablesNumber; i++)
         {
-            if (ft==SNDF) output += "*";
-            else output += "+";
+            if (getRandom(1))output += "!";
+            output += ("x" + std::to_string(i+1));
+            if(i != variablesNumber-1)
+            {
+                if (ft == SNDF) output+="*";
+                else output += "+";
+            }
         }
     }
-    while (SNF_Generator::isOperandRepeat(output) && generatedOperands.size()<= currentVariablesNumber*currentVariablesNumber);//temp
-
+    while (isOperandRepeat(output));
     generatedOperands.push_back(output);
     return output;
 }

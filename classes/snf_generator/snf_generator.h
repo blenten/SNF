@@ -25,7 +25,7 @@ private:
     static void logCurrentFunction (int currentVariablesNumber, int currentOperandsNumber, double currentTime);
     static void logPercentCompleted(double percent);
 
-    static std::string generateOperand(int currentVariablesNumber, int variablesNumber, FunctionType ft);
+    static std::string generateOperand(unsigned int variablesNumber, FunctionType ft);
     static bool isOperandRepeat (std::string operand);
 
 public:
