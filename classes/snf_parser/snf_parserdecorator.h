@@ -7,7 +7,7 @@ class SNF_ParserDecorator
 {
 private:
 
-bool isInShortForm(std::string input);
+FunctionInputForm getFunctionInputForm (std::string input);
 
 public:
     FunctionType parse  (std::string input, Expression &output);

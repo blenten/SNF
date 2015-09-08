@@ -8,6 +8,12 @@ enum FunctionType {
     OTHER=-1, SNDF, SNKF
 };
 
+enum FunctionInputForm
+{
+    EXPANDED_FORM,
+    SHORT_FORM
+};
+
 enum SymbolType
 {
     SYMBOL_CONJUNCTION,

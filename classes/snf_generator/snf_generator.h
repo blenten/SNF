@@ -10,34 +10,48 @@
 class SNF_Generator
 {
 private:
-    static std::ofstream logStream;
-    static std::ostream* infoStream;
 
-    static std::vector<std::string> generatedOperands;
+    unsigned int downVariablesNumber;
+    unsigned int upVariablesNumber;
+    unsigned int variablesStep;
+    unsigned int downOperandsNumber;
+    unsigned int upOperandsNumber;
+    unsigned int operandsStep;
 
-    static int getRandom (int max);
-    static double getMinimizingTime (std::string function);
+    double stepsCount;
+
+    std::ofstream logStream;
+    std::ostream* infoStream;
+
+    std::vector<std::string> generatedOperands;
+    std::vector <int> maxOperandsNumbers; //max numbers of operands for each variables number to avoid repeating
+
+    void getMaxOperandsNumbers();
+    void getStepsCount();
+
+    int getRandom (int max);
+    double getMinimizingTime (std::string function);
 
     //replacement of mother-returning function in Minimizer class
-    static std::string minimize (std::string function);
+    std::string minimize (std::string function);
 
-    static void logHead();
-    static void logCurrentFunction (int currentVariablesNumber, int currentOperandsNumber, double currentTime);
-    static void logPercentCompleted(double percent);
+    void logHead();
+    void logCurrentFunction (int currentVariablesNumber, int currentOperandsNumber, double currentTime);
+    void logPercentCompleted(double percent);
 
-    static std::string generateOperand(unsigned int variablesNumber, FunctionType ft);
-    static bool isOperandRepeat (std::string operand);
+    std::string generateOperand(unsigned int variablesNumber, FunctionType ft);
+    bool isOperandRepeat (std::string operand);
 
 public:
 
     //gets time of minimizing functions; writes a log to file on path; prints an completing info to infoOutputStream
-    static void testMinimizing (std::string logPath,
-                                unsigned int downVariablesNumber, unsigned int upVariablesNumber,
-                                unsigned int downOperandsNumber, unsigned int upOperandsNumber,
-                                unsigned int variablesStep=1, unsigned int operandsStep=1,
+    void testMinimizing (std::string logPath,
+                                unsigned int _downVariablesNumber, unsigned int _upVariablesNumber,
+                                unsigned int _downOperandsNumber, unsigned int _upOperandsNumber,
+                                unsigned int _variablesStep=1, unsigned int _operandsStep=1,
                                 std::ostream &infoOutputStream=std::cout);
 
-    static std::string generateFunction (unsigned int variablesNumber, unsigned int operandsNumber,FunctionType ft);
+    std::string generateFunction (unsigned int variablesNumber, unsigned int operandsNumber,FunctionType ft);
 
 };
 

@@ -3,7 +3,8 @@
 FunctionType SNF_ParserDecorator::parse(string input, Expression &output)
 {
     Parser* parser;
-    if (isInShortForm(input))parser = new ShortFormParser;
+    if (getFunctionInputForm(input) == SHORT_FORM)
+        parser = new ShortFormParser;
     else parser = new ExpandedFormParser;
 
     FunctionType ft = parser->parse(input,output);
@@ -11,12 +12,12 @@ FunctionType SNF_ParserDecorator::parse(string input, Expression &output)
     return ft;
 }
 
-bool SNF_ParserDecorator::isInShortForm(string input)
+FunctionInputForm SNF_ParserDecorator::getFunctionInputForm(string input)
 {
     size_t i=0;
     while (getSymbolType(input[i])==SYMBOL_OTHER || getSymbolType(input[i])==SYMBOL_SPACE) i++;
 
     if (getSymbolType(input[i]) == SYMBOL_CONJUNCTION || getSymbolType(input[i]) == SYMBOL_DISJUNCTION )
-        return true;
-    return false;
+        return SHORT_FORM;
+    return EXPANDED_FORM;
 }
