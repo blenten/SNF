@@ -10,6 +10,9 @@
 class SNF_Generator
 {
 private:
+    std::string logPath;
+    std::ofstream logStream;
+    std::ostream* infoStream;
 
     unsigned int downVariablesNumber;
     unsigned int upVariablesNumber;
@@ -20,14 +23,13 @@ private:
 
     double stepsCount;
 
-    std::ofstream logStream;
-    std::ostream* infoStream;
-
     std::vector<std::string> generatedOperands;
-    std::vector <int> maxOperandsNumbers; //max numbers of operands for each variables number to avoid repeating
+    std::vector <int> maxOperandsNumbers; //max numbers of operands for each variables number to avoid repeating (equals 2 to the number power)
 
     void getMaxOperandsNumbers();
     void getStepsCount();
+
+    void testMinimizing();
 
     int getRandom (int max);
     double getMinimizingTime (std::string function);
@@ -45,11 +47,11 @@ private:
 public:
 
     //gets time of minimizing functions; writes a log to file on path; prints an completing info to infoOutputStream
-    void testMinimizing (std::string logPath,
-                                unsigned int _downVariablesNumber, unsigned int _upVariablesNumber,
-                                unsigned int _downOperandsNumber, unsigned int _upOperandsNumber,
-                                unsigned int _variablesStep=1, unsigned int _operandsStep=1,
-                                std::ostream &infoOutputStream=std::cout);
+    void startTesting (std::string _logPath,
+                       unsigned int _downVariablesNumber, unsigned int _upVariablesNumber,
+                       unsigned int _downOperandsNumber, unsigned int _upOperandsNumber,
+                       unsigned int _variablesStep=1, unsigned int _operandsStep=1,
+                       std::ostream &infoOutputStream=std::cout);
 
     std::string generateFunction (unsigned int variablesNumber, unsigned int operandsNumber,FunctionType ft);
 

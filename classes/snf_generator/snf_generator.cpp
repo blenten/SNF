@@ -1,14 +1,12 @@
 #include "snf_generator.h"
 
-void SNF_Generator::testMinimizing(std::string logPath,
+void SNF_Generator::startTesting(std::string _logPath,
                                    unsigned int _downVariablesNumber, unsigned int _upVariablesNumber,
                                    unsigned int _downOperandsNumber, unsigned int _upOperandsNumber,
                                    unsigned int _variablesStep, unsigned int _operandsStep,
                                    std::ostream &infoOutputStream)
 {
-    logStream.open(logPath);
-    infoStream=&infoOutputStream;
-
+    logPath=_logPath;
     downVariablesNumber = _downVariablesNumber;
     upVariablesNumber= _upVariablesNumber;
     variablesStep=_variablesStep;
@@ -16,39 +14,19 @@ void SNF_Generator::testMinimizing(std::string logPath,
     upOperandsNumber=_upOperandsNumber;
     operandsStep= _operandsStep;
 
+    infoStream=&infoOutputStream;
+
     (*infoStream)<<"Testing...\n";
 
-    maxOperandsNumbers.clear();
     getMaxOperandsNumbers();
     getStepsCount();
 
-    logHead();
-
-    srand (QDateTime::currentMSecsSinceEpoch());
-
-    int index=0;
-    double doneStepsCount=0;
-    for (unsigned int i=downVariablesNumber;i<=upVariablesNumber;i+=variablesStep)
-    {
-        unsigned int maxOperandsNumber = maxOperandsNumbers[index++];
-
-        for (unsigned int j=downOperandsNumber;j<=maxOperandsNumber;j+=operandsStep)
-        {
-            std::string func;
-            if(getRandom(1)) func=generateFunction(i,j, SNDF);
-            else func=generateFunction(i,j, SNKF);
-
-            logCurrentFunction(i, j, getMinimizingTime(func));
-
-            doneStepsCount++;
-            logPercentCompleted(doneStepsCount/stepsCount*100);
-        }
-    }
-    logStream.close();
+    testMinimizing();
 }
 
 void SNF_Generator::getMaxOperandsNumbers()
 {
+    maxOperandsNumbers.clear();
     for (unsigned int i=downVariablesNumber;i<=upVariablesNumber;i+=variablesStep)
     {
         unsigned int maxOperandsNumber = pow (2,i);
@@ -64,6 +42,31 @@ void SNF_Generator::getStepsCount()
     for (size_t i=0; i<size; i++)
     {
        stepsCount += ceil((double)(maxOperandsNumbers[i]-downOperandsNumber+1)/(double)operandsStep);
+    }
+}
+
+void SNF_Generator::testMinimizing()
+{
+    logHead();
+
+    srand (QDateTime::currentMSecsSinceEpoch());
+    unsigned int index=0;
+    double doneStepsCount=0;
+    for (unsigned int i=downVariablesNumber;i<=upVariablesNumber;i+=variablesStep)
+    {
+        unsigned int maxOperandsNumber = maxOperandsNumbers[index++];
+
+        for (unsigned int j=downOperandsNumber; j<=maxOperandsNumber; j+=operandsStep)
+        {
+            std::string func;
+            if(getRandom(1)) func=generateFunction(i,j, SNDF);
+            else func=generateFunction(i,j, SNKF);
+
+            logCurrentFunction(i, j, getMinimizingTime(func));
+
+            doneStepsCount++;
+            logPercentCompleted(doneStepsCount/stepsCount*100);
+        }
     }
 }
 
@@ -143,15 +146,19 @@ std::string SNF_Generator::minimize(string function)
 
 void SNF_Generator::logHead()
 {
+    logStream.open(logPath);
     logStream << stepsCount << " functions will be checked\n";
     logStream << "variables\toperands\ttime\n";
+    logStream.close();
 }
 
 void SNF_Generator::logCurrentFunction (int currentVariablesNumber, int currentOperandsNumber, double currentTime)
 {
+    logStream.open(logPath, std::ios_base::app);
     logStream << std::setw(9)<<currentVariablesNumber<<"\t";
     logStream << std::setw(8)<<currentOperandsNumber<<"\t";
     logStream << std::to_string(currentTime)<<"s\t\n";
+    logStream.close();
 }
 
 void SNF_Generator::logPercentCompleted(double percent)
