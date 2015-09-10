@@ -5,13 +5,13 @@
 
 enum OperationState
 {
-    UndefinedToDisjunction=-5,
-    UndefinedToConjunction=-4,
-    ConjunctionToDinsjunction=-3,
-    DisjunctionToConjunction=-2,
-    Undefined=-1,
-    Conjunction=0,
-    Disjunction=1
+    UndefinedToDisjunction = -5,
+    UndefinedToConjunction = -4,
+    ConjunctionToDinsjunction = -3,
+    DisjunctionToConjunction = -2,
+    Undefined = -1,
+    Conjunction = 0,
+    Disjunction = 1
 };
 
 class ExpandedFormParser:public Parser

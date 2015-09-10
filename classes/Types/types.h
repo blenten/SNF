@@ -10,8 +10,8 @@ enum FunctionType {
 
 enum FunctionInputForm
 {
-    EXPANDED_FORM,
-    SHORT_FORM
+    FORM_EXPANDED,
+    FORM_SHORT
 };
 
 enum SymbolType

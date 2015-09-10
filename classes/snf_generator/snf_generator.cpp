@@ -6,13 +6,13 @@ void SNF_Generator::startTesting(std::string _logPath,
                                    unsigned int _variablesStep, unsigned int _operandsStep,
                                    std::ostream &infoOutputStream)
 {
-    logPath=_logPath;
+    logPath =_logPath;
     downVariablesNumber = _downVariablesNumber;
-    upVariablesNumber= _upVariablesNumber;
-    variablesStep=_variablesStep;
-    downOperandsNumber=_downOperandsNumber;
-    upOperandsNumber=_upOperandsNumber;
-    operandsStep= _operandsStep;
+    upVariablesNumber = _upVariablesNumber;
+    variablesStep =_variablesStep;
+    downOperandsNumber = _downOperandsNumber;
+    upOperandsNumber = _upOperandsNumber;
+    operandsStep = _operandsStep;
 
     infoStream=&infoOutputStream;
 
@@ -27,10 +27,10 @@ void SNF_Generator::startTesting(std::string _logPath,
 void SNF_Generator::getMaxOperandsNumbers()
 {
     maxOperandsNumbers.clear();
-    for (unsigned int i=downVariablesNumber;i<=upVariablesNumber;i+=variablesStep)
+    for (unsigned int i=downVariablesNumber; i<=upVariablesNumber; i+=variablesStep)
     {
         unsigned int maxOperandsNumber = pow (2,i);
-        if (maxOperandsNumber>upOperandsNumber) maxOperandsNumber=upOperandsNumber;
+        if (maxOperandsNumber > upOperandsNumber) maxOperandsNumber = upOperandsNumber;
         maxOperandsNumbers.push_back(maxOperandsNumber);
     }
 }
@@ -52,20 +52,20 @@ void SNF_Generator::testMinimizing()
     srand (QDateTime::currentMSecsSinceEpoch());
     unsigned int index=0;
     double doneStepsCount=0;
-    for (unsigned int i=downVariablesNumber;i<=upVariablesNumber;i+=variablesStep)
+    for (unsigned int i=downVariablesNumber; i<=upVariablesNumber; i+=variablesStep)
     {
         unsigned int maxOperandsNumber = maxOperandsNumbers[index++];
 
         for (unsigned int j=downOperandsNumber; j<=maxOperandsNumber; j+=operandsStep)
         {
             std::string func;
-            if(getRandom(1)) func=generateFunction(i,j, SNDF);
-            else func=generateFunction(i,j, SNKF);
+            if (getRandom(1)) func = generateFunction(i,j, SNDF);
+            else func = generateFunction(i,j, SNKF);
 
             logCurrentFunction(i, j, getMinimizingTime(func));
 
             doneStepsCount++;
-            logPercentCompleted(doneStepsCount/stepsCount*100);
+            logInfoPercentCompleted(doneStepsCount/stepsCount*100);
         }
     }
 }
@@ -77,13 +77,13 @@ int SNF_Generator::getRandom(int max)
 
 std::string SNF_Generator::generateFunction(unsigned int variablesNumber, unsigned int operandsNumber, FunctionType ft)
 {
-    std::string output="";
+    std::string output = "";
     generatedOperands.clear();
 
     for (unsigned int i=0; i<operandsNumber; i++)
     {
         output += "(";
-        output+=generateOperand(variablesNumber,ft);
+        output += generateOperand(variablesNumber,ft);
         output += ")";
 
         if (i != operandsNumber-1)
@@ -100,10 +100,10 @@ std::string SNF_Generator::generateOperand(unsigned int variablesNumber, Functio
     std::string output;
     do
     {
-        output="";
+        output = "";
         for (unsigned int i=0; i<variablesNumber; i++)
         {
-            if (getRandom(1))output += "!";
+            if (getRandom(1)) output += "!";
             output += ("x" + std::to_string(i+1));
             if(i != variablesNumber-1)
             {
@@ -112,12 +112,12 @@ std::string SNF_Generator::generateOperand(unsigned int variablesNumber, Functio
             }
         }
     }
-    while (isOperandRepeat(output));
+    while (isOperandRepeated(output));
     generatedOperands.push_back(output);
     return output;
 }
 
-bool SNF_Generator::isOperandRepeat(string operand)
+bool SNF_Generator::isOperandRepeated(string operand)
 {
     size_t size = generatedOperands.size();
     for (size_t i = 0; i<size; i++)
@@ -155,14 +155,14 @@ void SNF_Generator::logHead()
 void SNF_Generator::logCurrentFunction (int currentVariablesNumber, int currentOperandsNumber, double currentTime)
 {
     logStream.open(logPath, std::ios_base::app);
-    logStream << std::setw(9)<<currentVariablesNumber<<"\t";
-    logStream << std::setw(8)<<currentOperandsNumber<<"\t";
-    logStream << std::to_string(currentTime)<<"s\t\n";
+    logStream << std::setw(9) << currentVariablesNumber << "\t";
+    logStream << std::setw(8) << currentOperandsNumber << "\t";
+    logStream << std::to_string(currentTime) << "s\n";
     logStream.close();
 }
 
-void SNF_Generator::logPercentCompleted(double percent)
+void SNF_Generator::logInfoPercentCompleted(double percent)
 {
-    (*infoStream) <<"\r                 \rReady: "<<percent<<"%";
+    (*infoStream) <<"\r                 \rReady: "<< percent << "%";
     infoStream->flush();
 }

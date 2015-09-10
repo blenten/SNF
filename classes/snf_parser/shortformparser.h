@@ -10,7 +10,7 @@
 class ShortFormParser: public Parser
 {
 private:
-    const size_t firstDigitPos=2;
+    const size_t firstDigitPos = 2;
 
     std::vector<int> numbers;
 
@@ -20,9 +20,9 @@ private:
     void checkDigitsAndCommas();
     void removeDoubleCommas();
 
-    void parseNumbers(std::vector<int> &numbers);
+    void parseNumbers();
 
-    unsigned int calculateVariablesCount (const std::vector<int> &numbers);
+    unsigned int calculateVariablesCount ();
 
     void fillExpression();
     std::string numberToBinary(int number, int size);

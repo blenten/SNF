@@ -2,18 +2,18 @@
 
 FunctionType ShortFormParser::parse(string input, Expression &output)
 {
-     expression=&output;
-     _input=input;
+     expression = &output;
+     _input = input;
      checkCorrectness();
 
-    char operation=_input[0];
+    char operation = _input[0];
 
     _input.erase(0,2);
     _input.erase(_input.length()-1,1);
 
-    parseNumbers(numbers);
+    parseNumbers();
 
-    FunctionType ft = (getSymbolType(operation)==SYMBOL_CONJUNCTION)? SNKF:SNDF;
+    FunctionType ft = (getSymbolType(operation)==SYMBOL_CONJUNCTION) ? SNKF:SNDF;
 
     fillExpression();
     return ft;
@@ -32,7 +32,7 @@ void ShortFormParser::checkCorrectness()
 
 void ShortFormParser::removeUseless()
 {
-    size_t i=0;
+    size_t i = 0;
     while (getSymbolType(_input[i])!=SYMBOL_ZERO)
     {
         if (getSymbolType(_input[i])==SYMBOL_OTHER || getSymbolType(_input[i])==SYMBOL_SPACE)
@@ -43,48 +43,48 @@ void ShortFormParser::removeUseless()
 
 void ShortFormParser::checkBrackets()
 {
-    unsigned int lCount=0, rCount=0;
-    size_t lIndex=0, rIndex=0;
+    unsigned int lCount = 0, rCount = 0;
+    size_t lIndex = 0, rIndex = 0;
 
-    size_t len=_input.length();
+    size_t len = _input.length();
 
-    for (size_t i=0;i<len+1;i++)
+    for (size_t i=0; i<len+1; i++)
     {
-        if (getSymbolType(_input[i])== SYMBOL_LBRACKET)
+        if (getSymbolType(_input[i]) == SYMBOL_LBRACKET)
         {
             lCount++;
-            lIndex=i;
+            lIndex = i;
         }
-        else if (getSymbolType(_input[i])==SYMBOL_RBRACKET)
+        else if (getSymbolType(_input[i]) ==SYMBOL_RBRACKET)
         {
             rCount++;
-            rIndex=i;
+            rIndex = i;
         }
     }
-    if (lCount!=1 || rCount!=1) throw InvalidFunctionException ("%IncorrectShortForm");
+    if (lCount!=1 || rCount!=1) throw InvalidFunctionException ("%TooManyBrackets");
 
-    if (lIndex!=1 || rIndex!=len-1) throw InvalidFunctionException ("%IncorrectShortForm");
+    if (lIndex!=1 || rIndex!=len-1) throw InvalidFunctionException ("%IncorrectBracketPosition");
 }
 
 void ShortFormParser::checkDigitsAndCommas()
 {
-    size_t len=_input.length();
+    size_t len = _input.length();
 
-    if (getSymbolType(_input[firstDigitPos])==SYMBOL_COMMA || getSymbolType(_input[len-2])==SYMBOL_COMMA)
-        throw InvalidFunctionException ("%IncorrectShortForm");
+    if (getSymbolType(_input[firstDigitPos]) == SYMBOL_COMMA || getSymbolType(_input[len-2]) == SYMBOL_COMMA)
+        throw InvalidFunctionException ("%ExcessiveComma");
 
-    for (size_t i=firstDigitPos;i<len-1;i++)
-        if (!isdigit(_input[i]) && getSymbolType(_input[i])!=SYMBOL_COMMA)
-            throw InvalidFunctionException ("%IncorrectShortForm");
+    for (size_t i=firstDigitPos; i<len-1; i++)
+        if (!isdigit(_input[i]) && getSymbolType(_input[i]) != SYMBOL_COMMA)
+            throw InvalidFunctionException ("%IncorrectEnumeration@"+std::to_string(i));
 }
 
 void ShortFormParser::removeDoubleCommas()
 {
-     size_t len=_input.length();
+     size_t len = _input.length();
 
-    for (size_t i=firstDigitPos;i<len-1;i++)
+    for (size_t i=firstDigitPos; i<len-1; i++)
     {
-        if (getSymbolType(_input[i])==SYMBOL_COMMA && getSymbolType(_input[i+1])==SYMBOL_COMMA)
+        if (getSymbolType(_input[i]) == SYMBOL_COMMA && getSymbolType(_input[i+1]) == SYMBOL_COMMA)
         {
             _input.erase(i,1);
             len--;
@@ -93,7 +93,7 @@ void ShortFormParser::removeDoubleCommas()
     }
 }
 
-void ShortFormParser::parseNumbers(std::vector<int> &numbers)
+void ShortFormParser::parseNumbers()
 {
     std::stringstream stream (_input);
     std::string curr;
@@ -104,36 +104,36 @@ void ShortFormParser::parseNumbers(std::vector<int> &numbers)
     }
 }
 
-unsigned int ShortFormParser::calculateVariablesCount(const std::vector<int> &numbers)
+unsigned int ShortFormParser::calculateVariablesCount()
 {
     int max=0;
     size_t len = numbers.size();
-    for (size_t i=0;i<len;i++)
-        if (numbers[i]>max) max=numbers[i];
+    for (size_t i=0; i<len; i++)
+        if (numbers[i] > max) max = numbers[i];
     if (max==0) return 1;
 
-    return floor(log2(max))+1;
+    return floor(log2(max)) + 1;
 }
 
 void ShortFormParser::fillExpression()
 {
-    unsigned int varCount = calculateVariablesCount(numbers);
+    unsigned int varCount = calculateVariablesCount();
     unsigned int operandCount = numbers.size();
 
-    for (unsigned int i=0;i<operandCount;i++)
+    for (unsigned int i=0; i<operandCount; i++)
     {
         Operand op;
 
-        std::string str=numberToBinary(numbers[i], varCount);
+        std::string str = numberToBinary(numbers[i], varCount);
 
-        for (unsigned int j=0;j<varCount;j++)
+        for (unsigned int j=0; j<varCount; j++)
         {
             Variable var;
-            std::string currVar = 'x'+std::to_string(j+1);
-            var.name=currVar;
+            std::string currVar = 'x' + std::to_string(j+1);
+            var.name = currVar;
 
-            if (str[j]=='0') var.invertion=true;
-            else var.invertion=false;
+            if (str[j]=='0') var.invertion = true;
+            else var.invertion = false;
 
             op.push_back(var);
         }

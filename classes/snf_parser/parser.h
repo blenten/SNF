@@ -20,10 +20,10 @@ protected:
     std::string _input;
 
     Expression *expression;
-    std::vector<std::string> variables;
+    std::vector <std::string> variables;
 
 public:
-    virtual FunctionType parse (std::string input, Expression &output)=0;
+    virtual FunctionType parse (std::string input, Expression &output) = 0;
     virtual ~Parser();
 };
 

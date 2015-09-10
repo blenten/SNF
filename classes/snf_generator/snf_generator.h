@@ -39,10 +39,10 @@ private:
 
     void logHead();
     void logCurrentFunction (int currentVariablesNumber, int currentOperandsNumber, double currentTime);
-    void logPercentCompleted(double percent);
+    void logInfoPercentCompleted(double percent);
 
     std::string generateOperand(unsigned int variablesNumber, FunctionType ft);
-    bool isOperandRepeat (std::string operand);
+    bool isOperandRepeated (std::string operand);
 
 public:
 
@@ -50,10 +50,10 @@ public:
     void startTesting (std::string _logPath,
                        unsigned int _downVariablesNumber, unsigned int _upVariablesNumber,
                        unsigned int _downOperandsNumber, unsigned int _upOperandsNumber,
-                       unsigned int _variablesStep=1, unsigned int _operandsStep=1,
-                       std::ostream &infoOutputStream=std::cout);
+                       unsigned int _variablesStep = 1, unsigned int _operandsStep = 1,
+                       std::ostream &infoOutputStream = std::cout);
 
-    std::string generateFunction (unsigned int variablesNumber, unsigned int operandsNumber,FunctionType ft);
+    std::string generateFunction (unsigned int variablesNumber, unsigned int operandsNumber, FunctionType ft);
 
 };
 

@@ -30,6 +30,9 @@
                  <SequenceOfVariablesIsBroken>Нарушена последовательность переменных на позиции </SequenceOfVariablesIsBroken>
                  <IncorrectOperationChanging>Невозможно прочитать все переменные из-за некорректной смены операции на позиции </IncorrectOperationChanging>
 		 <ExpressionIsEmpty>Выражение пусто!</ExpressionIsEmpty>
-                 <IncorrectShortForm>Некорректная сокращенная форма</IncorrectShortForm>
+                 <ExcessiveComma>Лишняя запятая в начале или конце перечисления</ExcessiveComma>
+                 <IncorrectEnumeration>Перечисление конституент нарушено на позиции </IncorrectEnumeration>
+                 <TooManyBrackets>Число скобок не равно 1</TooManyBrackets>
+                 <IncorrectBracketPosition>Неправильное расположение скобки</IncorrectBracketPosition>
 	</Exception>	
 </Locale>

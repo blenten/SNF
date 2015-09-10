@@ -14,4 +14,3 @@ SymbolType getSymbolType(char symb)
 
     return SYMBOL_OTHER;
 }
-

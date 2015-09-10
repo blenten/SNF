@@ -30,6 +30,9 @@
                  <SequenceOfVariablesIsBroken>The sequence of variables is broken at position </SequenceOfVariablesIsBroken>
                  <IncorrectOperationChanging>Can't read all variables because of incorrect operation changing at position </IncorrectOperationChanging>
 		 <ExpressionIsEmpty>Expression is empty!</ExpressionIsEmpty>
-                 <IncorrectShortForm>Short form is written incorrectly</IncorrectShortForm>
+                 <ExcessiveComma>An excessive comma at the beginning or the ending of enumeration</ExcessiveComma>
+                 <IncorrectEnumeration>The enumeration of constituents is broken at position </IncorrectEnumeration>
+                 <TooManyBrackets>The number of brackets is not equals 1</TooManyBrackets>
+                 <IncorrectBracketPosition>Wrong position of bracket</IncorrectBracketPosition>
 	</Exception>	
 </Locale>
