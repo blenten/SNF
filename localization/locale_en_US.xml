@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Locale>
 	<Main>
-		 <Title>SNF Minimizer 0.1</Title>
+                 <Title>SNF Minimizer 1.0</Title>
                  <InputLabel>Input function:</InputLabel>
                  <OutputLabel>Output function:</OutputLabel>
                  <MinimizeButton>MINIMIZE</MinimizeButton>
@@ -25,14 +25,14 @@
  		 <OperationBeforeRBracket>Operation before right bracket at position </OperationBeforeRBracket>
                  <NoOperandAfterLBracket>No operand after left bracket at position </NoOperandAfterLBracket>
 		 <BracketsNumberIsNotEqual>Left brackets number is not equal that right brackets number</BracketsNumberIsNotEqual>
-		 <NoOperandAfterInversion>No operand after inversion at position </NoOperandAfterInversion>
-		 <LastSymbolIsInversion>Last symbol in string is inversion</LastSymbolIsInversion>
+                 <NoOperandAfterInversion>No operand after inversion at position </NoOperandAfterInversion>
+                 <LastSymbolIsInversion>Last symbol in string is inversion</LastSymbolIsInversion>
                  <SequenceOfVariablesIsBroken>The sequence of variables is broken at position </SequenceOfVariablesIsBroken>
                  <IncorrectOperationChanging>Can't read all variables because of incorrect operation changing at position </IncorrectOperationChanging>
 		 <ExpressionIsEmpty>Expression is empty!</ExpressionIsEmpty>
                  <ExcessiveComma>An excessive comma at the beginning or the ending of enumeration</ExcessiveComma>
                  <IncorrectEnumeration>The enumeration of constituents is broken at position </IncorrectEnumeration>
-                 <TooManyBrackets>The number of brackets is not equals 1</TooManyBrackets>
+                 <TooManyBrackets>The number of brackets is not equal to 1</TooManyBrackets>
                  <IncorrectBracketPosition>Wrong position of bracket</IncorrectBracketPosition>
 	</Exception>	
 </Locale>

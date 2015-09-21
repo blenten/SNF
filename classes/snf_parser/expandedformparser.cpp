@@ -291,7 +291,7 @@ Variable ExpandedFormParser::parseVariable(std::string &currVar)
     Variable var;
     if (getSymbolType(currVar[0]) == SYMBOL_INVERSE)
     {
-        var.invertion=true;
+        var.inversion=true;
         currVar.erase(0,1);
     }
     var.name=currVar;

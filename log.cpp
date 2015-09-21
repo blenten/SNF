@@ -10,7 +10,7 @@ Log::Log(QWidget *parent) :
 
 void Log::setlog(QString l)
 {
-    log=l;
+    log = l;
     Localizator::instance().localize(this);
 }
 

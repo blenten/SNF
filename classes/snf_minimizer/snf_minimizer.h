@@ -24,7 +24,7 @@ public:
     string res_toString();
     string getLog();
 
-    string minimize(string); //for generator only. needs fixing!
+    string minimize(string); //for tester only. needs fixing!
 
 private:
     bool checkNecessity(int index);

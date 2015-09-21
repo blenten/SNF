@@ -132,8 +132,8 @@ void ShortFormParser::fillExpression()
             std::string currVar = 'x' + std::to_string(j+1);
             var.name = currVar;
 
-            if (str[j]=='0') var.invertion = true;
-            else var.invertion = false;
+            if (str[j]=='0') var.inversion = true;
+            else var.inversion = false;
 
             op.push_back(var);
         }

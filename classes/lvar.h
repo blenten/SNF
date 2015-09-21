@@ -12,7 +12,7 @@ public:
     Variable(string, bool);
     bool operator==(Variable&);
     string name;
-    bool invertion;
+    bool inversion;
 };
 ///-----------------///
 typedef vector<Variable> Operand;
@@ -20,14 +20,14 @@ typedef vector<Operand> Expression;
 
 ///----------------///
 
-inline Variable::Variable(string name = "", bool invertion=false)
+inline Variable::Variable(string name = "", bool inversion=false)
 {
     this->name = name;
-    this->invertion = invertion;
+    this->inversion = inversion;
 }
 inline bool Variable::operator==(Variable &var)
 {
-    if(name==var.name && invertion==var.invertion)  return true;
+    if(name==var.name && inversion==var.inversion)  return true;
     return false;
 }
 

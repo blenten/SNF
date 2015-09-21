@@ -1,6 +1,6 @@
-#include "snf_generator.h"
+#include "snf_tester.h"
 
-void SNF_Generator::startTesting(std::string _logPath,
+void SNF_Tester::start(std::string _logPath,
                                    unsigned int _downVariablesNumber, unsigned int _upVariablesNumber,
                                    unsigned int _downOperandsNumber, unsigned int _upOperandsNumber,
                                    unsigned int _variablesStep, unsigned int _operandsStep,
@@ -24,7 +24,7 @@ void SNF_Generator::startTesting(std::string _logPath,
     testMinimizing();
 }
 
-void SNF_Generator::getMaxOperandsNumbers()
+void SNF_Tester::getMaxOperandsNumbers()
 {
     maxOperandsNumbers.clear();
     for (unsigned int i=downVariablesNumber; i<=upVariablesNumber; i+=variablesStep)
@@ -35,7 +35,7 @@ void SNF_Generator::getMaxOperandsNumbers()
     }
 }
 
-void SNF_Generator::getStepsCount()
+void SNF_Tester::getStepsCount()
 {
     stepsCount=0;
     size_t size = maxOperandsNumbers.size();
@@ -45,7 +45,7 @@ void SNF_Generator::getStepsCount()
     }
 }
 
-void SNF_Generator::testMinimizing()
+void SNF_Tester::testMinimizing()
 {
     logHead();
 
@@ -70,12 +70,12 @@ void SNF_Generator::testMinimizing()
     }
 }
 
-int SNF_Generator::getRandom(int max)
+int SNF_Tester::getRandom(int max)
 {
     return rand()%(max+1);
 }
 
-std::string SNF_Generator::generateFunction(unsigned int variablesNumber, unsigned int operandsNumber, FunctionType ft)
+std::string SNF_Tester::generateFunction(unsigned int variablesNumber, unsigned int operandsNumber, FunctionType ft)
 {
     std::string output = "";
     generatedOperands.clear();
@@ -95,7 +95,7 @@ std::string SNF_Generator::generateFunction(unsigned int variablesNumber, unsign
     return output;
 }
 
-std::string SNF_Generator::generateOperand(unsigned int variablesNumber, FunctionType ft)
+std::string SNF_Tester::generateOperand(unsigned int variablesNumber, FunctionType ft)
 {
     std::string output;
     do
@@ -117,7 +117,7 @@ std::string SNF_Generator::generateOperand(unsigned int variablesNumber, Functio
     return output;
 }
 
-bool SNF_Generator::isOperandRepeated(string operand)
+bool SNF_Tester::isOperandRepeated(string operand)
 {
     size_t size = generatedOperands.size();
     for (size_t i = 0; i<size; i++)
@@ -125,15 +125,15 @@ bool SNF_Generator::isOperandRepeated(string operand)
     return false;
 }
 
-double SNF_Generator::getMinimizingTime (std::string function)
+double SNF_Tester::getMinimizingTime (std::string function)
 {
     double time = omp_get_wtime();
-    SNF_Generator::minimize(function);
+    SNF_Tester::minimize(function);
     time=omp_get_wtime()-time;
     return time;
 }
 
-std::string SNF_Generator::minimize(string function)
+std::string SNF_Tester::minimize(string function)
 {
     SNF_Minimizer snf;
     if(snf.parse(function))
@@ -144,7 +144,7 @@ std::string SNF_Generator::minimize(string function)
     return snf.res_toString();
 }
 
-void SNF_Generator::logHead()
+void SNF_Tester::logHead()
 {
     logStream.open(logPath);
     logStream << stepsCount << " functions will be checked\n";
@@ -152,7 +152,7 @@ void SNF_Generator::logHead()
     logStream.close();
 }
 
-void SNF_Generator::logCurrentFunction (int currentVariablesNumber, int currentOperandsNumber, double currentTime)
+void SNF_Tester::logCurrentFunction (int currentVariablesNumber, int currentOperandsNumber, double currentTime)
 {
     logStream.open(logPath, std::ios_base::app);
     logStream << std::setw(9) << currentVariablesNumber << "\t";
@@ -161,7 +161,7 @@ void SNF_Generator::logCurrentFunction (int currentVariablesNumber, int currentO
     logStream.close();
 }
 
-void SNF_Generator::logInfoPercentCompleted(double percent)
+void SNF_Tester::logInfoPercentCompleted(double percent)
 {
     (*infoStream) <<"\r                 \rReady: "<< percent << "%";
     infoStream->flush();

@@ -1,5 +1,5 @@
-#ifndef SNF_GENERATOR_H
-#define SNF_GENERATOR_H
+#ifndef SNF_TESTER_H
+#define SNF_TESTER_H
 #include "../snf_minimizer/snf_minimizer.h"
 #include <QDateTime>
 #include <cstdlib>
@@ -7,7 +7,7 @@
 #include <fstream>
 #include <omp.h>
 
-class SNF_Generator
+class SNF_Tester
 {
 private:
     std::string logPath;
@@ -47,7 +47,7 @@ private:
 public:
 
     //gets time of minimizing functions; writes a log to file on path; prints an completing info to infoOutputStream
-    void startTesting (std::string _logPath,
+    void start (std::string _logPath,
                        unsigned int _downVariablesNumber, unsigned int _upVariablesNumber,
                        unsigned int _downOperandsNumber, unsigned int _upOperandsNumber,
                        unsigned int _variablesStep = 1, unsigned int _operandsStep = 1,

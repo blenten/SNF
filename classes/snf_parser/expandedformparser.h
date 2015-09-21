@@ -20,7 +20,7 @@ private:
     void initialChecking();
     void removeUseless();
     void checkBrackets();
-    //inserts '&' instead of double invertion and after operand before left bracket or invertion and after right bracket before invertion
+    //inserts '&' instead of double inversion and after operand before left bracket or inversion and after right bracket before inversion
     void insertConjunctionSymbols();
     void checkInversions();
 
@@ -28,7 +28,7 @@ private:
 
     FunctionType getVariables ();
 
-    //increases to invertion/operand/zero symbol
+    //increases to inversion/operand/zero symbol
     size_t increaseIndexToVariable(size_t index);
 
     bool isVariablesRepeat();

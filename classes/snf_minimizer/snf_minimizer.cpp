@@ -18,7 +18,7 @@ void SNF_Minimizer::log()
         {
             for(int j=0; j<(int)exp[i].size(); j++)
             {
-                if(exp[i][j].invertion)
+                if(exp[i][j].inversion)
                 {
                     logs<<'!'<<exp[i][j].name;
                 }else
@@ -66,7 +66,7 @@ string SNF_Minimizer::res_toString()
         if(expType==SNKF) output += '(';
         for(int j=0; j<(int)exp[i].size(); j++)
         {
-            if(exp[i][j].invertion==true) output += '!';
+            if(exp[i][j].inversion==true) output += '!';
             output += exp[i][j].name;
             if(expType==SNKF && (exp[i].size()-j)>1) output += '+';
         }
@@ -181,7 +181,7 @@ bool SNF_Minimizer::checkNecessity(int index)
             {
                 for(int j=i+1; j<(int)NINs.size(); j++)
                 {
-                    if(NINs[i].size()==1 && NINs[j].size()==1 && NINs[i][0].name==NINs[j][0].name && NINs[i][0].invertion!=NINs[j][0].invertion)
+                    if(NINs[i].size()==1 && NINs[j].size()==1 && NINs[i][0].name==NINs[j][0].name && NINs[i][0].inversion!=NINs[j][0].inversion)
                     {
                         return false;
                     }
@@ -199,7 +199,7 @@ INOP_t SNF_Minimizer::inop(Variable &var, Operand &op)
     {
         if(var.name==op[i].name)
         {
-            if(var.invertion==op[i].invertion)  return IN;
+            if(var.inversion==op[i].inversion)  return IN;
             return invIN;
         }
     }

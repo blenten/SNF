@@ -38,7 +38,7 @@ private slots:
 private:
     Ui::SNF_gui *ui;
     QString log;
-    bool logShown=false;
+    bool logShown = false;
     void setLocale (QString locale);
     void createMenubar();
 };

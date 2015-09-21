@@ -2,21 +2,21 @@
 
 void SNF_gui::sleep(unsigned int ms)
 {
-    QTime dieTime= QTime::currentTime().addMSecs(ms);
-    while( QTime::currentTime() < dieTime )
+    QTime dieTime = QTime::currentTime().addMSecs(ms);
+    while(QTime::currentTime() < dieTime)
     QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }
 
 void SNF_gui::createMenubar()
 {
-    QMenuBar* bar=new QMenuBar();
+    QMenuBar* bar = new QMenuBar();
     ui->menuLayout->addWidget(bar);
-    QMenu* langMenu=new QMenu("Language");
+    QMenu* langMenu = new QMenu("Language");
     bar->addMenu(langMenu);
 
     QAction* langRu,* langEn;
-    langEn=new QAction ("English", this);
-    langRu=new QAction("Русский", this);
+    langEn = new QAction ("English", this);
+    langRu = new QAction("Русский", this);
 
     connect (langEn, SIGNAL(triggered()), this, SLOT (langEn_clicked()));
     connect (langRu, SIGNAL(triggered()), this, SLOT (langRu_clicked()));
@@ -48,7 +48,7 @@ void SNF_gui::on_minimizeButton_clicked()
     QString input = ui->inputText->toPlainText();
 
     QTime time = QTime::currentTime();
-    int val=0;
+    int val = 0;
     qsrand((uint)time.msec());
 
     ui->progressBar->setValue(0);

@@ -18,7 +18,6 @@ QMAKE_LFLAGS += -fopenmp
 SOURCES += main.cpp\
         snf_gui.cpp \
     classes/Exceptions/invalidfunctionexception.cpp \
-    classes/snf_generator/snf_generator.cpp \
     classes/snf_minimizer/snf_minimizer.cpp \
     log.cpp \
     classes/localizator/localizator.cpp \
@@ -26,11 +25,11 @@ SOURCES += main.cpp\
     classes/snf_parser/shortformparser.cpp \
     classes/snf_parser/expandedformparser.cpp \
     classes/snf_parser/parser.cpp \
-    classes/snf_parser/snf_parserdecorator.cpp
+    classes/snf_parser/snf_parserdecorator.cpp \
+    classes/snf_tester/snf_tester.cpp
 
 HEADERS  += snf_gui.h \
     classes/Exceptions/invalidfunctionexception.h \
-    classes/snf_generator/snf_generator.h \
     classes/snf_minimizer/snf_minimizer.h \
     classes/lvar.h \
     log.h \
@@ -39,7 +38,8 @@ HEADERS  += snf_gui.h \
     classes/snf_parser/shortformparser.h \
     classes/snf_parser/expandedformparser.h \
     classes/snf_parser/parser.h \
-    classes/snf_parser/snf_parserdecorator.h
+    classes/snf_parser/snf_parserdecorator.h \
+    classes/snf_tester/snf_tester.h
 
 FORMS    += snf_gui.ui \
     log.ui
