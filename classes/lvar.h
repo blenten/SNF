@@ -3,10 +3,11 @@
 
 #include<string>
 #include<vector>
+#include "snf_lib_global.h"
 
 using namespace std;
 /// Logiv Variable
-class Variable
+class SNF_LIBSHARED_EXPORT Variable
 {
 public:
     Variable(string, bool);

@@ -3,7 +3,7 @@
 
 #include "../snf_parser/snf_parserdecorator.h"
 #include <sstream>
-#include "classes/localizator/localizator.h"
+#include "snf_lib_global.h"
 
 using namespace std;
 
@@ -13,7 +13,7 @@ enum INOP_t
 };
 
 /// MINIMIZER
-class SNF_Minimizer
+class SNF_LIBSHARED_EXPORT SNF_Minimizer
 {
 public:
     SNF_Minimizer();

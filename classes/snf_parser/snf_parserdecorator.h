@@ -2,8 +2,9 @@
 #define SNF_PARSERDECORATOR_H
 #include "shortformparser.h"
 #include "expandedformparser.h"
+#include "snf_lib_global.h"
 
-class SNF_ParserDecorator
+class SNF_LIBSHARED_EXPORT SNF_ParserDecorator
 {
 private:
 

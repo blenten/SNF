@@ -3,6 +3,7 @@
 
 #include "ctype.h"
 #include <string>
+#include "snf_lib_global.h"
 
 enum FunctionType {
     OTHER=-1, SNDF, SNKF
@@ -28,7 +29,7 @@ enum SymbolType
     SYMBOL_OTHER
 };
 
-SymbolType getSymbolType(char symb);
+SNF_LIBSHARED_EXPORT SymbolType  getSymbolType(char symb);
 
 
 

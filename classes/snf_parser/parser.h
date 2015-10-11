@@ -4,6 +4,7 @@
 #include "../lvar.h"
 #include "../Exceptions/invalidfunctionexception.h"
 #include "../Types/types.h"
+#include "snf_lib_global.h"
 
 //Parser of string with SNF function
 //NOTE: variables may delim by:
@@ -14,7 +15,7 @@
 //double inversions will be removed and replaced by conjunction symbol
 //function can be inputted in short form (e.g. +(1,3,5) means !x1*!x2*x3 + !x1*x2*x3 + x1*!x2*x3)
 
-class Parser
+class SNF_LIBSHARED_EXPORT Parser
 {
 protected:
     std::string _input;
