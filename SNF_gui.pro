@@ -16,16 +16,16 @@ CONFIG += qt
 
 
 SOURCES += main.cpp\
-        snf_gui.cpp \
-    log.cpp \
+    gui/snf_gui.cpp \
+    gui/log.cpp \
     classes/localizator/localizator.cpp \
 
-HEADERS  += snf_gui.h \
-    log.h \
+HEADERS  += gui/snf_gui.h \
+    gui/log.h \
     classes/localizator/localizator.h \
 
-FORMS    += snf_gui.ui \
-    log.ui
+FORMS    += gui/snf_gui.ui \
+    gui/log.ui
 
 DISTFILES +=
 

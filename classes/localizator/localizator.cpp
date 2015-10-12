@@ -1,4 +1,4 @@
-#include "../localizator/localizator.h"
+#include "classes/localizator/localizator.h"
 #include <iostream>
 
 void Localizator::loadLocale(QString locale)

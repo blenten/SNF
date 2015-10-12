@@ -18,36 +18,34 @@ CONFIG += C++11
 CONFIG += qt
 QMAKE_LFLAGS += -fopenmp
 
-SOURCES += main.cpp\
-        snf_gui.cpp \
-    classes/Exceptions/invalidfunctionexception.cpp \
-    classes/snf_minimizer/snf_minimizer.cpp \
-    log.cpp \
-    classes/localizator/localizator.cpp \
-    classes/Types/types.cpp \
-    classes/snf_parser/shortformparser.cpp \
-    classes/snf_parser/expandedformparser.cpp \
-    classes/snf_parser/parser.cpp \
-    classes/snf_parser/snf_parserdecorator.cpp \
-    classes/snf_tester/snf_tester.cpp
+SOURCES += main.cpp \
+     gui/snf_gui.cpp \
+     classes/Exceptions/invalidfunctionexception.cpp \
+     classes/snf_minimizer/snf_minimizer.cpp \
+     gui/log.cpp \
+     classes/localizator/localizator.cpp \
+     classes/Types/types.cpp \
+     classes/snf_parser/shortformparser.cpp \
+     classes/snf_parser/expandedformparser.cpp \
+     classes/snf_parser/parser.cpp \
+     classes/snf_parser/snf_parserdecorator.cpp
+     classes/snf_tester/snf_tester.cpp
 
-HEADERS  += snf_gui.h \
-    classes/Exceptions/invalidfunctionexception.h \
-    classes/snf_minimizer/snf_minimizer.h \
-    classes/lvar.h \
-    log.h \
-    classes/localizator/localizator.h \
-    classes/Types/types.h \
-    classes/snf_parser/shortformparser.h \
-    classes/snf_parser/expandedformparser.h \
-    classes/snf_parser/parser.h \
-    classes/snf_parser/snf_parserdecorator.h \
-    classes/snf_tester/snf_tester.h \
-    libs/testlib.h \
-    libs/testlib_global.h
+HEADERS  += gui/snf_gui.h \
+     classes/Exceptions/invalidfunctionexception.h \
+     classes/snf_minimizer/snf_minimizer.h \
+     classes/lvar.h \
+     gui/log.h \
+     classes/localizator/localizator.h \
+     classes/Types/types.h \
+     classes/snf_parser/shortformparser.h \
+     classes/snf_parser/expandedformparser.h \
+     classes/snf_parser/parser.h \
+     classes/snf_parser/snf_parserdecorator.h \
+     classes/snf_tester/snf_tester.h \
 
-FORMS    += snf_gui.ui \
-    log.ui
+FORMS    += gui/snf_gui.ui \
+    gui/log.ui
 
 DISTFILES +=
 

@@ -1,9 +1,8 @@
 #ifndef INVALIDFUNCTIONEXCEPTION_H
 #define INVALIDFUNCTIONEXCEPTION_H
 #include <string>
-#include "snf_lib_global.h"
 
-class SNF_LIBSHARED_EXPORT InvalidFunctionException
+class InvalidFunctionException
 {
 
 private:
