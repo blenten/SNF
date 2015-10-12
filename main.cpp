@@ -1,4 +1,4 @@
-#include "snf_gui.h"
+#include "gui/snf_gui.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])

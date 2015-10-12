@@ -1,4 +1,4 @@
-#include "log.h"
+#include "gui/log.h"
 #include "ui_log.h"
 
 Log::Log(QWidget *parent) :

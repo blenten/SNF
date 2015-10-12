@@ -31,8 +31,7 @@ HEADERS += \
     classes/snf_parser/shortformparser.h \
     classes/snf_parser/snf_parserdecorator.h \
     classes/Types/types.h \
-    classes/lvar.h \
-    snf_lib_global.h
+    classes/lvar.h
 
 
 unix {

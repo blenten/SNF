@@ -2,7 +2,6 @@
 #define EXPANDEDFORMPARSER_H
 
 #include "parser.h"
-#include "snf_lib_global.h"
 
 enum OperationState
 {
@@ -15,7 +14,7 @@ enum OperationState
     Disjunction = 1
 };
 
-class SNF_LIBSHARED_EXPORT ExpandedFormParser:public Parser
+class ExpandedFormParser:public Parser
 {
 private:    
     void initialChecking();

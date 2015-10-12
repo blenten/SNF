@@ -6,8 +6,8 @@
 #include <QByteArray>
 #include <QMap>
 
-#include "snf_gui.h"
-#include "log.h"
+#include "gui/snf_gui.h"
+#include "gui/log.h"
 
 class SNF_gui;
 class Log;

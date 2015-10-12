@@ -1,4 +1,4 @@
-#include "snf_gui.h"
+#include "gui/snf_gui.h"
 
 void SNF_gui::sleep(unsigned int ms)
 {

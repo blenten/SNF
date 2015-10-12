@@ -1,9 +1,8 @@
 #ifndef SNF_MINIMIZER_H
 #define SNF_MINIMIZER_H
 
-#include "../snf_parser/snf_parserdecorator.h"
+#include "classes/snf_parser/snf_parserdecorator.h"
 #include <sstream>
-#include "snf_lib_global.h"
 
 using namespace std;
 
@@ -13,7 +12,7 @@ enum INOP_t
 };
 
 /// MINIMIZER
-class SNF_LIBSHARED_EXPORT SNF_Minimizer
+class SNF_Minimizer
 {
 public:
     SNF_Minimizer();

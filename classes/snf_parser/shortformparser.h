@@ -6,9 +6,8 @@
 #include <sstream>
 #include <iostream>
 #include <math.h>
-#include "snf_lib_global.h"
 
-class SNF_LIBSHARED_EXPORT ShortFormParser: public Parser
+class ShortFormParser: public Parser
 {
 private:
     const size_t firstDigitPos = 2;
