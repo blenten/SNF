@@ -6,9 +6,13 @@
 #include <iomanip>
 #include <fstream>
 #include <omp.h>
+#include <QDebug>
+#include <QObject>
 
-class SNF_Tester
-{
+class SNF_Tester: public QObject
+{    
+    Q_OBJECT
+
 private:
     std::string logPath;
     std::ofstream logStream;
@@ -54,6 +58,13 @@ public:
                        std::ostream &infoOutputStream = std::cout);
 
     std::string generateFunction (unsigned int variablesNumber, unsigned int operandsNumber, FunctionType ft);
+
+signals:
+    void onInfoSend(QString info);
+    void finish();
+
+public slots:
+    void run();
 
 };
 

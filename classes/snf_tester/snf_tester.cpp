@@ -1,5 +1,11 @@
 #include "snf_tester.h"
 
+void SNF_Tester::run()
+{
+    this->start("1.txt",1,50,1,50);
+    emit finish();
+}
+
 void SNF_Tester::start(std::string _logPath,
                                    unsigned int _downVariablesNumber, unsigned int _upVariablesNumber,
                                    unsigned int _downOperandsNumber, unsigned int _upOperandsNumber,
@@ -16,7 +22,7 @@ void SNF_Tester::start(std::string _logPath,
 
     infoStream=&infoOutputStream;
 
-    (*infoStream)<<"Testing...\n";
+    onInfoSend("Testing...\n");
 
     getMaxOperandsNumbers();
     getStepsCount();
@@ -163,6 +169,6 @@ void SNF_Tester::logCurrentFunction (int currentVariablesNumber, int currentOper
 
 void SNF_Tester::logInfoPercentCompleted(double percent)
 {
-    (*infoStream) <<"\r                 \rReady: "<< percent << "%";
+    onInfoSend("\r                 \rReady: "+ QString::number(percent) + "%");
     infoStream->flush();
 }
