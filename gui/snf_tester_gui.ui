@@ -42,7 +42,7 @@
       <x>35</x>
       <y>10</y>
       <width>401</width>
-      <height>81</height>
+      <height>41</height>
      </rect>
     </property>
     <property name="palette">
@@ -122,7 +122,7 @@
     <property name="geometry">
      <rect>
       <x>170</x>
-      <y>110</y>
+      <y>80</y>
       <width>71</width>
       <height>21</height>
      </rect>
@@ -135,7 +135,7 @@
     <property name="geometry">
      <rect>
       <x>320</x>
-      <y>110</y>
+      <y>80</y>
       <width>71</width>
       <height>21</height>
      </rect>
@@ -148,7 +148,7 @@
     <property name="geometry">
      <rect>
       <x>140</x>
-      <y>150</y>
+      <y>120</y>
       <width>100</width>
       <height>31</height>
      </rect>
@@ -170,7 +170,7 @@
     <property name="geometry">
      <rect>
       <x>140</x>
-      <y>220</y>
+      <y>190</y>
       <width>100</width>
       <height>31</height>
      </rect>
@@ -189,7 +189,7 @@
     <property name="geometry">
      <rect>
       <x>140</x>
-      <y>290</y>
+      <y>260</y>
       <width>100</width>
       <height>31</height>
      </rect>
@@ -208,7 +208,7 @@
     <property name="geometry">
      <rect>
       <x>290</x>
-      <y>150</y>
+      <y>120</y>
       <width>100</width>
       <height>31</height>
      </rect>
@@ -227,7 +227,7 @@
     <property name="geometry">
      <rect>
       <x>290</x>
-      <y>290</y>
+      <y>260</y>
       <width>100</width>
       <height>31</height>
      </rect>
@@ -246,7 +246,7 @@
     <property name="geometry">
      <rect>
       <x>290</x>
-      <y>220</y>
+      <y>190</y>
       <width>100</width>
       <height>31</height>
      </rect>
@@ -264,8 +264,8 @@
    <widget class="QLabel" name="downNumberLabel">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>150</y>
+      <x>40</x>
+      <y>120</y>
       <width>91</width>
       <height>21</height>
      </rect>
@@ -274,11 +274,11 @@
      <string>Down number</string>
     </property>
    </widget>
-   <widget class="QLabel" name="upNumberLabel_2">
+   <widget class="QLabel" name="upNumberLabel">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>230</y>
+      <x>50</x>
+      <y>200</y>
       <width>71</width>
       <height>21</height>
      </rect>
@@ -287,11 +287,11 @@
      <string>Up number</string>
     </property>
    </widget>
-   <widget class="QLabel" name="stepLabel_3">
+   <widget class="QLabel" name="stepLabel">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>300</y>
+      <x>70</x>
+      <y>270</y>
       <width>31</width>
       <height>21</height>
      </rect>
@@ -301,6 +301,41 @@
     </property>
     <property name="text">
      <string>Step</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="filename">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>330</y>
+      <width>251</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="inputMethodHints">
+     <set>Qt::ImhNone</set>
+    </property>
+    <property name="text">
+     <string>test.txt</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="filenameLabel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>330</y>
+      <width>81</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="text">
+     <string>Output file name</string>
     </property>
    </widget>
   </widget>

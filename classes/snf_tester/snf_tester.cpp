@@ -4,13 +4,10 @@ void SNF_Tester::start()
 {
     if (checkRanges())
     {
-        logPath = "test.txt";
-
         onInfoSend("Testing...\n");
 
         getMaxOperandsNumbers();
         getStepsCount();
-
         testMinimizing();
     }
     else emit onInfoSend("Too big value.");
@@ -126,10 +123,10 @@ bool SNF_Tester::isOperandRepeated(string operand)
 
 double SNF_Tester::getMinimizingTime (std::string function)
 {
-    double time = omp_get_wtime();
+    QElapsedTimer timer;
+    timer.start();
     SNF_Tester::minimize(function);
-    time=omp_get_wtime()-time;
-    return time;
+    return ((double)timer.nsecsElapsed()/1000000000.0); //to seconds
 }
 
 std::string SNF_Tester::minimize(string function)
@@ -162,5 +159,5 @@ void SNF_Tester::logCurrentFunction (int currentVariablesNumber, int currentOper
 
 void SNF_Tester::logInfoPercentCompleted(double percent)
 {
-    onInfoSend("\r                 \rReady: "+ QString::number(percent) + "%");
+    onInfoSend("Ready: "+ QString::number(percent) + "%");
 }

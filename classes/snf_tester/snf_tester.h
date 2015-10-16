@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <iomanip>
 #include <fstream>
-#include <omp.h>
+#include <QElapsedTimer>
 #include <QObject>
 
 class SNF_Tester: public QObject
@@ -13,7 +13,6 @@ class SNF_Tester: public QObject
     Q_OBJECT
 
 private:
-    std::string logPath;
     std::ofstream logStream;
 
     double stepsCount;
@@ -48,6 +47,7 @@ public:
     unsigned int downOperandsNumber;
     unsigned int upOperandsNumber;
     unsigned int operandsStep;
+    std::string logPath;
 
     std::string generateFunction (quint64 variablesNumber, quint64 operandsNumber, FunctionType ft);
 

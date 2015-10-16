@@ -16,7 +16,6 @@ TEMPLATE = app
 
 CONFIG += C++11
 CONFIG += qt
-QMAKE_LFLAGS += -fopenmp
 
 SOURCES += main.cpp \
      gui/snf_gui.cpp \
