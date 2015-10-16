@@ -16,19 +16,14 @@ class SNF_Tester: public QObject
 private:
     std::string logPath;
     std::ofstream logStream;
-    std::ostream* infoStream;
-
-    unsigned int downVariablesNumber;
-    unsigned int upVariablesNumber;
-    unsigned int variablesStep;
-    unsigned int downOperandsNumber;
-    unsigned int upOperandsNumber;
-    unsigned int operandsStep;
+    bool isStopped;
 
     double stepsCount;
 
     std::vector<std::string> generatedOperands;
-    std::vector <int> maxOperandsNumbers; //max numbers of operands for each variables number to avoid repeating (equals 2 to the number power)
+    std::vector <size_t> maxOperandsNumbers; //max numbers of operands for each variables number to avoid repeating (equals 2 to the number power)
+
+    bool checkRanges();
 
     void getMaxOperandsNumbers();
     void getStepsCount();
@@ -45,27 +40,26 @@ private:
     void logCurrentFunction (int currentVariablesNumber, int currentOperandsNumber, double currentTime);
     void logInfoPercentCompleted(double percent);
 
-    std::string generateOperand(unsigned int variablesNumber, FunctionType ft);
+    std::string generateOperand(size_t variablesNumber, FunctionType ft);
     bool isOperandRepeated (std::string operand);
 
 public:
+    unsigned int downVariablesNumber;
+    unsigned int upVariablesNumber;
+    unsigned int variablesStep;
+    unsigned int downOperandsNumber;
+    unsigned int upOperandsNumber;
+    unsigned int operandsStep;
 
-    //gets time of minimizing functions; writes a log to file on path; prints an completing info to infoOutputStream
-    void start (std::string _logPath,
-                       unsigned int _downVariablesNumber, unsigned int _upVariablesNumber,
-                       unsigned int _downOperandsNumber, unsigned int _upOperandsNumber,
-                       unsigned int _variablesStep = 1, unsigned int _operandsStep = 1,
-                       std::ostream &infoOutputStream = std::cout);
-
-    std::string generateFunction (unsigned int variablesNumber, unsigned int operandsNumber, FunctionType ft);
+    std::string generateFunction (size_t variablesNumber, size_t operandsNumber, FunctionType ft);
 
 signals:
     void onInfoSend(QString info);
     void finish();
 
 public slots:
-    void run();
-
+    //gets time of minimizing functions; writes a log to file on path; prints an completing info to infoOutputStream
+    void start();
 };
 
 #endif

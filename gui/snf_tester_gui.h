@@ -18,13 +18,15 @@ public:
     ~SNF_Tester_gui();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_testButt_clicked();
     void getInfo(QString info);
 
 private:
     Ui::SNF_Tester_gui *ui;
     SNF_Tester tester;
     QThread testerThread;
+    void setInputValidators();
+    void setTesterData();
 };
 
 #endif // SNF_TESTER_GUI_H
