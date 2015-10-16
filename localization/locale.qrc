@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/locale">
+        <file>locale_ru_RU.xml</file>
+        <file>locale_en_US.xml</file>
+    </qresource>
+</RCC>
