@@ -13,7 +13,6 @@ TEMPLATE = app
 
 CONFIG += C++11
 CONFIG += qt
-QMAKE_LFLAGS += -fopenmp
 
 SOURCES += gui/snf_tester_main.cpp \
     classes/snf_tester/snf_tester.cpp \

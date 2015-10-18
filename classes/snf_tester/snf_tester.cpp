@@ -1,35 +1,31 @@
 #include "snf_tester.h"
 
-void SNF_Tester::start(std::string _logPath,
-                                   unsigned int _downVariablesNumber, unsigned int _upVariablesNumber,
-                                   unsigned int _downOperandsNumber, unsigned int _upOperandsNumber,
-                                   unsigned int _variablesStep, unsigned int _operandsStep,
-                                   std::ostream &infoOutputStream)
+void SNF_Tester::start()
 {
-    logPath =_logPath;
-    downVariablesNumber = _downVariablesNumber;
-    upVariablesNumber = _upVariablesNumber;
-    variablesStep =_variablesStep;
-    downOperandsNumber = _downOperandsNumber;
-    upOperandsNumber = _upOperandsNumber;
-    operandsStep = _operandsStep;
+    if (checkRanges())
+    {
+        onInfoSend("Testing...\n");
 
-    infoStream=&infoOutputStream;
+        getMaxOperandsNumbers();
+        getStepsCount();
+        testMinimizing();
+    }
+    else emit onInfoSend("Too big value.");
+    emit finish();
+}
 
-    (*infoStream)<<"Testing...\n";
-
-    getMaxOperandsNumbers();
-    getStepsCount();
-
-    testMinimizing();
+bool SNF_Tester::checkRanges()
+{
+    if (upVariablesNumber > sizeof(quint64)*8 - 1) return false;
+    return true;
 }
 
 void SNF_Tester::getMaxOperandsNumbers()
 {
     maxOperandsNumbers.clear();
-    for (unsigned int i=downVariablesNumber; i<=upVariablesNumber; i+=variablesStep)
+    for (quint64 i=downVariablesNumber; i<=upVariablesNumber; i+=variablesStep)
     {
-        unsigned int maxOperandsNumber = pow (2,i);
+        quint64 maxOperandsNumber = pow (2,i);
         if (maxOperandsNumber > upOperandsNumber) maxOperandsNumber = upOperandsNumber;
         maxOperandsNumbers.push_back(maxOperandsNumber);
     }
@@ -38,8 +34,8 @@ void SNF_Tester::getMaxOperandsNumbers()
 void SNF_Tester::getStepsCount()
 {
     stepsCount=0;
-    size_t size = maxOperandsNumbers.size();
-    for (size_t i=0; i<size; i++)
+    quint64 size = maxOperandsNumbers.size();
+    for (quint64 i=0; i<size; i++)
     {
        stepsCount += ceil((double)(maxOperandsNumbers[i]-downOperandsNumber+1)/(double)operandsStep);
     }
@@ -50,13 +46,13 @@ void SNF_Tester::testMinimizing()
     logHead();
 
     srand (QDateTime::currentMSecsSinceEpoch());
-    unsigned int index=0;
+    quint64 index=0;
     double doneStepsCount=0;
-    for (unsigned int i=downVariablesNumber; i<=upVariablesNumber; i+=variablesStep)
+    for (quint64 i=downVariablesNumber; i<=upVariablesNumber; i+=variablesStep)
     {
-        unsigned int maxOperandsNumber = maxOperandsNumbers[index++];
+        quint64 maxOperandsNumber = maxOperandsNumbers[index++];
 
-        for (unsigned int j=downOperandsNumber; j<=maxOperandsNumber; j+=operandsStep)
+        for (quint64 j=downOperandsNumber; j<=maxOperandsNumber; j+=operandsStep)
         {
             std::string func;
             if (getRandom(1)) func = generateFunction(i,j, SNDF);
@@ -75,12 +71,12 @@ int SNF_Tester::getRandom(int max)
     return rand()%(max+1);
 }
 
-std::string SNF_Tester::generateFunction(unsigned int variablesNumber, unsigned int operandsNumber, FunctionType ft)
+std::string SNF_Tester::generateFunction(quint64 variablesNumber, quint64 operandsNumber, FunctionType ft)
 {
     std::string output = "";
     generatedOperands.clear();
 
-    for (unsigned int i=0; i<operandsNumber; i++)
+    for (quint64 i=0; i<operandsNumber; i++)
     {
         output += "(";
         output += generateOperand(variablesNumber,ft);
@@ -95,13 +91,13 @@ std::string SNF_Tester::generateFunction(unsigned int variablesNumber, unsigned 
     return output;
 }
 
-std::string SNF_Tester::generateOperand(unsigned int variablesNumber, FunctionType ft)
+std::string SNF_Tester::generateOperand(quint64 variablesNumber, FunctionType ft)
 {
     std::string output;
     do
     {
         output = "";
-        for (unsigned int i=0; i<variablesNumber; i++)
+        for (quint64 i=0; i<variablesNumber; i++)
         {
             if (getRandom(1)) output += "!";
             output += ("x" + std::to_string(i+1));
@@ -119,18 +115,18 @@ std::string SNF_Tester::generateOperand(unsigned int variablesNumber, FunctionTy
 
 bool SNF_Tester::isOperandRepeated(string operand)
 {
-    size_t size = generatedOperands.size();
-    for (size_t i = 0; i<size; i++)
+    quint64 size = generatedOperands.size();
+    for (quint64 i = 0; i<size; i++)
         if (generatedOperands[i] == operand) return true;
     return false;
 }
 
 double SNF_Tester::getMinimizingTime (std::string function)
 {
-    double time = omp_get_wtime();
+    QElapsedTimer timer;
+    timer.start();
     SNF_Tester::minimize(function);
-    time=omp_get_wtime()-time;
-    return time;
+    return ((double)timer.nsecsElapsed()/1000000000.0); //to seconds
 }
 
 std::string SNF_Tester::minimize(string function)
@@ -163,6 +159,5 @@ void SNF_Tester::logCurrentFunction (int currentVariablesNumber, int currentOper
 
 void SNF_Tester::logInfoPercentCompleted(double percent)
 {
-    (*infoStream) <<"\r                 \rReady: "<< percent << "%";
-    infoStream->flush();
+    onInfoSend("Ready: "+ QString::number(percent) + "%");
 }
