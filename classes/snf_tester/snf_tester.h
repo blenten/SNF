@@ -5,8 +5,7 @@
 #include <cstdlib>
 #include <iomanip>
 #include <fstream>
-#include <omp.h>
-#include <QDebug>
+#include <QElapsedTimer>
 #include <QObject>
 
 class SNF_Tester: public QObject
@@ -14,14 +13,12 @@ class SNF_Tester: public QObject
     Q_OBJECT
 
 private:
-    std::string logPath;
     std::ofstream logStream;
-    bool isStopped;
 
     double stepsCount;
 
     std::vector<std::string> generatedOperands;
-    std::vector <size_t> maxOperandsNumbers; //max numbers of operands for each variables number to avoid repeating (equals 2 to the number power)
+    std::vector <quint64> maxOperandsNumbers; //max numbers of operands for each variables number to avoid repeating (equals 2 to the number power)
 
     bool checkRanges();
 
@@ -40,7 +37,7 @@ private:
     void logCurrentFunction (int currentVariablesNumber, int currentOperandsNumber, double currentTime);
     void logInfoPercentCompleted(double percent);
 
-    std::string generateOperand(size_t variablesNumber, FunctionType ft);
+    std::string generateOperand(quint64 variablesNumber, FunctionType ft);
     bool isOperandRepeated (std::string operand);
 
 public:
@@ -50,8 +47,9 @@ public:
     unsigned int downOperandsNumber;
     unsigned int upOperandsNumber;
     unsigned int operandsStep;
+    std::string logPath;
 
-    std::string generateFunction (size_t variablesNumber, size_t operandsNumber, FunctionType ft);
+    std::string generateFunction (quint64 variablesNumber, quint64 operandsNumber, FunctionType ft);
 
 signals:
     void onInfoSend(QString info);

@@ -41,6 +41,7 @@ void SNF_Tester_gui::setTesterData()
     tester.upOperandsNumber = ui->upOperandsNumber->text().toUInt();
     tester.variablesStep = ui->variablesStep->text().toUInt();
     tester.operandsStep = ui->operandsStep->text().toUInt();
+    tester.logPath = ui->filename->text().toStdString();
 }
 
 void SNF_Tester_gui::getInfo(QString info)
