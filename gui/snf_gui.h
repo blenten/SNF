@@ -10,6 +10,7 @@
 #include <QTime>
 
 #include "log.h"
+#include "help.h"
 
 
 namespace Ui {
@@ -30,6 +31,7 @@ private slots:
 
     void langEn_clicked();
     void langRu_clicked();
+    void help_clicked();
 
     void on_stepsButton_clicked();
 
@@ -41,6 +43,8 @@ private:
     bool logShown = false;
     void setLocale (QString locale);
     void createMenubar();
+    void createLangMenu(QMenuBar* bar);
+    void createHelpMenu(QMenuBar* bar);
 };
 
 #endif // SNF_GUI_H

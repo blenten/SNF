@@ -11,6 +11,12 @@ void SNF_gui::createMenubar()
 {
     QMenuBar* bar = new QMenuBar();
     ui->menuLayout->addWidget(bar);
+    createLangMenu(bar);
+    createHelpMenu(bar);
+}
+
+void SNF_gui::createLangMenu(QMenuBar *bar)
+{
     QMenu* langMenu = new QMenu("Language");
     bar->addMenu(langMenu);
 
@@ -23,6 +29,17 @@ void SNF_gui::createMenubar()
 
     langMenu->addAction(langEn);
     langMenu->addAction(langRu);
+}
+
+void SNF_gui::createHelpMenu(QMenuBar *bar)
+{
+    QMenu* helpMenu = new QMenu ("Help");
+    bar->addMenu (helpMenu);
+
+    QAction* helpAction = new QAction("User guide", this);
+    helpMenu->addAction(helpAction);
+
+    connect (helpAction, SIGNAL(triggered(bool)), this, SLOT(help_clicked()));
 }
 
 SNF_gui::SNF_gui(QWidget *parent) :
@@ -95,6 +112,12 @@ void SNF_gui::langEn_clicked()
 void SNF_gui::langRu_clicked()
 {
     setLocale("ru_RU");
+}
+
+void SNF_gui::help_clicked()
+{
+    Help* helpform = new Help (this);
+    helpform->show();
 }
 
 void SNF_gui::setLocale (QString locale)
