@@ -80,13 +80,22 @@ string SNF_Minimizer::res_toString()
 void SNF_Minimizer::match()
 {
     int size = (int)exp.size();
+
     vector<Operand> temp;
 
     for(int i=0; i<size-1; i++)
     {
-        for(int j=i+1; j<size; j++)
+        int j = i+1;
+        while(j<size)
         {
-            matchOperands(exp[i], exp[j], temp);
+            if(eqop(exp[i], exp[j]))
+            {
+                exp.erase(exp.begin()+j);   //deletes duplicates
+            }else
+            {
+                matchOperands(exp[i], exp[j], temp);
+                j++;
+            }
         }
     }
 
@@ -114,8 +123,21 @@ bool SNF_Minimizer::matchOperands(Operand &op1, Operand &op2, Expression &result
     }
     return false;
 }
+//OPERAND EQUALITY
+bool SNF_Minimizer::eqop(Operand& op1, Operand& op2) //op equality check kostil. cause mne vpadlu delat operand classom
+{
+    for(int i=0; i<(int)op1.size();i++)
+    {
+        if(!(op1[i]==op2[i]))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
 // DEL UNNESSESARY
-void SNF_Minimizer::delNeedless()
+void SNF_Minimizer::delUnness()
 {
 
     if(exp.size()<=1)
@@ -140,60 +162,92 @@ void SNF_Minimizer::delNeedless()
 // NECESSITY CHECK
 bool SNF_Minimizer::checkNecessity(int index)
 {
-    int res=0;
-    Expression NINs;
-    for(int i=0; i<(int)exp.size(); i++)
+    Expression resexp;  //result of inop check
+    resexp.clear();
+
+    for(int i=0; i<(int)exp.size();i++)                         // each operand except exp[index]
     {
         if(i!=index)
         {
-            int tempres=1;
-            Operand op;
-            for(int j=0; j<(int)exp[i].size(); j++)
+            Operand resop;  //part of resexp
+            resop.clear();
+            for(int j=0; j<(int)exp[i].size();j++)              //each variable there
             {
-                INOP_t temp = inop(exp[i][j], exp[index]);
-                if(temp==invIN)
+                INOP_type type = inop(exp[i][j], exp[index]);
+                if(type==invIN) //if there is 0 in operand
                 {
-                    tempres = 0;
-                    op.clear();
+                    resop.clear();
                     break;
-                }else if(temp==NIN)
+                }else if(type==NIN) //if trere's a var of unknown value
                 {
-                    tempres = 0;
-                    op.push_back(exp[i][j]);
+                    resop.push_back(exp[i][j]);
                 }
             }
-            if(!op.empty())
+            if(!resop.empty())
             {
-                NINs.push_back(op);
+                bool isherealready=false;
+                for(Operand o : resexp)
+                {
+                    if(eqop(o,resop)) isherealready=true;
+                }
+
+                if(!isherealready) resexp.push_back(resop); //add resop to resexp only if it's unique. needed for resolve below
             }
-            res += tempres;
         }
     }
 
-    if(res==0)
+    if(resexp.size()>1) //resolve NINs if there are many
     {
-        if(NINs.empty())
+        sortres(0,(int)(resexp.size()-1),resexp);
+        for(int i=0; i<(int)resexp.size(); i++)     //every operand in rank order
         {
-            return true;
-        }else
-        {
-            for(int i=0; i<(int)NINs.size()-1; i++)
+            int j=0;
+            int matches=0;                          //the number of 1rank ops that suit. should be equal to checked op size
+
+            while(resexp[j].size()==1) //only 1 rank operands suit
             {
-                for(int j=i+1; j<(int)NINs.size(); j++)
+                if(i!=j) //except operand we check
                 {
-                    if(NINs[i].size()==1 && NINs[j].size()==1 && NINs[i][0].name==NINs[j][0].name && NINs[i][0].inversion!=NINs[j][0].inversion)
+                    if(inop(resexp[j][0], resexp[i])==invIN) matches++; //res[j] is an inv version of some var in res[i] we check
+                    if(matches==(int)resexp[i].size())
                     {
                         return false;
                     }
                 }
+                j++;
             }
-            return true;
         }
     }
-    return false;
+    return true;
 }
+//qsort for res
+void SNF_Minimizer::sortres(int left, int right, Expression& res)
+{
+    int l = left;
+    int r = right;
+    int x = res[(l+r)/2].size();
+
+    do{
+        while((int)res[l].size()<x) l++;
+        while((int)res[r].size()>x) r--;
+
+        if(l<=r)
+        {
+            if(res[l].size()>res[r].size())
+            {
+                swap(res[l], res[r]);
+            }
+            l++;
+            r--;
+        }
+    }while(l<=r);
+
+    if(l<right) sortres(l, right, res);
+    if(r>left)  sortres(left, r, res);
+}
+
 // INOP
-INOP_t SNF_Minimizer::inop(Variable &var, Operand &op)
+INOP_type SNF_Minimizer::inop(Variable &var, Operand &op)
 {
     for(int i=0; i<(int)op.size(); i++)
     {

@@ -6,7 +6,7 @@
 
 using namespace std;
 
-enum INOP_t
+enum INOP_type
 {
     IN=1, invIN=0, NIN=-1
 };
@@ -19,7 +19,7 @@ public:
 
     bool parse(string input);
     void match();
-    void delNeedless();
+    void delUnness();
     string res_toString();
     string getLog();
 
@@ -27,8 +27,10 @@ public:
 
 private:
     bool checkNecessity(int index);
-    INOP_t inop(Variable&, Operand&);
+    void sortres(int left, int right, Expression& res);
+    INOP_type inop(Variable&, Operand&);
     bool matchOperands(Operand& op1, Operand& op2, Expression& result);
+    bool eqop(Operand& op1, Operand& op2);
 
     void log();         //creating log for "steps"
     stringstream logs;

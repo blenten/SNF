@@ -89,7 +89,7 @@ void SNF_gui::on_minimizeButton_clicked()
     ///
     ui->conditionLabel->setText(Localizator::instance().getTranslation("%ConditionNessessity"));
     sleep(100 + qrand()%50);
-    snf.delNeedless();
+    snf.delUnness();
     ui->progressBar->setValue(100);
     ///
     ui->conditionLabel->setText(Localizator::instance().getTranslation("%ConditionReady"));
