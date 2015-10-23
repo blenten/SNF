@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string> SNF Minimizer 1.0</string>
+   <string> SNF Minimizer 1.1</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

@@ -6,24 +6,24 @@ string SNF_Minimizer::getLog()
     return logs.str();
 }
 
-void SNF_Minimizer::log()
+void SNF_Minimizer::log(Expression &logex)
 {
-    if(exp.empty())
+    if(logex.empty())
     {
         logs<<"%ExpressionIsEmpty"<<"\n";
     }else
     {
-        int size = (int) exp.size();
+        int size = (int) logex.size();
         for(int i=0; i<size; i++)
         {
-            for(int j=0; j<(int)exp[i].size(); j++)
+            for(int j=0; j<(int)logex[i].size(); j++)
             {
-                if(exp[i][j].inversion)
+                if(logex[i][j].inversion)
                 {
-                    logs<<'!'<<exp[i][j].name;
+                    logs<<'!'<<logex[i][j].name;
                 }else
                 {
-                    logs<<exp[i][j].name;
+                    logs<<logex[i][j].name;
                 }
             }
             logs<<'\t';
@@ -52,7 +52,7 @@ bool SNF_Minimizer::parse(string input)
         logs<<"%Default"<<"\n";
         return true;
     }
-    log();
+    log(exp);
     return false;
 }
 
@@ -79,14 +79,12 @@ string SNF_Minimizer::res_toString()
 // MATCH
 void SNF_Minimizer::match()
 {
-    int size = (int)exp.size();
-
     vector<Operand> temp;
 
-    for(int i=0; i<size-1; i++)
+    for(int i=0; i<(int)exp.size()-1; i++)
     {
         int j = i+1;
-        while(j<size)
+        while(j<(int)exp.size())
         {
             if(eqop(exp[i], exp[j]))
             {
@@ -105,7 +103,7 @@ void SNF_Minimizer::match()
         exp = temp;
     }
     //
-    log();
+    log(exp);
 }
 /// subMatch
 bool SNF_Minimizer::matchOperands(Operand &op1, Operand &op2, Expression &result)
@@ -126,6 +124,8 @@ bool SNF_Minimizer::matchOperands(Operand &op1, Operand &op2, Expression &result
 //OPERAND EQUALITY
 bool SNF_Minimizer::eqop(Operand& op1, Operand& op2) //op equality check kostil. cause mne vpadlu delat operand classom
 {
+    if(op1.size()!=op2.size())  return false;
+
     for(int i=0; i<(int)op1.size();i++)
     {
         if(!(op1[i]==op2[i]))
@@ -157,7 +157,7 @@ void SNF_Minimizer::delUnness()
         }
     }
     //
-    log();
+    log(exp);
 }
 // NECESSITY CHECK
 bool SNF_Minimizer::checkNecessity(int index)
@@ -195,7 +195,7 @@ bool SNF_Minimizer::checkNecessity(int index)
             }
         }
     }
-
+    //log(resexp);
     if(resexp.size()>1) //resolve NINs if there are many
     {
         sortres(0,(int)(resexp.size()-1),resexp);
@@ -211,7 +211,7 @@ bool SNF_Minimizer::checkNecessity(int index)
                     if(inop(resexp[j][0], resexp[i])==invIN) matches++; //res[j] is an inv version of some var in res[i] we check
                     if(matches==(int)resexp[i].size())
                     {
-                        return false;
+                        return false;                        
                     }
                 }
                 j++;

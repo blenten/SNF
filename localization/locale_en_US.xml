@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Locale>
 	<Main>
-                 <Title>SNF Minimizer 1.0</Title>
+                 <Title>SNF Minimizer </Title>
                  <InputLabel>Input function:</InputLabel>
                  <OutputLabel>Output function:</OutputLabel>
                  <MinimizeButton>MINIMIZE</MinimizeButton>

@@ -6,20 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>384</width>
-    <height>476</height>
+    <width>640</width>
+    <height>480</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Help</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <layout class="QVBoxLayout" name="contentLayout">
-     <item>
-      <widget class="QTextBrowser" name="helpBrowser"/>
-     </item>
-    </layout>
+    <widget class="QTextBrowser" name="helpBrowser"/>
    </item>
   </layout>
  </widget>

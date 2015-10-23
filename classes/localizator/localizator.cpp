@@ -34,7 +34,7 @@ void Localizator::localize(SNF_gui *window)
     window->ui->stepsButton->setText(getTranslation("%StepsButton"));
     window->ui->conditionLabel->setText(getTranslation("%ConditionDefault"));
 
-    window->setWindowTitle(getTranslation("%Title"));
+    window->setWindowTitle(getTranslation("%Title")+SNF_version);
 }
 
 void Localizator::localize(Log *window)

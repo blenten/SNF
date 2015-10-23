@@ -32,7 +32,7 @@ private:
     bool matchOperands(Operand& op1, Operand& op2, Expression& result);
     bool eqop(Operand& op1, Operand& op2);
 
-    void log();         //creating log for "steps"
+    void log(Expression&);         //creating log for "steps"
     stringstream logs;
 
     SNF_ParserDecorator parser; //olerapx
