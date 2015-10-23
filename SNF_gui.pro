@@ -13,19 +13,22 @@ TEMPLATE = app
 
 CONFIG += C++11
 CONFIG += qt
-
+DEFINES += SNF_version=\\\"1.1\\\"
 
 SOURCES += main.cpp\
     gui/snf_gui.cpp \
     gui/log.cpp \
+    gui/help.cpp \
     classes/localizator/localizator.cpp \
 
 HEADERS  += gui/snf_gui.h \
     gui/log.h \
+    gui/help.h \
     classes/localizator/localizator.h \
 
 FORMS    += gui/snf_gui.ui \
-    gui/log.ui
+    gui/log.ui \
+    gui/help.ui
 
 DISTFILES +=
 

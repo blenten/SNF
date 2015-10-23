@@ -136,7 +136,7 @@ std::string SNF_Tester::minimize(string function)
         return "";
 
     snf.match();
-    snf.delNeedless();
+    snf.delUnness();
     return snf.res_toString();
 }
 
