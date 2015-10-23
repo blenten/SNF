@@ -13,6 +13,7 @@ SNF_Tester_gui::SNF_Tester_gui(QWidget *parent) :
     tester.moveToThread(&testerThread);
     connect (&testerThread, SIGNAL(started()), &tester, SLOT(start()));
     connect (&tester, SIGNAL(finish()), &testerThread, SLOT(quit()));
+    connect (this, SIGNAL(stopTesting()), &tester, SLOT(stop()), Qt::DirectConnection);
 }
 
 void SNF_Tester_gui::setInputValidators()
@@ -52,4 +53,9 @@ void SNF_Tester_gui::getInfo(QString info)
 SNF_Tester_gui::~SNF_Tester_gui()
 {
     delete ui;
+}
+
+void SNF_Tester_gui::on_stopButt_clicked()
+{
+   emit stopTesting();
 }

@@ -21,6 +21,11 @@ private slots:
     void on_testButt_clicked();
     void getInfo(QString info);
 
+    void on_stopButt_clicked();
+
+signals:
+    void stopTesting();
+
 private:
     Ui::SNF_Tester_gui *ui;
     SNF_Tester tester;

@@ -23,7 +23,7 @@
    <widget class="QPushButton" name="testButt">
     <property name="geometry">
      <rect>
-      <x>190</x>
+      <x>140</x>
       <y>390</y>
       <width>87</width>
       <height>27</height>
@@ -336,6 +336,19 @@
     </property>
     <property name="text">
      <string>Output file name</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="stopButt">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>390</y>
+      <width>87</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Stop</string>
     </property>
    </widget>
   </widget>

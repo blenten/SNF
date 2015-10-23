@@ -16,6 +16,7 @@ private:
     std::ofstream logStream;
 
     double stepsCount;
+    bool isStopped;
 
     std::vector<std::string> generatedOperands;
     std::vector <quint64> maxOperandsNumbers; //max numbers of operands for each variables number to avoid repeating (equals 2 to the number power)
@@ -58,6 +59,7 @@ signals:
 public slots:
     //gets time of minimizing functions; writes a log to file on path; prints an completing info to infoOutputStream
     void start();
+    void stop();
 };
 
 #endif

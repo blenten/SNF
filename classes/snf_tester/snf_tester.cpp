@@ -2,6 +2,7 @@
 
 void SNF_Tester::start()
 {
+    isStopped=false;
     if (checkRanges())
     {
         onInfoSend("Testing...\n");
@@ -12,6 +13,11 @@ void SNF_Tester::start()
     }
     else emit onInfoSend("Too big value.");
     emit finish();
+}
+
+void SNF_Tester::stop()
+{
+    isStopped=true;
 }
 
 bool SNF_Tester::checkRanges()
@@ -54,6 +60,12 @@ void SNF_Tester::testMinimizing()
 
         for (quint64 j=downOperandsNumber; j<=maxOperandsNumber; j+=operandsStep)
         {
+            if (isStopped)
+            {
+                emit onInfoSend("Stopped.");
+                return;
+            }
+
             std::string func;
             if (getRandom(1)) func = generateFunction(i,j, SNDF);
             else func = generateFunction(i,j, SNKF);
