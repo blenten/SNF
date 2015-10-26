@@ -2,6 +2,7 @@
 #define HELP_H
 
 #include <QDialog>
+#include <QDir>
 
 namespace Ui {
 class Help;
