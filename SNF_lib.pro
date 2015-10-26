@@ -12,6 +12,7 @@ TARGET = SNF_lib
 TEMPLATE = lib
 
 DEFINES += SNF_LIB_LIBRARY
+DEFINES += SNF_version=\\"1.1\\"
 
 SOURCES += \
     classes/Exceptions/invalidfunctionexception.cpp \
