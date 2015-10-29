@@ -123,7 +123,7 @@ FunctionType ExpandedFormParser::getVariables()
      {
         if(currState != Undefined) prevState = currState;
 
-         currVar = getOperand(lena);
+         currVar = getVariable(lena);
          if (getSymbolType(_input[lena]) != SYMBOL_ZERO) lena++;
 
          if (getSymbolType(currVar[0]) == SYMBOL_INVERSE) currVar.erase(0,1);
@@ -147,7 +147,7 @@ size_t ExpandedFormParser::increaseIndexToVariable(size_t index)
     return index;
 }
 
-std::string ExpandedFormParser::getOperand (size_t &index)
+std::string ExpandedFormParser::getVariable(size_t &index)
 {
      std::string output;
      while (getSymbolType(_input[index]) != SYMBOL_CONJUNCTION &&
@@ -201,16 +201,15 @@ OperationState ExpandedFormParser::getNextState(size_t &lena, OperationState pre
 
 OperationState ExpandedFormParser::getOperationStateAfterLBracket(size_t index, OperationState currState)
 {
-    getOperand(index);
-    if (getSymbolType(_input[index]) != SYMBOL_ZERO) index++;
+    getVariable(index); //increase index to operation
 
-    if (getSymbolType(_input[index-1]) == SYMBOL_DISJUNCTION)
+    if (getSymbolType(_input[index]) == SYMBOL_DISJUNCTION)
     {
         if (currState == Conjunction) return ConjunctionToDinsjunction;
         else if (currState == Undefined) return UndefinedToDisjunction;
         else return Disjunction;
     }
-    else if (getSymbolType(_input[index-1]) == SYMBOL_CONJUNCTION)
+    else if (getSymbolType(_input[index]) == SYMBOL_CONJUNCTION)
     {
         if (currState == Disjunction) return DisjunctionToConjunction;
         else if (currState == Undefined) return UndefinedToConjunction;
@@ -235,17 +234,17 @@ bool ExpandedFormParser::isVariablesRepeat()
 
 void ExpandedFormParser::fillExpression(const FunctionType& ft)
 {
-    OperationState os = (ft == SNKF) ? Disjunction: Conjunction;
-    OperationState currState = os;
+    OperationState startState = (ft == SNKF) ? Disjunction: Conjunction;
+    OperationState currState = startState;
 
     size_t lena = 0, operandIndex = 0, varIndex = 0;
     size_t variablesNumber = variables.size();
 
     addOperandToExpression();
 
-    while (getSymbolType(_input[lena]) != SYMBOL_ZERO)
+    while (true)
     {
-        std::string currVar = getOperand(lena);
+        std::string currVar = getVariable(lena);
         lena = increaseIndexToVariable(lena);
 
         Variable var = parseVariable(currVar);
@@ -260,27 +259,25 @@ void ExpandedFormParser::fillExpression(const FunctionType& ft)
 
         if (getSymbolType(_input[lena]) == SYMBOL_ZERO)
         {
-           if (varIndex < variablesNumber) throw InvalidFunctionException("%IncorrectOperationChanging@" + std::to_string(lena));
+            if (varIndex < variablesNumber) throw InvalidFunctionException("%IncorrectOperationChanging@" + std::to_string(lena));
             return;
         }
 
         currState = getNextState(lena, currState);
-        if (currState != os && variables[variablesNumber-1] == currVar)
+        if (currState != startState)
         {
-            if(varIndex >= variablesNumber-1)
+            if (varIndex>=variablesNumber)
             {
                 varIndex = 0;
                 addOperandToExpression();
                 operandIndex++;
             }
-            else if (varIndex)
-               throw InvalidFunctionException ("%SequenceOfVariablesIsBroken@"+std::to_string(lena));
+            else if (currState != Undefined) throw InvalidFunctionException("%IncorrectOperationChanging@" + std::to_string(lena));
         }
-        else if (currState!=os && currState!=Undefined && currVar!="") throw InvalidFunctionException("%IncorrectOperationChanging@" + std::to_string(lena));
     }
 }
 
-void ExpandedFormParser::addOperandToExpression ()
+void ExpandedFormParser::addOperandToExpression()
 {
     Operand op;
     expression->push_back(op);
