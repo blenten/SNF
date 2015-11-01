@@ -14,7 +14,7 @@ enum OperationState
     Disjunction = 1
 };
 
-class ExpandedFormParser:public Parser
+class ExpandedFormParser: public Parser
 {
 private:    
     void initialChecking();
@@ -26,7 +26,7 @@ private:
 
     FunctionType parseExpandedForm();
 
-    FunctionType getVariables ();
+    FunctionType getVariables();
 
     //increases to inversion/operand/zero symbol
     size_t increaseIndexToVariable(size_t index);
@@ -34,7 +34,7 @@ private:
     bool isVariablesRepeat();
 
     //gets an operand and increase index to position after it
-    std::string getOperand (size_t &index);
+    std::string getVariable (size_t &index);
 
     OperationState getNextState(size_t &lena, OperationState prevState);
 
@@ -42,7 +42,7 @@ private:
 
     void fillExpression(const FunctionType &ft);
 
-    void addOperandToExpression ();
+    void addOperandToExpression();
 
     Variable parseVariable(std::string &currVar);
 
