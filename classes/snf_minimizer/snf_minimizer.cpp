@@ -80,6 +80,9 @@ string SNF_Minimizer::res_toString()
 void SNF_Minimizer::match()
 {
     vector<Operand> temp;
+    vector<bool> matched;
+    matched.resize(exp.size());
+    for(int i=0; i<(int)matched.size(); i++) matched[i]=false;
 
     for(int i=0; i<(int)exp.size()-1; i++)
     {
@@ -91,7 +94,11 @@ void SNF_Minimizer::match()
                 exp.erase(exp.begin()+j);   //deletes duplicates
             }else
             {
-                matchOperands(exp[i], exp[j], temp);
+                if(matchOperands(exp[i], exp[j], temp)) //marks matched ops
+                {
+                    matched[i]=true;
+                    matched[j]=true;
+                }
                 j++;
             }
         }
@@ -99,8 +106,16 @@ void SNF_Minimizer::match()
 
     if(!temp.empty())
     {
+        for(int i=0; i<(int)exp.size(); i++)
+        {
+            if(!matched[i])     //adds ops that haven't matched to result
+            {
+                temp.push_back(exp[i]);
+            }
+        }
         exp.clear();
         exp = temp;
+        //match();
     }
     //
     log(exp);
