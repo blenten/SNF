@@ -115,27 +115,33 @@ FunctionType ExpandedFormParser::getVariables()
      variables.clear();
      std::string currVar = "";
      size_t lena = 0;
-     OperationState prevState = Undefined, currState = Undefined;
+     OperationState currState = Undefined;
 
      lena = increaseIndexToVariable(lena);
 
      while (getSymbolType(_input[lena]) != SYMBOL_ZERO)
      {
-        if(currState != Undefined) prevState = currState;
-
          currVar = getVariable(lena);
+         lena = increaseIndexToSymbolAfterVariable(lena);
+
          if (getSymbolType(_input[lena]) != SYMBOL_ZERO) lena++;
 
          if (getSymbolType(currVar[0]) == SYMBOL_INVERSE) currVar.erase(0,1);
 
-         if (currVar != "")
-           variables.push_back(currVar);
+         if (variables.size()==0 || currVar != variables[0])
+         {
+             if (currVar != "")
+               variables.push_back(currVar);
 
-         currState = getNextState(lena,currState);
-         if (currState != Undefined && prevState != Undefined && currState != prevState)
-             return (currState == Conjunction ? SNKF : SNDF);
+             if (getSymbolType(_input[lena]) == SYMBOL_ZERO)
+                 return ((currState)==Conjunction? SNDF: SNKF);
+         }
+         else         
+             return ((currState)==Conjunction? SNKF: SNDF);
+
+         OperationState nextState = getNextState(lena,currState);
+         if (nextState!=Undefined) currState = nextState;
      }
-     return (prevState == Disjunction ? SNKF : SNDF);
      return OTHER;
 }
 
@@ -147,7 +153,7 @@ size_t ExpandedFormParser::increaseIndexToVariable(size_t index)
     return index;
 }
 
-std::string ExpandedFormParser::getVariable(size_t &index)
+std::string ExpandedFormParser::getVariable(size_t index)
 {
      std::string output;
      while (getSymbolType(_input[index]) != SYMBOL_CONJUNCTION &&
@@ -164,7 +170,22 @@ std::string ExpandedFormParser::getVariable(size_t &index)
     return output;
 }
 
-OperationState ExpandedFormParser::getNextState(size_t &lena, OperationState prevState)
+size_t ExpandedFormParser::increaseIndexToSymbolAfterVariable(size_t index)
+{
+    while (getSymbolType(_input[index]) != SYMBOL_CONJUNCTION &&
+           getSymbolType(_input[index]) != SYMBOL_DISJUNCTION &&
+           getSymbolType(_input[index]) != SYMBOL_LBRACKET &&
+           getSymbolType(_input[index]) != SYMBOL_RBRACKET &&
+           getSymbolType(_input[index]) != SYMBOL_ZERO &&
+           (getSymbolType(_input[index]) == SYMBOL_OPERAND ||
+            getSymbolType(_input[index]) == SYMBOL_INVERSE))
+    {
+           index++;
+    }
+   return index;
+}
+
+OperationState ExpandedFormParser::getNextState(size_t lena, OperationState prevState)
 {
     SymbolType currType = getSymbolType(_input[lena-1]);
     OperationState currState = Undefined;
@@ -181,7 +202,7 @@ OperationState ExpandedFormParser::getNextState(size_t &lena, OperationState pre
 
     else if (currType == SYMBOL_LBRACKET && getSymbolType(_input[lena]) == SYMBOL_OPERAND)
     {
-       currState = getOperationStateAfterLBracket(lena, prevState);
+       currState = getOperationStateAfterLeftBracket(lena, prevState);
 
        if (currState == DisjunctionToConjunction) return Conjunction;
        else if(currState == ConjunctionToDinsjunction) return Disjunction;
@@ -199,9 +220,9 @@ OperationState ExpandedFormParser::getNextState(size_t &lena, OperationState pre
     return Undefined;
 }
 
-OperationState ExpandedFormParser::getOperationStateAfterLBracket(size_t index, OperationState currState)
+OperationState ExpandedFormParser::getOperationStateAfterLeftBracket(size_t index, OperationState currState)
 {
-    getVariable(index); //increase index to operation
+    index = increaseIndexToSymbolAfterVariable(index);
 
     if (getSymbolType(_input[index]) == SYMBOL_DISJUNCTION)
     {
@@ -237,43 +258,43 @@ void ExpandedFormParser::fillExpression(const FunctionType& ft)
     OperationState startState = (ft == SNKF) ? Disjunction: Conjunction;
     OperationState currState = startState;
 
-    size_t lena = 0, operandIndex = 0, varIndex = 0;
-    size_t variablesNumber = variables.size();
-
-    addOperandToExpression();
+    size_t lena = 0, varIndex = 0;
+    size_t variablesNumber = variables.size(), operandsNumber=0;
 
     while (true)
     {
         std::string currVar = getVariable(lena);
-        lena = increaseIndexToVariable(lena);
-
         Variable var = parseVariable(currVar);
+
+        if (currVar==variables[0])
+        {
+            if (currState==startState && variables.size()>1 && operandsNumber!=0)
+                throw InvalidFunctionException("%IncorrectOperationChanging@" + std::to_string(lena));
+
+            varIndex = 0;
+            addOperandToExpression();
+            operandsNumber++;
+        }
 
         if (varIndex < variablesNumber && currVar != "" && currVar == variables[varIndex])
         {
-            expression->at(operandIndex).push_back(var);
+            if (currState!=startState && currState!=Undefined && variables.size()>1 && varIndex>0)
+                throw InvalidFunctionException("%IncorrectOperationChanging@" + std::to_string(lena));
+
+            expression->at(operandsNumber-1).push_back(var);
             varIndex++;
         }
         else if (currVar != "")
            throw InvalidFunctionException ("%SequenceOfVariablesIsBroken@" + std::to_string(lena));
 
+        lena = increaseIndexToSymbolAfterVariable(lena);
+        lena = increaseIndexToVariable(lena);
         if (getSymbolType(_input[lena]) == SYMBOL_ZERO)
         {
-            if (varIndex < variablesNumber) throw InvalidFunctionException("%IncorrectOperationChanging@" + std::to_string(lena));
+            if (varIndex < variablesNumber) throw InvalidFunctionException("%UnexpectedEndOfFunction");
             return;
         }
-
         currState = getNextState(lena, currState);
-        if (currState != startState)
-        {
-            if (varIndex>=variablesNumber)
-            {
-                varIndex = 0;
-                addOperandToExpression();
-                operandIndex++;
-            }
-            else if (currState != Undefined) throw InvalidFunctionException("%IncorrectOperationChanging@" + std::to_string(lena));
-        }
     }
 }
 

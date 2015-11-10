@@ -10,8 +10,8 @@ enum OperationState
     ConjunctionToDinsjunction = -3,
     DisjunctionToConjunction = -2,
     Undefined = -1,
-    Conjunction = 0,
-    Disjunction = 1
+    Disjunction = 0,
+    Conjunction = 1
 };
 
 class ExpandedFormParser: public Parser
@@ -33,12 +33,13 @@ private:
 
     bool isVariablesRepeat();
 
-    //gets an operand and increase index to position after it
-    std::string getVariable (size_t &index);
+    std::string getVariable (size_t index);
 
-    OperationState getNextState(size_t &lena, OperationState prevState);
+    size_t increaseIndexToSymbolAfterVariable(size_t index);
 
-    OperationState getOperationStateAfterLBracket(size_t index, OperationState currState);
+    OperationState getNextState(size_t lena, OperationState prevState);
+
+    OperationState getOperationStateAfterLeftBracket(size_t index, OperationState currState);
 
     void fillExpression(const FunctionType &ft);
 

@@ -4,8 +4,11 @@
 #include "ctype.h"
 #include <string>
 
-enum FunctionType {
-    OTHER=-1, SNDF, SNKF
+enum FunctionType
+{
+    OTHER=-1,
+    SNDF,
+    SNKF
 };
 
 enum FunctionInputForm

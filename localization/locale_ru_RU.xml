@@ -29,6 +29,7 @@
 		 <LastSymbolIsInversion>Последний символ в строке - инверсия</LastSymbolIsInversion>
                  <SequenceOfVariablesIsBroken>Нарушена последовательность переменных на позиции </SequenceOfVariablesIsBroken>
                  <IncorrectOperationChanging>Невозможно прочитать все переменные из-за некорректной смены операции на позиции </IncorrectOperationChanging>
+                 <UnexpectedEndOfFunction>Неожиданный конец функции</UnexpectedEndOfFunction>
 		 <ExpressionIsEmpty>Выражение пусто!</ExpressionIsEmpty>
                  <ExcessiveComma>Лишняя запятая в начале или конце перечисления</ExcessiveComma>
                  <IncorrectEnumeration>Перечисление конституент нарушено на позиции </IncorrectEnumeration>
