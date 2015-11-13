@@ -19,7 +19,7 @@
                  <LogTitle>Log</LogTitle>
                  <Parsing>Initial function:</Parsing>
                  <Matching>Match #</Matching>
-                 <Checking>Result:</Checking>
+                 <Result>Result:</Result>
  	</Log>
         <Help>
                  <HelpTitle>Help</HelpTitle>

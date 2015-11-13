@@ -18,13 +18,11 @@ void SNF_Minimizer::log(Expression &logex)
         {
             for(int j=0; j<(int)logex[i].size(); j++)
             {
-                if(logex[i][j].inversion)
-                {
-                    logs<<'!'<<logex[i][j].name;
-                }else
-                {
-                    logs<<logex[i][j].name;
-                }
+                if(logex[i][j].inversion)                
+                    logs<<'!';
+
+                logs<<logex[i][j].name;
+                if (j < (int)logex[i].size()-1) logs << (expType==SNKF? "+" :"*");
             }
             logs<<'\t';
         }
@@ -162,6 +160,9 @@ void SNF_Minimizer::delUnness()
 
     if(exp.size()<=1)
     {
+        logs << "\n";
+        logs <<"%Result\n";
+        log(exp);
         return;
     }
 
@@ -178,7 +179,7 @@ void SNF_Minimizer::delUnness()
     }
     //
     logs<<"\n";
-    logs <<"%Checking\n";
+    logs <<"%Result\n";
     log(exp);
 }
 // NECESSITY CHECK

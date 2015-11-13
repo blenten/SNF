@@ -19,7 +19,7 @@
  		 <LogTitle>Лог</LogTitle>
                  <Parsing>Исходная фукция:</Parsing>
                  <Matching>Склейка №</Matching>
-                 <Checking>Результат:</Checking>
+                 <Result>Результат:</Result>
  	</Log>
         <Help>
                  <HelpTitle>Справка</HelpTitle>
