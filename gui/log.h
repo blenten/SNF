@@ -20,7 +20,6 @@ public:
     ~Log();
     void setlog(QString);
 
-    QString translateLog(const QString &l);
 private:
     Ui::Log *ui;
     QString log;

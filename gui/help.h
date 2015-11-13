@@ -2,15 +2,17 @@
 #define HELP_H
 
 #include <QDialog>
+#include "classes/localizator/localizator.h"
 #include <QDir>
 
 namespace Ui {
 class Help;
 }
 
-class Help : public QDialog
+class Help: public QDialog
 {
     Q_OBJECT
+    friend class Localizator;
 
 public:
     explicit Help(QWidget *parent = 0);

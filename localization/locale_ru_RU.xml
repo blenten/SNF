@@ -2,6 +2,8 @@
 <Locale>
 	<Main>
                  <Title>SNF Minimizer </Title>
+                 <HelpMenu>Помощь</HelpMenu>
+                 <UserGuideAction>Справка</UserGuideAction>
 		 <InputLabel>Функция ввода:</InputLabel>
 		 <OutputLabel>Функция вывода:</OutputLabel>
 		 <MinimizeButton>МИНИМИЗИРОВАТЬ</MinimizeButton>
@@ -19,6 +21,9 @@
                  <Matching>Склейка №</Matching>
                  <Checking>Результат:</Checking>
  	</Log>
+        <Help>
+                 <HelpTitle>Справка</HelpTitle>
+        </Help>
 	<Exception>
 		 <Default>Некорректная функция</Default>
 		 <NoOperandsAndVariables>Строка не содержит переменных и операндов</NoOperandsAndVariables>

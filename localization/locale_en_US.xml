@@ -2,6 +2,8 @@
 <Locale>
 	<Main>
                  <Title>SNF Minimizer </Title>
+                 <HelpMenu>Help</HelpMenu>
+                 <UserGuideAction>User guide</UserGuideAction>
                  <InputLabel>Input function:</InputLabel>
                  <OutputLabel>Output function:</OutputLabel>
                  <MinimizeButton>MINIMIZE</MinimizeButton>
@@ -19,6 +21,9 @@
                  <Matching>Match #</Matching>
                  <Checking>Result:</Checking>
  	</Log>
+        <Help>
+                 <HelpTitle>Help</HelpTitle>
+        </Help>
 	<Exception>
                  <Default>Invalid function</Default>
 		 <NoOperandsAndVariables>Input string doesn't contain any variables or operands</NoOperandsAndVariables>

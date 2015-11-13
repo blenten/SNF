@@ -16,7 +16,7 @@ void Localizator::loadLocale(QString locale)
          QXmlStreamReader::TokenType token = reader.readNext();
          if (token == QXmlStreamReader::StartDocument) continue;
 
-         if (reader.name()=="Main" || reader.name()=="Exception" || reader.name()=="Log") continue;
+         if (reader.name()=="Main" || reader.name()=="Exception" || reader.name()=="Log" || reader.name()=="Help") continue;
 
          if (reader.name().toString().trimmed() != "")
             currName = reader.name().toString();
@@ -35,6 +35,11 @@ void Localizator::localize(SNF_gui *window)
     window->ui->conditionLabel->setText(getTranslation("%ConditionDefault"));
 
     window->setWindowTitle(getTranslation("%Title")+SNF_version);
+}
+
+void Localizator::localize(Help *window)
+{
+    window->setWindowTitle(getTranslation("%HelpTitle"));
 }
 
 void Localizator::localize(Log *window)
