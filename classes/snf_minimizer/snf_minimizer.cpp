@@ -10,7 +10,7 @@ void SNF_Minimizer::log(Expression &logex)
 {
     if(logex.empty())
     {
-        logs<<"%ExpressionIsEmpty"<<"\n";
+        logs<<"%ExpressionIsEmpty\n";
     }else
     {
         int size = (int) logex.size();
@@ -49,9 +49,10 @@ bool SNF_Minimizer::parse(string input)
     }
     if(exp.size()<=1)
     {
-        logs<<"%Default"<<"\n";
+        logs<<"%Default\n";
         return true;
     }
+    logs<<"%Parsing\n";
     log(exp);
     return false;
 }
@@ -79,6 +80,7 @@ string SNF_Minimizer::res_toString()
 // MATCH
 void SNF_Minimizer::match()
 {
+    unsigned int iter = 1;
     vector<Operand> temp;
     vector<bool> matched;
     matched.resize(exp.size());
@@ -118,7 +120,10 @@ void SNF_Minimizer::match()
         //match();
     }
     //
+    logs<<"\n";
+    logs<<"%Matching@"<<iter<<":\n";
     log(exp);
+    iter++;
 }
 /// subMatch
 bool SNF_Minimizer::matchOperands(Operand &op1, Operand &op2, Expression &result)
@@ -172,6 +177,8 @@ void SNF_Minimizer::delUnness()
         }
     }
     //
+    logs<<"\n";
+    logs <<"%Checking\n";
     log(exp);
 }
 // NECESSITY CHECK

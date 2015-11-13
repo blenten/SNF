@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>460</width>
-    <height>368</height>
+    <width>640</width>
+    <height>480</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,16 +16,11 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <widget class="QTextEdit" name="logText">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>441</width>
-     <height>351</height>
-    </rect>
-   </property>
-  </widget>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QTextEdit" name="logText"/>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>
