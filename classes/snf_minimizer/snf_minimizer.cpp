@@ -10,7 +10,7 @@ void SNF_Minimizer::log(Expression &logex)
 {
     if(logex.empty())
     {
-        logs<<"%ExpressionIsEmpty"<<"\n";
+        logs<<"%ExpressionIsEmpty\n";
     }else
     {
         int size = (int) logex.size();
@@ -18,13 +18,11 @@ void SNF_Minimizer::log(Expression &logex)
         {
             for(int j=0; j<(int)logex[i].size(); j++)
             {
-                if(logex[i][j].inversion)
-                {
-                    logs<<'!'<<logex[i][j].name;
-                }else
-                {
-                    logs<<logex[i][j].name;
-                }
+                if(logex[i][j].inversion)                
+                    logs<<'!';
+
+                logs<<logex[i][j].name;
+                if (j < (int)logex[i].size()-1) logs << (expType==SNKF? "+" :"*");
             }
             logs<<'\t';
         }
@@ -49,9 +47,10 @@ bool SNF_Minimizer::parse(string input)
     }
     if(exp.size()<=1)
     {
-        logs<<"%Default"<<"\n";
+        logs<<"%Default\n";
         return true;
     }
+    logs<<"%Parsing\n";
     log(exp);
     return false;
 }
@@ -79,47 +78,71 @@ string SNF_Minimizer::res_toString()
 // MATCH
 void SNF_Minimizer::match()
 {
+    unsigned int iter = 1;
     vector<Operand> temp;
     vector<bool> matched;
-    matched.resize(exp.size());
-    for(int i=0; i<(int)matched.size(); i++) matched[i]=false;
 
-    for(int i=0; i<(int)exp.size()-1; i++)
-    {
-        int j = i+1;
-        while(j<(int)exp.size())
+    do{
+        temp.clear();
+        matched.resize(exp.size());
+        for(int i=0; i<(int)matched.size(); i++) matched[i]=false;
+
+        for(int i=0; i<(int)exp.size()-1; i++)
         {
-            if(eqop(exp[i], exp[j]))
+            for(int j=i+1; j<(int)exp.size();j++)
             {
-                exp.erase(exp.begin()+j);   //deletes duplicates
-            }else
+                if(eqop(exp[i],exp[j]))
+                {
+                    exp.erase(exp.begin()+j);
+                }
+            }
+        }
+
+        for(int i=0; i<(int)exp.size()-1; i++)
+        {
+            for(int j=i+1; j<(int)exp.size(); j++)
             {
                 if(matchOperands(exp[i], exp[j], temp)) //marks matched ops
                 {
                     matched[i]=true;
                     matched[j]=true;
                 }
-                j++;
             }
         }
-    }
 
-    if(!temp.empty())
-    {
-        for(int i=0; i<(int)exp.size(); i++)
+        if(!temp.empty())
         {
-            if(!matched[i])     //adds ops that haven't matched to result
+            for(int i=0; i<(int)exp.size(); i++)
             {
-                temp.push_back(exp[i]);
+                if(!matched[i])     //adds ops that haven't matched to result
+                {
+                    temp.push_back(exp[i]);
+                }
+            }
+            exp.clear();
+            exp = temp;
+
+            logs<<"\n";
+            logs<<"%Matching@"<<iter<<":\n";
+            log(exp);
+            iter++;
+        }
+    }while(!temp.empty());
+
+    // la costille
+    for(int i=0; i<(int)exp.size()-1; i++)
+    {
+        for(int j=i+1; j<(int)exp.size();j++)
+        {
+            if(eqop(exp[i],exp[j]))
+            {
+                exp.erase(exp.begin()+j);
             }
         }
-        exp.clear();
-        exp = temp;
-        //match();
     }
-    //
-    log(exp);
+    //+(0,5,7,12,13,14,15)
 }
+
 /// subMatch
 bool SNF_Minimizer::matchOperands(Operand &op1, Operand &op2, Expression &result)
 {
@@ -157,6 +180,9 @@ void SNF_Minimizer::delUnness()
 
     if(exp.size()<=1)
     {
+        logs << "\n";
+        logs <<"%Result\n";
+        log(exp);
         return;
     }
 
@@ -172,6 +198,8 @@ void SNF_Minimizer::delUnness()
         }
     }
     //
+    logs<<"\n";
+    logs <<"%Result\n";
     log(exp);
 }
 // NECESSITY CHECK
