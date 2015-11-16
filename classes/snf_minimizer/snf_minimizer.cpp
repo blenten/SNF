@@ -81,48 +81,68 @@ void SNF_Minimizer::match()
     unsigned int iter = 1;
     vector<Operand> temp;
     vector<bool> matched;
-    matched.resize(exp.size());
-    for(int i=0; i<(int)matched.size(); i++) matched[i]=false;
 
-    for(int i=0; i<(int)exp.size()-1; i++)
-    {
-        int j = i+1;
-        while(j<(int)exp.size())
+    do{
+        temp.clear();
+        matched.resize(exp.size());
+        for(int i=0; i<(int)matched.size(); i++) matched[i]=false;
+
+        for(int i=0; i<(int)exp.size()-1; i++)
         {
-            if(eqop(exp[i], exp[j]))
+            for(int j=i+1; j<(int)exp.size();j++)
             {
-                exp.erase(exp.begin()+j);   //deletes duplicates
-            }else
+                if(eqop(exp[i],exp[j]))
+                {
+                    exp.erase(exp.begin()+j);
+                }
+            }
+        }
+
+        for(int i=0; i<(int)exp.size()-1; i++)
+        {
+            for(int j=i+1; j<(int)exp.size(); j++)
             {
                 if(matchOperands(exp[i], exp[j], temp)) //marks matched ops
                 {
                     matched[i]=true;
                     matched[j]=true;
                 }
-                j++;
             }
         }
-    }
 
-    if(!temp.empty())
-    {
-        for(int i=0; i<(int)exp.size(); i++)
+        if(!temp.empty())
         {
-            if(!matched[i])     //adds ops that haven't matched to result
+            for(int i=0; i<(int)exp.size(); i++)
             {
-                temp.push_back(exp[i]);
+                if(!matched[i])     //adds ops that haven't matched to result
+                {
+                    temp.push_back(exp[i]);
+                }
+            }
+            exp.clear();
+            exp = temp;
+
+            logs<<"\n";
+            logs<<"%Matching@"<<iter<<":\n";
+            log(exp);
+            iter++;
+        }
+    }while(!temp.empty());
+
+    // la costille
+    for(int i=0; i<(int)exp.size()-1; i++)
+    {
+        for(int j=i+1; j<(int)exp.size();j++)
+        {
+            if(eqop(exp[i],exp[j]))
+            {
+                exp.erase(exp.begin()+j);
             }
         }
-        exp.clear();
-        exp = temp;
-        //match();
     }
-    //
-    logs<<"\n";
-    logs<<"%Matching@"<<iter<<":\n";
-    log(exp);
-    iter++;
+    //+(0,5,7,12,13,14,15)
 }
+
 /// subMatch
 bool SNF_Minimizer::matchOperands(Operand &op1, Operand &op2, Expression &result)
 {
