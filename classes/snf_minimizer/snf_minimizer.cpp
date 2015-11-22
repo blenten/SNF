@@ -89,23 +89,29 @@ void SNF_Minimizer::match()
 
         for(int i=0; i<(int)exp.size()-1; i++)
         {
-            for(int j=i+1; j<(int)exp.size();j++)
+            int j=i+1;
+            while(j<(int)exp.size())
             {
                 if(eqop(exp[i],exp[j]))
                 {
                     exp.erase(exp.begin()+j);
+                }else
+                {
+                    j++;
                 }
             }
         }
-
-        for(int i=0; i<(int)exp.size()-1; i++)
+        if(exp[0].size()>1) //la one-var-ops match costille
         {
-            for(int j=i+1; j<(int)exp.size(); j++)
+            for(int i=0; i<(int)exp.size()-1; i++)
             {
-                if(matchOperands(exp[i], exp[j], temp)) //marks matched ops
+                for(int j=i+1; j<(int)exp.size(); j++)
                 {
-                    matched[i]=true;
-                    matched[j]=true;
+                    if(matchOperands(exp[i], exp[j], temp)) //marks matched ops
+                    {
+                        matched[i]=true;
+                        matched[j]=true;
+                    }
                 }
             }
         }
@@ -132,15 +138,19 @@ void SNF_Minimizer::match()
     // la costille
     for(int i=0; i<(int)exp.size()-1; i++)
     {
-        for(int j=i+1; j<(int)exp.size();j++)
+        int j=i+1;
+        while(j<(int)exp.size())
         {
             if(eqop(exp[i],exp[j]))
             {
                 exp.erase(exp.begin()+j);
+            }else
+            {
+                j++;
             }
         }
     }
-    //+(0,5,7,12,13,14,15)
+    //+(1,2,3)
 }
 
 /// subMatch
@@ -177,7 +187,10 @@ bool SNF_Minimizer::eqop(Operand& op1, Operand& op2) //op equality check kostil.
 // DEL UNNESSESARY
 void SNF_Minimizer::delUnness()
 {
-
+    if(exp.size()<3 || exp[0].size()==1)    //la nessessity chek は　nenuzhna costille
+    {
+        return;
+    }
     if(exp.size()<=1)
     {
         logs << "\n";
