@@ -71,6 +71,8 @@ FunctionType ExpandedFormParser::parseExpandedForm()
 
     fillExpression(ft);
 
+    if (containsAllOperands()) return ONE;
+
     return ft;
 }
 
@@ -281,7 +283,7 @@ void ExpandedFormParser::fillExpression(const FunctionType& ft)
             if (currState!=startState && currState!=Undefined && variables.size()>1 && varIndex>0)
                 throw InvalidFunctionException("%IncorrectOperationChanging@" + std::to_string(lena));
 
-            expression->at(operandsNumber-1).push_back(var);
+            expression->at(operandsNumber-1).variables.push_back(var);
             varIndex++;
         }
         else if (currVar != "")

@@ -8,7 +8,9 @@ enum FunctionType
 {
     OTHER=-1,
     SNDF,
-    SNKF
+    SNKF,
+    ONE,
+    ZERO
 };
 
 enum FunctionInputForm

@@ -15,8 +15,6 @@ public:
     bool inversion;
 };
 ///-----------------///
-typedef vector<Variable> Operand;
-typedef vector<Operand> Expression;
 
 ///----------------///
 

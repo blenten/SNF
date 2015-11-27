@@ -30,7 +30,6 @@ private:
     void sortres(int left, int right, Expression& res);
     INOP_type inop(Variable&, Operand&);
     bool matchOperands(Operand& op1, Operand& op2, Expression& result);
-    bool eqop(Operand& op1, Operand& op2);
 
     void log(Expression&);         //creating log for "steps"
     stringstream logs;

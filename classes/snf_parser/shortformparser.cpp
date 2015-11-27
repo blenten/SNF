@@ -16,6 +16,9 @@ FunctionType ShortFormParser::parse(string input, Expression &output)
     FunctionType ft = (getSymbolType(operation)==SYMBOL_CONJUNCTION) ? SNKF:SNDF;
 
     fillExpression();
+
+    if (containsAllOperands()) return ONE;
+
     return ft;
 }
 
@@ -135,7 +138,7 @@ void ShortFormParser::fillExpression()
             if (str[j]=='0') var.inversion = true;
             else var.inversion = false;
 
-            op.push_back(var);
+            op.variables.push_back(var);
         }
        expression->push_back(op);
     }

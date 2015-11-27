@@ -4,8 +4,6 @@
 #include "parser.h"
 #include <vector>
 #include <sstream>
-#include <iostream>
-#include <math.h>
 
 class ShortFormParser: public Parser
 {

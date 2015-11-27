@@ -1,9 +1,11 @@
 #ifndef SNF_PARSER_H
 #define SNF_PARSER_H
 
-#include "../lvar.h"
+#include "../operand.h"
 #include "../Exceptions/invalidfunctionexception.h"
 #include "../Types/types.h"
+#include <cstdint>
+#include <cmath>
 
 //Parser of string with SNF function
 //NOTE: variables may delim by:
@@ -21,6 +23,9 @@ protected:
 
     Expression *expression;
     std::vector <std::string> variables;
+
+    bool containsAllOperands();
+    void removeRepeatingOperands();
 
 public:
     virtual FunctionType parse (std::string input, Expression &output) = 0;
