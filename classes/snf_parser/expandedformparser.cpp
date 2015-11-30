@@ -70,9 +70,6 @@ FunctionType ExpandedFormParser::parseExpandedForm()
     if (isVariablesRepeat()) throw InvalidFunctionException("%RepeatingVariables");
 
     fillExpression(ft);
-
-    if (containsAllOperands()) return ONE;
-
     return ft;
 }
 

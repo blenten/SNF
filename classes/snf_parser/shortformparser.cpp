@@ -16,9 +16,6 @@ FunctionType ShortFormParser::parse(string input, Expression &output)
     FunctionType ft = (getSymbolType(operation)==SYMBOL_CONJUNCTION) ? SNKF:SNDF;
 
     fillExpression();
-
-    if (containsAllOperands()) return ONE;
-
     return ft;
 }
 
