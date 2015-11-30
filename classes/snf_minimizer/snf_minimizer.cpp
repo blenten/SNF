@@ -50,7 +50,7 @@ bool SNF_Minimizer::parse(string input)
         logs<<"%Default\n";
         return true;
     }
-    delsame(exp);
+    //delsame(exp);
     //if(exp.size()==)
     logs<<"%Parsing\n";
     log(exp);
@@ -106,11 +106,11 @@ void SNF_Minimizer::match()
     vector<Operand> temp;
     vector<bool> matched;
 
+    delsame(exp);
     do{
         temp.clear();
         matched.resize(exp.size());
         for(int i=0; i<(int)matched.size(); i++) matched[i]=false;
-        delsame(exp);
 
         if(exp[0].variables.size()>1) //la one-var-ops match costille
         {
@@ -126,7 +126,6 @@ void SNF_Minimizer::match()
                 }
             }
         }
-
         if(!temp.empty())
         {
             for(int i=0; i<(int)exp.size(); i++)
@@ -138,6 +137,7 @@ void SNF_Minimizer::match()
             }
             exp.clear();
             exp = temp;
+            delsame(exp);
 
             logs<<"\n";
             logs<<"%Matching@"<<iter<<":\n";
@@ -145,9 +145,6 @@ void SNF_Minimizer::match()
             iter++;
         }
     }while(!temp.empty());
-
-    // la costille
-    delsame(exp);
     //+(1,2,3)
 }
 
@@ -171,7 +168,7 @@ bool SNF_Minimizer::matchOperands(Operand &op1, Operand &op2, Expression &result
 // DEL UNNESSESARY
 void SNF_Minimizer::delUnness()
 {
-    if (expType==ONE)
+    if (expType==ONE || resolves(exp))
     {
         logs<<"\n";
         logs <<"%Result\n";
@@ -257,7 +254,7 @@ bool SNF_Minimizer::checkNecessity(int index)
 
 bool SNF_Minimizer::resolves(Expression& expression)
 {
-    sortres(0,(int)(expression.size()-1),exp);
+    sortres(0,(int)(expression.size()-1),expression);
     for(int i=0; i<(int)expression.size(); i++)     //every operand in rank order
     {
         int j=0;
