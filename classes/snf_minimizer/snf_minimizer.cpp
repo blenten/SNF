@@ -50,6 +50,8 @@ bool SNF_Minimizer::parse(string input)
         logs<<"%Default\n";
         return true;
     }
+    delsame(exp);
+    //if(exp.size()==)
     logs<<"%Parsing\n";
     log(exp);
     return false;
@@ -74,6 +76,24 @@ string SNF_Minimizer::res_toString()
     }
     return output;
 }
+//DELSAME
+void SNF_Minimizer::delsame(Expression &expression)
+{
+    for(int i=0; i<(int)expression.size()-1; i++)
+    {
+        int j=i+1;
+        while(j<(int)expression.size())
+        {
+            if(expression[i]==expression[j])
+            {
+                expression.erase(expression.begin()+j);
+            }else
+            {
+                j++;
+            }
+        }
+    }
+}
 
 // MATCH
 void SNF_Minimizer::match()
@@ -86,21 +106,8 @@ void SNF_Minimizer::match()
         temp.clear();
         matched.resize(exp.size());
         for(int i=0; i<(int)matched.size(); i++) matched[i]=false;
+        delsame(exp);
 
-        for(int i=0; i<(int)exp.size()-1; i++)
-        {
-            int j=i+1;
-            while(j<(int)exp.size())
-            {
-                if(exp[i]==exp[j])
-                {
-                    exp.erase(exp.begin()+j);
-                }else
-                {
-                    j++;
-                }
-            }
-        }
         if(exp[0].variables.size()>1) //la one-var-ops match costille
         {
             for(int i=0; i<(int)exp.size()-1; i++)
@@ -136,20 +143,7 @@ void SNF_Minimizer::match()
     }while(!temp.empty());
 
     // la costille
-    for(int i=0; i<(int)exp.size()-1; i++)
-    {
-        int j=i+1;
-        while(j<(int)exp.size())
-        {
-            if(exp[i]==exp[j])
-            {
-                exp.erase(exp.begin()+j);
-            }else
-            {
-                j++;
-            }
-        }
-    }
+    delsame(exp);
     //+(1,2,3)
 }
 
@@ -238,30 +232,37 @@ bool SNF_Minimizer::checkNecessity(int index)
         }
     }
     //log(resexp);
-    if(resexp.size()>1) //resolve NINs if there are many
+    if(resexp.size()>1 && resolves(resexp)) //resolve NINs if there are many
     {
-        sortres(0,(int)(resexp.size()-1),resexp);
-        for(int i=0; i<(int)resexp.size(); i++)     //every operand in rank order
-        {
-            int j=0;
-            int matches=0;                          //the number of 1rank ops that suit. should be equal to checked op size
-
-            while(resexp[j].variables.size()==1) //only 1 rank operands suit
-            {
-                if(i!=j) //except operand we check
-                {
-                    if(inop(resexp[j].variables[0], resexp[i])==invIN) matches++; //res[j] is an inv version of some var in res[i] we check
-                    if(matches==(int)resexp[i].variables.size())
-                    {
-                        return false;                        
-                    }
-                }
-                j++;
-            }
-        }
+        return false;
     }
     return true;
 }
+
+bool SNF_Minimizer::resolves(Expression& expression)
+{
+    sortres(0,(int)(expression.size()-1),exp);
+    for(int i=0; i<(int)expression.size(); i++)     //every operand in rank order
+    {
+        int j=0;
+        int matches=0;                          //the number of 1rank ops that suit. should be equal to checked op size
+
+        while(expression[j].variables.size()==1) //only 1 rank operands suit
+        {
+            if(i!=j) //except operand we check
+            {
+                if(inop(expression[j].variables[0], expression[i])==invIN) matches++; //res[j] is an inv version of some var in res[i] we check
+                if(matches==(int)expression[i].variables.size())
+                {
+                    return true;
+                }
+            }
+            j++;
+        }
+    }
+    return false;
+}
+
 //qsort for res
 void SNF_Minimizer::sortres(int left, int right, Expression& res)
 {

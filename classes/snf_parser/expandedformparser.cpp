@@ -71,7 +71,7 @@ FunctionType ExpandedFormParser::parseExpandedForm()
 
     fillExpression(ft);
 
-    if (containsAllOperands()) return ONE;
+//    if (containsAllOperands()) return ONE;
 
     return ft;
 }

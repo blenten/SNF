@@ -24,8 +24,8 @@ protected:
     Expression *expression;
     std::vector <std::string> variables;
 
-    bool containsAllOperands();
-    void removeRepeatingOperands();
+//    bool containsAllOperands();
+//    void removeRepeatingOperands();
 
 public:
     virtual FunctionType parse (std::string input, Expression &output) = 0;

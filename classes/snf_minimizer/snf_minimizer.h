@@ -29,7 +29,9 @@ private:
     bool checkNecessity(int index);
     void sortres(int left, int right, Expression& res);
     INOP_type inop(Variable&, Operand&);
+    bool resolves(Expression& exp);
     bool matchOperands(Operand& op1, Operand& op2, Expression& result);
+    void delsame(Expression& expression);
 
     void log(Expression&);         //creating log for "steps"
     stringstream logs;
