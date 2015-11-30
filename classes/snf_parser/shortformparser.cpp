@@ -17,7 +17,7 @@ FunctionType ShortFormParser::parse(string input, Expression &output)
 
     fillExpression();
 
-//    if (containsAllOperands()) return ONE;
+    if (containsAllOperands()) return ONE;
 
     return ft;
 }
