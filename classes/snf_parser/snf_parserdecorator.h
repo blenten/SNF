@@ -3,7 +3,7 @@
 #include "shortformparser.h"
 #include "expandedformparser.h"
 
-class SNF_ParserDecorator
+class SNF_ParserFacade
 {
 private:
 

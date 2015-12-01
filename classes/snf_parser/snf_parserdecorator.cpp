@@ -1,6 +1,6 @@
 #include "snf_parserdecorator.h"
 
-FunctionType SNF_ParserDecorator::parse(string input, Expression &output)
+FunctionType SNF_ParserFacade::parse(string input, Expression &output)
 {
     Parser* parser;
     if (getFunctionInputForm(input) == FORM_SHORT)
@@ -12,7 +12,7 @@ FunctionType SNF_ParserDecorator::parse(string input, Expression &output)
     return ft;
 }
 
-FunctionInputForm SNF_ParserDecorator::getFunctionInputForm(string input)
+FunctionInputForm SNF_ParserFacade::getFunctionInputForm(string input)
 {
     size_t i=0;
     while (getSymbolType(input[i])==SYMBOL_OTHER || getSymbolType(input[i])==SYMBOL_SPACE) i++;

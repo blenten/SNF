@@ -37,7 +37,7 @@ private:
     void log(Expression&);         //creating log for "steps"
     stringstream logs;
 
-    SNF_ParserDecorator parser; //olerapx
+    SNF_ParserFacade parser; //olerapx
     Expression exp;
     FunctionType expType;
 };

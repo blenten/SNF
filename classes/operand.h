@@ -7,7 +7,7 @@ class Operand
 {
 public:
     std::vector<Variable> variables;
-    bool operator == (Operand& op);
+    bool operator==(Operand& op);
 };
 
 typedef vector<Operand> Expression;

@@ -155,13 +155,8 @@ size_t ExpandedFormParser::increaseIndexToVariable(size_t index)
 std::string ExpandedFormParser::getVariable(size_t index)
 {
      std::string output;
-     while (getSymbolType(_input[index]) != SYMBOL_CONJUNCTION &&
-            getSymbolType(_input[index]) != SYMBOL_DISJUNCTION &&
-            getSymbolType(_input[index]) != SYMBOL_LBRACKET &&
-            getSymbolType(_input[index]) != SYMBOL_RBRACKET &&
-            getSymbolType(_input[index]) != SYMBOL_ZERO &&
-            (getSymbolType(_input[index]) == SYMBOL_OPERAND ||
-             getSymbolType(_input[index]) == SYMBOL_INVERSE))
+     while (getSymbolType(_input[index]) == SYMBOL_OPERAND ||
+             getSymbolType(_input[index]) == SYMBOL_INVERSE)
      {
             output += _input[index];
             index++;
@@ -171,13 +166,8 @@ std::string ExpandedFormParser::getVariable(size_t index)
 
 size_t ExpandedFormParser::increaseIndexToSymbolAfterVariable(size_t index)
 {
-    while (getSymbolType(_input[index]) != SYMBOL_CONJUNCTION &&
-           getSymbolType(_input[index]) != SYMBOL_DISJUNCTION &&
-           getSymbolType(_input[index]) != SYMBOL_LBRACKET &&
-           getSymbolType(_input[index]) != SYMBOL_RBRACKET &&
-           getSymbolType(_input[index]) != SYMBOL_ZERO &&
-           (getSymbolType(_input[index]) == SYMBOL_OPERAND ||
-            getSymbolType(_input[index]) == SYMBOL_INVERSE))
+    while (getSymbolType(_input[index]) == SYMBOL_OPERAND ||
+            getSymbolType(_input[index]) == SYMBOL_INVERSE)
     {
            index++;
     }
@@ -194,27 +184,20 @@ OperationState ExpandedFormParser::getNextState(size_t lena, OperationState prev
        (currType == SYMBOL_RBRACKET && getSymbolType(_input[lena]) == SYMBOL_OPERAND))
         return Conjunction;
 
-    else if (currType == SYMBOL_RBRACKET && getSymbolType(_input[lena]) == SYMBOL_DISJUNCTION)
+    if (currType == SYMBOL_RBRACKET && getSymbolType(_input[lena]) == SYMBOL_DISJUNCTION)
         return Disjunction;
 
-    else if (currType==SYMBOL_DISJUNCTION) return Disjunction;
+    if (currType==SYMBOL_DISJUNCTION) return Disjunction;
 
-    else if (currType == SYMBOL_LBRACKET && getSymbolType(_input[lena]) == SYMBOL_OPERAND)
+    if (currType == SYMBOL_LBRACKET && getSymbolType(_input[lena]) == SYMBOL_OPERAND)
     {
        currState = getOperationStateAfterLeftBracket(lena, prevState);
 
        if (currState == DisjunctionToConjunction) return Conjunction;
-       else if(currState == ConjunctionToDinsjunction) return Disjunction;
-       else if (currState == UndefinedToDisjunction) return Disjunction;
-       else if (currState == UndefinedToConjunction) return Conjunction;
+       if (currState == ConjunctionToDinsjunction) return Disjunction;
+       if (currState == UndefinedToDisjunction) return Disjunction;
+       if (currState == UndefinedToConjunction) return Conjunction;
     }
-
-    else currState = Undefined;
-
-    if(currState != Undefined && prevState != Undefined &&
-            currState != DisjunctionToConjunction &&
-            currState != ConjunctionToDinsjunction && currState != prevState)
-       return (prevState == Conjunction) ? Disjunction : Conjunction;
 
     return Undefined;
 }
@@ -229,14 +212,14 @@ OperationState ExpandedFormParser::getOperationStateAfterLeftBracket(size_t inde
         else if (currState == Undefined) return UndefinedToDisjunction;
         else return Disjunction;
     }
-    else if (getSymbolType(_input[index]) == SYMBOL_CONJUNCTION)
+    if (getSymbolType(_input[index]) == SYMBOL_CONJUNCTION)
     {
         if (currState == Disjunction) return DisjunctionToConjunction;
         else if (currState == Undefined) return UndefinedToConjunction;
         else return Conjunction;
     }
 
-    else if (currState == Undefined) return Conjunction;
+    if (currState == Undefined) return Conjunction;
     return currState;
 }
 
@@ -288,6 +271,7 @@ void ExpandedFormParser::fillExpression(const FunctionType& ft)
 
         lena = increaseIndexToSymbolAfterVariable(lena);
         lena = increaseIndexToVariable(lena);
+
         if (getSymbolType(_input[lena]) == SYMBOL_ZERO)
         {
             if (varIndex < variablesNumber) throw InvalidFunctionException("%UnexpectedEndOfFunction");
