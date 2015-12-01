@@ -54,6 +54,25 @@ bool SNF_Minimizer::parse(string input)
     //if(exp.size()==)
     logs<<"%Parsing\n";
     log(exp);
+    if (containsAllOperands())
+    {
+        logs<<"\n";
+        logs <<"%Result\n";
+        logs<<"1";
+        exp.clear();
+        Operand op;
+        op.variables.push_back(Variable("1", false));
+        exp.push_back(op);
+    }
+    return false;
+}
+
+bool SNF_Minimizer::containsAllOperands()
+{
+    delsame(exp);
+    uint64_t max = pow (2, exp.at(0).variables.size());
+    uint64_t contains = exp.size();
+    if (max==contains) return true;
     return false;
 }
 
@@ -79,12 +98,14 @@ string SNF_Minimizer::res_toString()
 //DELSAME
 void SNF_Minimizer::delsame(Expression &expression)
 {
-    for(int i=0; i<(int)expression.size()-1; i++)
+    if (expression.size()<=1) return;
+
+    for(size_t i=0; i<expression.size()-1; i++)
     {
-        int j=i+1;
-        while(j<(int)expression.size())
+        size_t j=i+1;
+        while(j<expression.size())
         {
-            if(expression[i]==expression[j])
+            if(expression.at(i)==expression.at(j))
             {
                 expression.erase(expression.begin()+j);
             }else

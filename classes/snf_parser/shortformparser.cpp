@@ -17,8 +17,6 @@ FunctionType ShortFormParser::parse(string input, Expression &output)
 
     fillExpression();
 
-    if (containsAllOperands()) return ONE;
-
     return ft;
 }
 
@@ -83,7 +81,7 @@ void ShortFormParser::checkDigitsAndCommas()
 
 void ShortFormParser::removeDoubleCommas()
 {
-     size_t len = _input.length();
+    size_t len = _input.length();
 
     for (size_t i=firstDigitPos; i<len-1; i++)
     {
@@ -107,7 +105,7 @@ void ShortFormParser::parseNumbers()
     }
 }
 
-unsigned int ShortFormParser::calculateVariablesCount()
+int ShortFormParser::calculateVariablesCount()
 {
     int max=0;
     size_t len = numbers.size();
@@ -120,16 +118,16 @@ unsigned int ShortFormParser::calculateVariablesCount()
 
 void ShortFormParser::fillExpression()
 {
-    unsigned int varCount = calculateVariablesCount();
-    unsigned int operandCount = numbers.size();
+    int varCount = calculateVariablesCount();
+    size_t operandCount = numbers.size();
 
-    for (unsigned int i=0; i<operandCount; i++)
+    for (size_t i=0; i<operandCount; i++)
     {
         Operand op;
 
         std::string str = numberToBinary(numbers[i], varCount);
 
-        for (unsigned int j=0; j<varCount; j++)
+        for (int j=0; j<varCount; j++)
         {
             Variable var;
             std::string currVar = 'x' + std::to_string(j+1);

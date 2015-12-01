@@ -4,7 +4,6 @@
 
 class InvalidFunctionException
 {
-
 private:
   std::string errorText;
 

@@ -31,12 +31,13 @@ private:
     INOP_type inop(Variable&, Operand&);
     bool resolves(Expression& exp);
     bool matchOperands(Operand& op1, Operand& op2, Expression& result);
+    bool containsAllOperands();
     void delsame(Expression& expression);
 
     void log(Expression&);         //creating log for "steps"
     stringstream logs;
 
-    SNF_ParserDecorator parser; //olerapx
+    SNF_ParserFacade parser; //olerapx
     Expression exp;
     FunctionType expType;
 };

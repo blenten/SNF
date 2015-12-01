@@ -17,5 +17,5 @@ Help::~Help()
 
 void Help::showHelp()
 {
-    ui->helpBrowser->setSource(QUrl::fromLocalFile(QDir::currentPath() +"/help/index.htm"));
+    ui->helpBrowser->setSource(QUrl::fromLocalFile(QDir::currentPath() + "/help/index.htm"));
 }
