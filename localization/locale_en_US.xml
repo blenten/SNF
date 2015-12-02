@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Locale>
 	<Main>
-                 <Title>SNF Minimizer </Title>
+                 <Title>SNF Minimizer {0}</Title>
                  <HelpMenu>Help</HelpMenu>
                  <UserGuideAction>User guide</UserGuideAction>
                  <InputLabel>Input function:</InputLabel>
@@ -18,7 +18,7 @@
  	<Log>
                  <LogTitle>Log</LogTitle>
                  <Parsing>Initial function:</Parsing>
-                 <Matching>Match #</Matching>
+                 <Matching>Match #{0}</Matching>
                  <Result>Result:</Result>
  	</Log>
         <Help>
@@ -29,18 +29,18 @@
 		 <NoOperandsAndVariables>Input string doesn't contain any variables or operands</NoOperandsAndVariables>
 		 <NoVariables>Input string has no variables</NoVariables>
 		 <RepeatingVariables>Input string has repeating variables</RepeatingVariables>
-                 <BracketsNesting>Brackets nesting is violated at position </BracketsNesting>
- 		 <OperationBeforeRBracket>Operation before right bracket at position </OperationBeforeRBracket>
+                 <BracketsNesting>Brackets nesting is violated at position {0}</BracketsNesting>
+                 <OperationBeforeRBracket>Operation before right bracket at position {0}</OperationBeforeRBracket>
                  <NoOperandAfterLBracket>No operand after left bracket at position </NoOperandAfterLBracket>
 		 <BracketsNumberIsNotEqual>Left brackets number is not equal that right brackets number</BracketsNumberIsNotEqual>
-                 <NoOperandAfterInversion>No operand after inversion at position </NoOperandAfterInversion>
+                 <NoOperandAfterInversion>No operand after inversion at position {0}</NoOperandAfterInversion>
                  <LastSymbolIsInversion>Last symbol in string is inversion</LastSymbolIsInversion>
-                 <SequenceOfVariablesIsBroken>The sequence of variables is broken at position </SequenceOfVariablesIsBroken>
-                 <IncorrectOperationChanging>Can't read all variables because of incorrect operation changing at position </IncorrectOperationChanging>
+                 <SequenceOfVariablesIsBroken>The sequence of variables is broken at position {0}</SequenceOfVariablesIsBroken>
+                 <IncorrectOperationChanging>Can't read all variables because of incorrect operation changing at position {0}</IncorrectOperationChanging>
                  <UnexpectedEndOfFunction>Unexpected end of the function</UnexpectedEndOfFunction>
 		 <ExpressionIsEmpty>Expression is empty!</ExpressionIsEmpty>
                  <ExcessiveComma>An excessive comma at the beginning or the ending of enumeration</ExcessiveComma>
-                 <IncorrectEnumeration>The enumeration of constituents is broken at position </IncorrectEnumeration>
+                 <IncorrectEnumeration>The enumeration of constituents is broken at position {0}</IncorrectEnumeration>
                  <TooManyBrackets>The number of brackets is not equal to 1</TooManyBrackets>
                  <IncorrectBracketPosition>Wrong position of bracket</IncorrectBracketPosition>
 	</Exception>	

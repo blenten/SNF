@@ -1,4 +1,5 @@
 #include "classes/localizator/localizator.h"
+#include <iostream>
 
 void Localizator::loadLocale(QString locale)
 {
@@ -27,32 +28,67 @@ void Localizator::loadLocale(QString locale)
 
 void Localizator::localize(SNF_gui *window)
 {
-    window->ui->label_2->setText(getTranslation("%InputLabel"));
-    window->ui->label->setText(getTranslation("%OutputLabel"));
-    window->ui->minimizeButton->setText(getTranslation("%MinimizeButton"));
-    window->ui->stepsButton->setText(getTranslation("%StepsButton"));
-    window->ui->conditionLabel->setText(getTranslation("%ConditionDefault"));
+    window->ui->label_2->setText(translate("%InputLabel"));
+    window->ui->label->setText(translate("%OutputLabel"));
+    window->ui->minimizeButton->setText(translate("%MinimizeButton"));
+    window->ui->stepsButton->setText(translate("%StepsButton"));
+    window->ui->conditionLabel->setText(translate("%ConditionDefault"));
 
-    window->setWindowTitle(getTranslation("%Title")+SNF_version);
+    window->setWindowTitle(translate("%Title", {QString(SNF_version)}));
 }
 
 void Localizator::localize(Help *window)
 {
-    window->setWindowTitle(getTranslation("%HelpTitle"));
+    window->setWindowTitle(translate("%HelpTitle"));
 }
 
 void Localizator::localize(Log *window)
 {
     window->ui->logText->setText(translateLog(window->log));
 
-    window->setWindowTitle(getTranslation("%LogTitle"));
+    window->setWindowTitle(translate("%LogTitle"));
 }
 
-QString Localizator::getTranslation(QString name)
+QString Localizator::translate(QString name, std::vector<QString> args)
+{
+    name = translate(name);
+    name = insertArgsIntoString(name, args);
+
+    return name;
+}
+
+QString Localizator::translate(QString name)
 {
     if (name[0] != '%') return name;
     name.remove(0,1);
     return map[name];
+}
+
+QString Localizator::insertArgsIntoString (QString str, std::vector<QString> &args)
+{
+    for (int i=0;i<str.length();i++)
+    {
+        if (str.at(i)=='{')
+        {
+            size_t temp = i+1;
+            QString argIndex;
+
+            while (str.at(temp)!='}')
+                argIndex+=str.at(temp++);
+
+            str.remove(i, (temp-i+1));
+            i--;
+
+            size_t index = argIndex.toInt();
+
+            if (index<args.size())
+            {
+                str.insert(i+1,args[index]);
+                i+=args[index].length();
+            }
+        }
+    }
+    return str;
 }
 
 QString Localizator::translateLog (const QString &l)
@@ -64,11 +100,14 @@ QString Localizator::translateLog (const QString &l)
     {
         QStringList currList = (*iter).split('@');
 
-        (*iter) = getTranslation(currList[0]);
+        std::vector<QString> args;
 
-        if (currList.size() > 1) (*iter) += currList[1]; // if input string has "@" delim and symbols after it (ex: %SomeError@SomePosition)
+        if (currList.size()>1)
+           for (int i=1;i<currList.size();i++)
+               args.push_back(currList[i]);
 
-        output += (*iter);
+        output+=translate(currList[0], args);
+
         if (iter != list.end()-1) output += "\n";
     }
     return output;

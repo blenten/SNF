@@ -20,7 +20,7 @@ private:
 
     void parseNumbers();
 
-    unsigned int calculateVariablesCount();
+    int calculateVariablesCount();
 
     void fillExpression();
     std::string numberToBinary(int number, int size);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Locale>
 	<Main>
-                 <Title>SNF Minimizer </Title>
+                 <Title>SNF Minimizer {0}</Title>
                  <HelpMenu>Помощь</HelpMenu>
                  <UserGuideAction>Справка</UserGuideAction>
 		 <InputLabel>Функция ввода:</InputLabel>
@@ -18,7 +18,7 @@
  	<Log>
  		 <LogTitle>Лог</LogTitle>
                  <Parsing>Исходная фукция:</Parsing>
-                 <Matching>Склейка №</Matching>
+                 <Matching>Склейка №{0}</Matching>
                  <Result>Результат:</Result>
  	</Log>
         <Help>
@@ -30,17 +30,17 @@
 		 <NoVariables>Строка не содержит переменных</NoVariables>
 		 <RepeatingVariables>Строка содержит повторяющиеся переменные</RepeatingVariables>
                  <BracketsNesting>Нарушена вложенность скобок на позиции </BracketsNesting>
-		 <OperationBeforeRBracket>Символ операции перед закрывающей скобкой на позиции </OperationBeforeRBracket>
-                 <NoOperandAfterLBracket>Отсутствует операнд после открывающей скобки на позиции </NoOperandAfterLBracket>
+                 <OperationBeforeRBracket>Символ операции перед закрывающей скобкой на позиции {0}</OperationBeforeRBracket>
+                 <NoOperandAfterLBracket>Отсутствует операнд после открывающей скобки на позиции {0}</NoOperandAfterLBracket>
 		 <BracketsNumberIsNotEqual>Число открывающих скобок не равно числу закрывающих</BracketsNumberIsNotEqual>
-		 <NoOperandAfterInversion>Нет операнда после символа инверсии на позиции </NoOperandAfterInversion>
+                 <NoOperandAfterInversion>Нет операнда после символа инверсии на позиции {0}</NoOperandAfterInversion>
 		 <LastSymbolIsInversion>Последний символ в строке - инверсия</LastSymbolIsInversion>
-                 <SequenceOfVariablesIsBroken>Нарушена последовательность переменных на позиции </SequenceOfVariablesIsBroken>
-                 <IncorrectOperationChanging>Невозможно прочитать все переменные из-за некорректной смены операции на позиции </IncorrectOperationChanging>
+                 <SequenceOfVariablesIsBroken>Нарушена последовательность переменных на позиции {0}</SequenceOfVariablesIsBroken>
+                 <IncorrectOperationChanging>Невозможно прочитать все переменные из-за некорректной смены операции на позиции {0}</IncorrectOperationChanging>
                  <UnexpectedEndOfFunction>Неожиданный конец функции</UnexpectedEndOfFunction>
 		 <ExpressionIsEmpty>Выражение пусто!</ExpressionIsEmpty>
                  <ExcessiveComma>Лишняя запятая в начале или конце перечисления</ExcessiveComma>
-                 <IncorrectEnumeration>Перечисление конституент нарушено на позиции </IncorrectEnumeration>
+                 <IncorrectEnumeration>Перечисление конституент нарушено на позиции {0}</IncorrectEnumeration>
                  <TooManyBrackets>Число скобок не равно 1</TooManyBrackets>
                  <IncorrectBracketPosition>Неправильное расположение скобки</IncorrectBracketPosition>
 	</Exception>	

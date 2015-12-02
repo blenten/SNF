@@ -16,7 +16,7 @@ TEMPLATE = app
 
 CONFIG += C++11
 CONFIG += qt
-DEFINES += SNF_version=\\\"1.1\\\"
+DEFINES += SNF_version=\\\"1.2\\\"
 
 SOURCES += main.cpp \
      gui/snf_gui.cpp \

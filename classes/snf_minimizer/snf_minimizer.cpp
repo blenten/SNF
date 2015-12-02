@@ -119,10 +119,6 @@ void SNF_Minimizer::delsame(Expression &expression)
 // MATCH
 void SNF_Minimizer::match()
 {
-    if (expType==ONE)
-    {
-        return;
-    }
     unsigned int iter = 1;
     vector<Operand> temp;
     vector<bool> matched;
@@ -189,7 +185,7 @@ bool SNF_Minimizer::matchOperands(Operand &op1, Operand &op2, Expression &result
 // DEL UNNESSESARY
 void SNF_Minimizer::delUnness()
 {
-    if (expType==ONE || resolves(exp))
+    if (resolves(exp))
     {
         logs<<"\n";
         logs <<"%Result\n";
