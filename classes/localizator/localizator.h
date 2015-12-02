@@ -24,6 +24,8 @@ private:
    Localizator (const Localizator &){}
    Localizator& operator=(const Localizator&);
 
+   QString insertArgsIntoString(QString str, std::vector<QString> &args);
+
 public:
    void loadLocale(QString locale);
 
@@ -32,8 +34,9 @@ public:
    void localize (Log* window);
    void localize (Help* window);
 
-   //will find translation for text by its name. Name must begin with '%' symbol
-   QString getTranslation (QString name);
+   //returns translation of string by name and inserts args in output string. Name must start with '%'
+   QString translate (QString name, std::vector<QString> args);
+   QString translate (QString name);
 
    QString translateLog(const QString &l);
 

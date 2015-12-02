@@ -69,30 +69,30 @@ void SNF_gui::on_minimizeButton_clicked()
     qsrand((uint)time.msec());
 
     ui->progressBar->setValue(0);
-    ui->conditionLabel->setText(Localizator::instance().getTranslation("%ConditionParsing"));
+    ui->conditionLabel->setText(Localizator::instance().translate("%ConditionParsing"));
     sleep(100 + qrand()%50);
     if(snf.parse(input.toStdString()))
     {
-        ui->conditionLabel->setText(Localizator::instance().getTranslation("%ConditionError"));
-        ui->outputLine->setText(Localizator::instance().getTranslation("%ConditionError"));
+        ui->conditionLabel->setText(Localizator::instance().translate("%ConditionError"));
+        ui->outputLine->setText(Localizator::instance().translate("%ConditionError"));
         log = snf.getLog().c_str();
         return;
     }
     val += 30 + qrand()%14;
     ui->progressBar->setValue(val);
     ///
-    ui->conditionLabel->setText(Localizator::instance().getTranslation("%ConditionMatch"));
+    ui->conditionLabel->setText(Localizator::instance().translate("%ConditionMatch"));
     sleep(100 + qrand()%50);
     snf.match();
     val += 30 + qrand()%14;
     ui->progressBar->setValue(val);
     ///
-    ui->conditionLabel->setText(Localizator::instance().getTranslation("%ConditionNessessity"));
+    ui->conditionLabel->setText(Localizator::instance().translate("%ConditionNessessity"));
     sleep(100 + qrand()%50);
     snf.delUnness();
     ui->progressBar->setValue(100);
     ///
-    ui->conditionLabel->setText(Localizator::instance().getTranslation("%ConditionReady"));
+    ui->conditionLabel->setText(Localizator::instance().translate("%ConditionReady"));
     ui->outputLine->setText(snf.res_toString().c_str());
     log = snf.getLog().c_str();
 }

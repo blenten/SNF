@@ -14,9 +14,6 @@ public:
     string name;
     bool inversion;
 };
-///-----------------///
-
-///----------------///
 
 inline Variable::Variable(string name = "", bool inversion=false)
 {

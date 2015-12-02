@@ -10,6 +10,7 @@ private:
 public:
     InvalidFunctionException();
     InvalidFunctionException(std::string error);
+
     inline std::string getError(){return errorText;}
 };
 
