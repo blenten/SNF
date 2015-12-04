@@ -98,15 +98,16 @@ QString Localizator::translateLog (const QString &l)
 
     for (QStringList::iterator iter=list.begin(); iter<list.end(); iter++)
     {
-        QStringList currList = (*iter).split('@');
+        QStringList strWithArgs = (*iter).split('@');
+        QString str = strWithArgs[0];
 
         std::vector<QString> args;
 
-        if (currList.size()>1)
-           for (int i=1;i<currList.size();i++)
-               args.push_back(currList[i]);
+        if (strWithArgs.size()>1)
+           for (int i=1;i<strWithArgs.size();i++)
+               args.push_back(translate(strWithArgs[i]));
 
-        output+=translate(currList[0], args);
+        output+=translate(str, args);
 
         if (iter != list.end()-1) output += "\n";
     }
