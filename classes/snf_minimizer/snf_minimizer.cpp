@@ -50,8 +50,6 @@ bool SNF_Minimizer::parse(string input)
         logs<<"%Default\n";
         return true;
     }
-    //delsame(exp);
-    //if(exp.size()==)
     logs<<"%Parsing\n";
     log(exp);
     if (containsAllOperands())
@@ -66,7 +64,7 @@ bool SNF_Minimizer::parse(string input)
     }
     return false;
 }
-
+//ALL OPS
 bool SNF_Minimizer::containsAllOperands()
 {
     delsame(exp);
@@ -123,12 +121,12 @@ void SNF_Minimizer::match()
     vector<Operand> temp;
     vector<bool> matched;
 
-    delsame(exp);
     do{
         temp.clear();
         matched.resize(exp.size());
         for(int i=0; i<(int)matched.size(); i++) matched[i]=false;
 
+        delsame(exp);
         if(exp[0].variables.size()>1) //la one-var-ops match costille
         {
             for(int i=0; i<(int)exp.size()-1; i++)
@@ -154,7 +152,6 @@ void SNF_Minimizer::match()
             }
             exp.clear();
             exp = temp;
-            delsame(exp);
 
             logs<<"\n";
             logs<<"%Matching@"<<iter<<":\n";
@@ -162,7 +159,7 @@ void SNF_Minimizer::match()
             iter++;
         }
     }while(!temp.empty());
-    //+(1,2,3)
+    delsame(exp);
 }
 
 /// subMatch
@@ -171,6 +168,7 @@ bool SNF_Minimizer::matchOperands(Operand &op1, Operand &op2, Expression &result
     Operand res_op;
     for(int i=0; i<(int)op1.variables.size(); i++)
     {
+        if(op1.variables[i].name!=op2.variables[i].name) return false;
         if(op1.variables[i]==op2.variables[i])  res_op.variables.push_back(op1.variables[i]);
     }
 
