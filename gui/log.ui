@@ -18,7 +18,17 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <widget class="QTextEdit" name="logText"/>
+    <widget class="QTextEdit" name="logText">
+     <property name="lineWrapMode">
+      <enum>QTextEdit::WidgetWidth</enum>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+     <property name="tabStopWidth">
+      <number>80</number>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

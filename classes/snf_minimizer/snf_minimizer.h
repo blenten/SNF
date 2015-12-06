@@ -35,6 +35,7 @@ private:
     void delsame(Expression& expression);
 
     void log(Expression&);         //creating log for "steps"
+    void logResult();
     stringstream logs;
 
     SNF_ParserFacade parser; //olerapx

@@ -29,6 +29,14 @@ void SNF_Minimizer::log(Expression &logex)
     }
     logs<<endl;
 }
+
+void SNF_Minimizer::logResult()
+{
+    logs<<"\n";
+    logs <<"%Result\n";
+    log(exp);
+}
+
 //CONSTRUCTOR
 SNF_Minimizer::SNF_Minimizer()
 {
@@ -183,6 +191,7 @@ bool SNF_Minimizer::matchOperands(Operand &op1, Operand &op2, Expression &result
 // DEL UNNESSESARY
 void SNF_Minimizer::delUnness()
 {
+    if (exp.size()==1) return;
     if (resolves(exp))
     {
         logs<<"\n";
@@ -197,13 +206,7 @@ void SNF_Minimizer::delUnness()
 
     if(exp.size()<3 || exp[0].variables.size()==1)    //la nessessity chek は　nenuzhna costille
     {
-        return;
-    }
-    if(exp.size()<=1)
-    {
-        logs << "\n";
-        logs <<"%Result\n";
-        log(exp);
+        logResult();
         return;
     }
 
@@ -219,9 +222,7 @@ void SNF_Minimizer::delUnness()
         }
     }
     //
-    logs<<"\n";
-    logs <<"%Result\n";
-    log(exp);
+        logResult();
 }
 // NECESSITY CHECK
 bool SNF_Minimizer::checkNecessity(int index)
