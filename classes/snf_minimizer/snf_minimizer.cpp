@@ -276,7 +276,7 @@ bool SNF_Minimizer::resolves(Expression& expression)
         int j=0;
         int matches=0;                          //the number of 1rank ops that suit. should be equal to checked op size
 
-        while(expression[j].variables.size()==1) //only 1 rank operands suit
+        while(expression[j].variables.size()==1 && j<(int)expression.size()) //only 1 rank operands suit
         {
             if(i!=j) //except operand we check
             {
