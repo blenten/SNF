@@ -29,7 +29,7 @@ SOURCES += main.cpp \
      classes/snf_parser/shortformparser.cpp \
      classes/snf_parser/expandedformparser.cpp \
      classes/snf_parser/parser.cpp \
-     classes/snf_parser/snf_parserdecorator.cpp \
+     classes/snf_parser/snf_parserfacade.cpp \
      classes/operand.cpp
 
 HEADERS  += gui/snf_gui.h \
@@ -43,7 +43,7 @@ HEADERS  += gui/snf_gui.h \
      classes/snf_parser/shortformparser.h \
      classes/snf_parser/expandedformparser.h \
      classes/snf_parser/parser.h \
-     classes/snf_parser/snf_parserdecorator.h \
+     classes/snf_parser/snf_parserfacade.h \
      classes/operand.h
 
 FORMS    += gui/snf_gui.ui \

@@ -1,3 +1,6 @@
+/**
+  \file
+  */
 #ifndef SNF_PARSER_H
 #define SNF_PARSER_H
 
@@ -16,16 +19,35 @@
 //double inversions will be removed and replaced by conjunction symbol
 //function can be inputted in short form (e.g. +(1,3,5) means !x1*!x2*x3 + !x1*x2*x3 + x1*!x2*x3)
 
+/**
+ * @brief Parser
+ *
+ * Парсер строки с функцией в совершенной нормальной форме. Базовый класс
+ */
 class Parser
 {
 protected:
-    std::string _input;
+    std::string _input; ///<входная строка
 
-    Expression *expression;
-    std::vector <std::string> variables;
+    Expression *expression; ///< выходное выражение
+    std::vector <std::string> variables; ///<список используемых переменных
 
 public:
+    /**
+     * @brief parse
+     *
+     * Виртуальная функция парсинга. Переопределяется в наследниках
+     * @param input - входная строка
+     * @param output - выходное выражение для последующей обработки
+     * @return СНДФ или СНКФ
+     */
     virtual FunctionType parse (std::string input, Expression &output) = 0;
+
+    /**
+     * @brief ~Parser
+     *
+     * Виртуальный конструктор. Не используется
+     */
     virtual ~Parser();
 };
 

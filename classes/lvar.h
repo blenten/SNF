@@ -1,3 +1,7 @@
+/**
+  \file
+  */
+
 #ifndef LVAR_H
 #define LVAR_H
 
@@ -5,14 +9,31 @@
 #include<vector>
 
 using namespace std;
-/// Logiv Variable
+/**
+ * @brief The Variable class
+ *
+ * Логическая переменная
+ */
 class Variable
 {
 public:
+    /**
+     * @brief Variable
+     *
+     * Конструктор
+     * @param name - имя переменной
+     * @param inversion - инверсия
+     */
     Variable(string, bool);
+    /**
+     * @brief operator ==
+     *
+     * Перегруженный оператор сравнения
+     * @return
+     */
     bool operator==(Variable&);
-    string name;
-    bool inversion;
+    string name; ///<имя переменной
+    bool inversion; ///<инверсия
 };
 
 inline Variable::Variable(string name = "", bool inversion=false)

@@ -1,3 +1,7 @@
+/**
+  \file
+  */
+
 #include "operand.h"
 
 bool Operand::operator==(Operand& op)

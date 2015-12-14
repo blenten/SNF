@@ -1,4 +1,8 @@
-#include "snf_parserdecorator.h"
+/**
+  \file
+  */
+
+#include "snf_parserfacade.h"
 
 FunctionType SNF_ParserFacade::parse(string input, Expression &output)
 {

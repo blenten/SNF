@@ -1,3 +1,7 @@
+/**
+  \file
+  */
+
 #include "shortformparser.h"
 
 FunctionType ShortFormParser::parse(string input, Expression &output)

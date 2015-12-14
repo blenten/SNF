@@ -1,3 +1,6 @@
+/**
+  \file
+  */
 #ifndef LOG_H
 #define LOG_H
 
@@ -10,14 +13,27 @@ namespace Ui {
 class Log;
 }
 
+/**
+ * @brief Log
+ */
 class Log : public QDialog
 {
     Q_OBJECT
     friend class Localizator;
 
 public:
+    /**
+     * @brief Log
+     * @param parent
+     */
     explicit Log(QWidget *parent = 0);
+    /**
+      @brief ~Log
+      */
     ~Log();
+    /**
+     * @brief setlog
+     */
     void setlog(QString);
 
 private:

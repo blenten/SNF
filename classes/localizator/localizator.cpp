@@ -1,3 +1,7 @@
+/**
+  \file
+  */
+
 #include "classes/localizator/localizator.h"
 #include <iostream>
 

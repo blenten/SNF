@@ -1,3 +1,7 @@
+/**
+  \file
+  */
+
 #include "expandedformparser.h"
 
 FunctionType ExpandedFormParser::parse(std::string input, Expression &output)
