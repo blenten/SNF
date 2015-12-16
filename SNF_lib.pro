@@ -20,7 +20,7 @@ SOURCES += \
     classes/snf_parser/expandedformparser.cpp \
     classes/snf_parser/parser.cpp \
     classes/snf_parser/shortformparser.cpp \
-    classes/snf_parser/snf_parserdecorator.cpp \
+    classes/snf_parser/snf_parserfacade.cpp \
     classes/Types/types.cpp \
     classes/operand.cpp
 
@@ -31,7 +31,7 @@ HEADERS += \
     classes/snf_parser/expandedformparser.h \
     classes/snf_parser/parser.h \
     classes/snf_parser/shortformparser.h \
-    classes/snf_parser/snf_parserdecorator.h \
+    classes/snf_parser/snf_parserfacade.h \
     classes/Types/types.h \
     classes/lvar.h \
     classes/operand.h

@@ -1,3 +1,7 @@
+/**
+  \file
+*/
+
 #include "snf_tester.h"
 
 void SNF_Tester::start()

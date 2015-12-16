@@ -1,3 +1,7 @@
+/**
+  \file
+*/
+
 #include "snf_tester_gui.h"
 #include "ui_snf_tester_gui.h"
 
