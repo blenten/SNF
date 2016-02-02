@@ -30,10 +30,10 @@ void Localizator::loadLocale(QString locale)
     }
 }
 
-void Localizator::localize(SNF_gui *window)
+void Localizator::localize(GUICLASS *window)
 {
-    window->ui->label_2->setText(translate("%InputLabel"));
-    window->ui->label->setText(translate("%OutputLabel"));
+    window->ui->inputLabel->setText(translate("%InputLabel"));
+    window->ui->outputLabel->setText(translate("%OutputLabel"));
     window->ui->minimizeButton->setText(translate("%MinimizeButton"));
     window->ui->stepsButton->setText(translate("%StepsButton"));
     window->ui->conditionLabel->setText(translate("%ConditionDefault"));

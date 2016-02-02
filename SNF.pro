@@ -11,15 +11,14 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = SNF_gui
+TARGET = SNFG
 TEMPLATE = app
 
 CONFIG += C++11
 CONFIG += qt
-DEFINES += SNF_version=\\\"1.2\\\"
+DEFINES += SNF_version=\\\"1.2.5\\\"
 
 SOURCES += main.cpp \
-     gui/snf_gui.cpp \
      gui/log.cpp \
      gui/help.cpp \
      classes/Exceptions/invalidfunctionexception.cpp \
@@ -30,9 +29,10 @@ SOURCES += main.cpp \
      classes/snf_parser/expandedformparser.cpp \
      classes/snf_parser/parser.cpp \
      classes/snf_parser/snf_parserfacade.cpp \
-     classes/operand.cpp
+     classes/operand.cpp \
+    gui/snfg.cpp
 
-HEADERS  += gui/snf_gui.h \
+HEADERS  += \
      gui/log.h \
      gui/help.h \
      classes/Exceptions/invalidfunctionexception.h \
@@ -44,11 +44,13 @@ HEADERS  += gui/snf_gui.h \
      classes/snf_parser/expandedformparser.h \
      classes/snf_parser/parser.h \
      classes/snf_parser/snf_parserfacade.h \
-     classes/operand.h
+     classes/operand.h \
+    gui/snfg.h
 
 FORMS    += gui/snf_gui.ui \
     gui/log.ui \
-    gui/help.ui
+    gui/help.ui \
+    gui/snfg.ui
 
 DISTFILES +=
 

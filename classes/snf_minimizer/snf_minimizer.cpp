@@ -177,6 +177,8 @@ void SNF_Minimizer::match()
 /// subMatch
 bool SNF_Minimizer::matchOperands(Operand &op1, Operand &op2, Expression &result)
 {
+    if(op1.variables.size()!=op2.variables.size())  return false; //la pozdnie etapi matcha costille
+
     Operand res_op;
     for(int i=0; i<(int)op1.variables.size(); i++)
     {
@@ -208,10 +210,22 @@ void SNF_Minimizer::delUnness()
         return;
     }
 
-    if(exp.size()<3 || exp[0].variables.size()==1)    //la nessessity chek は　nenuzhna costille
+    if(exp.size()<3)    //la nessessity chek は　nenuzhna costille
     {
-        logResult();
-        return;
+        bool b=true;
+        for(int i=0; i<(int)exp.size(); i++)
+        {
+            if(exp[i].variables.size()!=1)
+            {
+                b = false;
+                break;
+            }
+        }
+        if(b)
+        {
+            logResult();
+            return;
+        }
     }
 
     int i=0;

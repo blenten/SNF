@@ -20,15 +20,18 @@ SOURCES += main.cpp\
     gui/log.cpp \
     gui/help.cpp \
     classes/localizator/localizator.cpp \
+    gui/snfg.cpp
 
 HEADERS  += gui/snf_gui.h \
     gui/log.h \
     gui/help.h \
     classes/localizator/localizator.h \
+    gui/snfg.h
 
 FORMS    += gui/snf_gui.ui \
     gui/log.ui \
-    gui/help.ui
+    gui/help.ui \
+    gui/snfg.ui
 
 DISTFILES +=
 

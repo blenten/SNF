@@ -10,11 +10,14 @@
 #include <QByteArray>
 #include <QMap>
 
-#include "gui/snf_gui.h"
 #include "gui/log.h"
 #include "gui/help.h"
 
-class SNF_gui; ///<Главное окно
+//la changing gui class costille
+#include "gui/snfg.h"
+#define GUICLASS SNFG
+
+class GUICLASS; ///<Главное окно
 class Log; ///< Окно лога
 class Help; ///< Окно справки
 
@@ -82,7 +85,7 @@ public:
     * Осуществляет перевод главного окна
     * @param window - окно , которое будет локализовано
     */
-   void localize(SNF_gui* window);
+   void localize(GUICLASS* window);
 
    /**
     * @brief localize
