@@ -119,7 +119,7 @@ FunctionType ExpandedFormParser::getVariables()
      variables.clear();
      std::string currVar = "";
      size_t lena = 0;
-     OperationState currState = Undefined;
+     OperationState currState = Undefined, prevState=Undefined;
 
      lena = increaseIndexToVariable(lena);
 
@@ -140,11 +140,24 @@ FunctionType ExpandedFormParser::getVariables()
              if (getSymbolType(_input[lena]) == SYMBOL_ZERO)
                  return ((currState)==Conjunction? SNDF: SNKF);
          }
-         else         
+         else
              return ((currState)==Conjunction? SNKF: SNDF);
 
+
          OperationState nextState = getNextState(lena,currState);
-         if (nextState!=Undefined) currState = nextState;
+         if (currVar==""&& currState!=Undefined && prevState!=Undefined)
+         {
+             if (prevState==currState)
+                 return ((currState)==Conjunction? SNDF: SNKF);
+             else
+                 return ((currState)==Conjunction? SNKF: SNDF);
+         }
+
+         if (nextState!=Undefined)
+         {
+             prevState = currState;
+             currState = nextState;
+         }
      }
      return OTHER;
 }
@@ -258,6 +271,7 @@ void ExpandedFormParser::fillExpression(const FunctionType& ft)
             if (currState==startState && variables.size()>1 && operandsNumber!=0)
                 throw InvalidFunctionException("%IncorrectOperationChanging@" + std::to_string(lena));
 
+
             varIndex = 0;
             addOperandToExpression();
             operandsNumber++;
@@ -267,6 +281,7 @@ void ExpandedFormParser::fillExpression(const FunctionType& ft)
         {
             if (currState!=startState && currState!=Undefined && variables.size()>1 && varIndex>0)
                 throw InvalidFunctionException("%IncorrectOperationChanging@" + std::to_string(lena));
+
 
             expression->at(operandsNumber-1).variables.push_back(var);
             varIndex++;
