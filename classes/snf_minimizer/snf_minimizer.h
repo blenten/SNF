@@ -5,7 +5,7 @@
 #ifndef SNF_MINIMIZER_H
 #define SNF_MINIMIZER_H
 
-#include "../../classes/snf_parser/snf_parserfacade.h"
+#include "classes/snf_parser/snf_parserfacade.h"
 #include <sstream>
 
 using namespace std;
