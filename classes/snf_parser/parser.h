@@ -10,6 +10,8 @@
 #include <cstdint>
 #include <cmath>
 
+#include "../qmm/qm_operand.h"
+
 //Parser of string with SNF function
 //NOTE: variables may delim by:
 //operations: x1+x2, y1*y2
@@ -19,35 +21,18 @@
 //double inversions will be removed and replaced by conjunction symbol
 //function can be inputted in short form (e.g. +(1,3,5) means !x1*!x2*x3 + !x1*x2*x3 + x1*!x2*x3)
 
-/**
- * @brief Parser
- *
- * Парсер строки с функцией в совершенной нормальной форме. Базовый класс
- */
 class Parser
 {
 protected:
-    std::string _input; ///<входная строка
+    std::string _input;
 
-    Expression *expression; ///< выходное выражение
-    std::vector <std::string> variables; ///<список используемых переменных
+    Expression *expression;
+    std::vector <std::string> variables;
 
 public:
-    /**
-     * @brief parse
-     *
-     * Виртуальная функция парсинга. Переопределяется в наследниках
-     * @param input - входная строка
-     * @param output - выходное выражение для последующей обработки
-     * @return СНДФ или СНКФ
-     */
     virtual FunctionType parse (std::string input, Expression &output) = 0;
+    QMExp expressionToQMExp(Expression& input);
 
-    /**
-     * @brief ~Parser
-     *
-     * Виртуальный конструктор. Не используется
-     */
     virtual ~Parser();
 };
 

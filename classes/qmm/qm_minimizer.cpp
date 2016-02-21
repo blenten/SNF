@@ -1,17 +1,5 @@
 #include "qm_minimizer.h"
 
-QMOperand::QMOperand()
-{
-    matched = false;
-    vars.clear();
-}
-QMOperand::QMOperand(QString str)
-{
-    matched = false;
-    vars = str;
-}
-
-
 QM_Minimizer::QM_Minimizer()
 {
     parser = createParser();

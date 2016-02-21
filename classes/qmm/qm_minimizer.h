@@ -1,21 +1,7 @@
 #ifndef KM_MINIMIZER_H
 #define KM_MINIMIZER_H
 
-#include "../snf_parser/snf_parserdecorator.h"
-#include <QString>
-
-class QMOperand
-{
-public:
-    QMOperand();
-    QMOperand(QString str);
-    QString vars;
-    bool matched;
-};
-
-typedef vector<QMOperand> QMExp;
-
-
+#include "../snf_parser/snf_parserfacade.h"
 
 class QM_Minimizer
 {
