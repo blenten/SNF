@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>SNF Tester 1.0</string>
+   <string/>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="testButt">

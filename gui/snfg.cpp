@@ -20,8 +20,6 @@ SNFG::~SNFG()
     delete ui;
 }
 
-
-
 void SNFG::sleep(unsigned int ms)
 {
     QTime dieTime = QTime::currentTime().addMSecs(ms);

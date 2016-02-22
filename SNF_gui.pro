@@ -16,19 +16,18 @@ CONFIG += qt
 DEFINES += SNF_version=\\\"1.2\\\"
 
 SOURCES += main.cpp\
-    gui/snf_gui.cpp \
     gui/log.cpp \
     gui/help.cpp \
     classes/localizator/localizator.cpp \
     gui/snfg.cpp
 
-HEADERS  += gui/snf_gui.h \
+HEADERS  +=  \
     gui/log.h \
     gui/help.h \
     classes/localizator/localizator.h \
     gui/snfg.h
 
-FORMS    += gui/snf_gui.ui \
+FORMS    += \
     gui/log.ui \
     gui/help.ui \
     gui/snfg.ui

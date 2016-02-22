@@ -22,7 +22,8 @@ SOURCES += \
     classes/snf_parser/shortformparser.cpp \
     classes/snf_parser/snf_parserfacade.cpp \
     classes/Types/types.cpp \
-    classes/operand.cpp
+    classes/operand.cpp \
+    classes/qmm/qm_operand.cpp
 
 
 HEADERS += \
@@ -34,7 +35,8 @@ HEADERS += \
     classes/snf_parser/snf_parserfacade.h \
     classes/Types/types.h \
     classes/lvar.h \
-    classes/operand.h
+    classes/operand.h \
+    classes/qmm/qm_operand.h
 
 
 unix {

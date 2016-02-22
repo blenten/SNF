@@ -1,6 +1,3 @@
-/**
-  \file
-  */
 #ifndef SNF_PARSER_H
 #define SNF_PARSER_H
 

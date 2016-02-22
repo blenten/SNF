@@ -1,6 +1,3 @@
-/**
-  \file
-  */
 #include "types.h"
 
 SymbolType getSymbolType(char symb)

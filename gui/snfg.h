@@ -11,9 +11,8 @@
 #include "log.h"
 #include "help.h"
 
-
-
-namespace Ui {
+namespace Ui
+{
 class SNFG;
 }
 

@@ -1,7 +1,3 @@
-/**
-  \file
-*/
-
 #include "snf_tester_gui.h"
 #include "ui_snf_tester_gui.h"
 
@@ -10,8 +6,9 @@ SNF_Tester_gui::SNF_Tester_gui(QWidget *parent) :
     ui(new Ui::SNF_Tester_gui)
 {
     ui->setupUi(this);
-    setInputValidators();
+    this->setWindowTitle("SNF Tester " + QString(SNF_version));
 
+    setInputValidators();
     connect (&tester, SIGNAL(onInfoSend(QString)), this, SLOT(getInfo(QString)));
 
     tester.moveToThread(&testerThread);

@@ -1,29 +1,12 @@
-/**
-  \file
-  */
-
 #ifndef OPERAND_H
 #define OPERAND_H
 
 #include "lvar.h"
 
-/**
- * @brief Operand
- *
- * Операнд функции
- */
 class Operand
 {
 public:
-    std::vector<Variable> variables; ///< список содержащихся переменных
-
-    /**
-     * @brief operator ==
-     *
-     * Перегруженный оператор сравнения
-     * @param op
-     * @return
-     */
+    std::vector<Variable> variables;
     bool operator==(Operand& op);
 };
 

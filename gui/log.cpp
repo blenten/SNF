@@ -1,7 +1,3 @@
-/**
-  \file
-  */
-
 #include "gui/log.h"
 #include "ui_log.h"
 

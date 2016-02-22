@@ -1,7 +1,3 @@
-/**
-  \file
-  */
-
 #include "help.h"
 #include "ui_help.h"
 

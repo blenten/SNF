@@ -1,7 +1,3 @@
-/**
-  \file
-  */
-
 #include "classes/localizator/localizator.h"
 #include <iostream>
 
@@ -37,6 +33,8 @@ void Localizator::localize(GUICLASS *window)
     window->ui->minimizeButton->setText(translate("%MinimizeButton"));
     window->ui->stepsButton->setText(translate("%StepsButton"));
     window->ui->conditionLabel->setText(translate("%ConditionDefault"));
+    window->ui->menuHelp->setTitle(translate("%HelpMenu"));
+    window->ui->menuHelp->actions().at(0)->setText(translate("%UserGuideAction"));
 
     window->setWindowTitle(translate("%Title", {QString(SNF_version)}));
 }

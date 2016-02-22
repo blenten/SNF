@@ -1,7 +1,3 @@
-/**
-  \file
-  */
-
 #include "snf_minimizer.h"
 //------------SNF-------------//
 

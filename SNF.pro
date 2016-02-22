@@ -30,6 +30,7 @@ SOURCES += main.cpp \
      classes/snf_parser/parser.cpp \
      classes/snf_parser/snf_parserfacade.cpp \
      classes/operand.cpp \
+     classes/qmm/qm_operand.cpp \
     gui/snfg.cpp
 
 HEADERS  += \
@@ -45,9 +46,10 @@ HEADERS  += \
      classes/snf_parser/parser.h \
      classes/snf_parser/snf_parserfacade.h \
      classes/operand.h \
+     classes/qmm/qm_operand.h \
     gui/snfg.h
 
-FORMS    += gui/snf_gui.ui \
+FORMS    += \
     gui/log.ui \
     gui/help.ui \
     gui/snfg.ui

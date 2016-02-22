@@ -14,12 +14,11 @@ CONFIG   -= app_bundle
 CONFIG   += C++11
 
 TEMPLATE = app
-
+DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 SOURCES += \
     tst_qmm.cpp \
-    ../../classes/qmm/qm_minimizer.cpp
-DEFINES += SRCDIR=\\\"$$PWD/\\\"
+    ../../classes/qmm/qm_minimizer.cpp \
 
 HEADERS += \
-    ../../classes/qmm/qm_minimizer.h
+    ../../classes/qmm/qm_minimizer.h \
