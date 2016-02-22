@@ -1,32 +1,17 @@
 #include "classes/localizator/localizator.h"
-#include <iostream>
 
 void Localizator::loadLocale(QString locale)
 {
-    QFile file(":locale/locale_" + locale + ".xml");
-    file.open(QIODevice::ReadOnly);
-    QByteArray byte = file.readAll();
+    QFile file(":locale/locale_" + locale + ".json");
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QString byte = file.readAll();
     file.close();
 
-    QXmlStreamReader reader;
-    reader.addData(byte);
-    QString currName;
-    while (!reader.atEnd() && !reader.hasError())
-    {
-         QXmlStreamReader::TokenType token = reader.readNext();
-         if (token == QXmlStreamReader::StartDocument) continue;
-
-         if (reader.name()=="Main" || reader.name()=="Exception" || reader.name()=="Log" || reader.name()=="Help") continue;
-
-         if (reader.name().toString().trimmed() != "")
-            currName = reader.name().toString();
-
-         if (reader.text().toString().trimmed() != "")
-             map.insert(currName, reader.text().toString());
-    }
+    QJsonDocument document = QJsonDocument::fromJson(byte.toUtf8());
+    localeJson = document.object();
 }
 
-void Localizator::localize(GUICLASS *window)
+void Localizator::localize(SNFG *window)
 {
     window->ui->inputLabel->setText(translate("%InputLabel"));
     window->ui->outputLabel->setText(translate("%OutputLabel"));
@@ -63,7 +48,7 @@ QString Localizator::translate(QString name)
 {
     if (name[0] != '%') return name;
     name.remove(0,1);
-    return map[name];
+    return localeJson.value(name).toString();
 }
 
 QString Localizator::insertArgsIntoString (QString str, std::vector<QString> &args)

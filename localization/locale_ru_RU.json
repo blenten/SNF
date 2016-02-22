@@ -1,0 +1,42 @@
+﻿{
+		"Title": "SNF Minimizer {0}",
+        "HelpMenu": "Помощь",
+        "UserGuideAction": "Справка",
+        "InputLabel": "Функция ввода:",
+        "OutputLabel": "Функция вывода:",
+        "MinimizeButton": "МИНИМИЗИРОВАТЬ",
+        "StepsButton": "Пошагово",
+        "ConditionDefault": "Сост.",
+        "ConditionParsing": "Парсинг...",
+        "ConditionError": "Неудачно.",
+        "ConditionMatch": "Склейка...",
+        "ConditionNessessity": "Проверка избыточности...",
+        "ConditionReady": "Готово.",
+
+		"LogTitle": "Лог",
+        "Parsing": "Исходная фукция:",
+        "Matching": "Склейка №{0}",
+        "Result": "Результат:",
+
+
+		"HelpTitle": "Справка",
+
+        "Default": "Некорректная функция",
+		"NoOperandsAndVariables": "Строка не содержит переменных и операндов",
+		"NoVariables": "Строка не содержит переменных",
+		"RepeatingVariables": "Строка содержит повторяющиеся переменные",
+        "BracketsNesting": "Нарушена вложенность скобок на позиции {0}",
+        "OperationBeforeRBracket": "Символ операции перед закрывающей скобкой на позиции {0}",
+        "NoOperandAfterLBracket": "Отсутствует операнд после открывающей скобки на позиции {0}",
+		"BracketsNumberIsNotEqual": "Число открывающих скобок не равно числу закрывающих",
+        "NoOperandAfterInversion": "Нет операнда после символа инверсии на позиции {0}",
+        "LastSymbolIsInversion": "Последний символ в строке - инверсия",
+        "SequenceOfVariablesIsBroken": "Нарушена последовательность переменных на позиции {0}",
+        "IncorrectOperationChanging": "Невозможно прочитать все переменные из-за некорректной смены операции на позиции {0}",
+        "UnexpectedEndOfFunction": "Неожиданный конец функции",
+		"ExpressionIsEmpty": "Выражение пусто!",
+        "ExcessiveComma": "Лишняя запятая в начале или конце перечисления",
+        "IncorrectEnumeration": "Перечисление конституент нарушено на позиции {0}",
+        "TooManyBrackets": "Число скобок не равно 1",
+        "IncorrectBracketPosition": "Неправильное расположение скобки"
+}

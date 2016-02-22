@@ -1,26 +1,23 @@
 #ifndef LOCALIZATOR_H
 #define LOCALIZATOR_H
 
-#include <qxmlstream.h>
 #include <QFile>
 #include <QByteArray>
-#include <QMap>
+#include <QJsonDocument>
+#include <QJsonObject>
 
+#include "gui/snfg.h"
 #include "gui/log.h"
 #include "gui/help.h"
 
-//la changing gui class costille
-#include "gui/snfg.h"
-#define GUICLASS SNFG
-
-class GUICLASS;
+class SNFG;
 class Log;
 class Help;
 
 class Localizator
 {
 private:
-   QMap <QString, QString> map;
+   QJsonObject localeJson;
 
    Localizator(){}
    ~Localizator(){}
@@ -33,7 +30,7 @@ public:
 
    void loadLocale(QString locale);
 
-   void localize(GUICLASS* window);
+   void localize(SNFG* window);
 
    void localize (Log* window);
 
