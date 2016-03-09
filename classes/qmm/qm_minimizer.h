@@ -10,13 +10,16 @@ public:
     ~QM_Minimizer();
 
     inline QMExp getExp(){ return exp; }
+
+    void match(QMExp match_exp);
 protected:
-    SNF_ParserFacade* createParser();
+    virtual SNF_ParserFacade* createParser();
     QMOperand* matchOps(QMOperand &op1, QMOperand &op2, int &match_index);
     void toGroups(QMExp &expression, Groups &res);
     void firstMatch(QMExp &match_exp, Groups &res);
+    void secMatch(QMExp &match_exp, Groups &match_groups);
+    int opsize;
 private:
-    int opsyze;
     SNF_ParserFacade *parser;
     FunctionType expType;
     QMExp exp;

@@ -18,6 +18,7 @@ public:
     QMExp strToExp(QString &str);
     QString expToStr(QMExp &exp);
     QString groupsToStr(vector<QMExp> &groups);
+    Groups strToGroups(QString &str);
 
 private Q_SLOTS:
 
@@ -87,6 +88,28 @@ QString QMMtest::groupsToStr(vector<QMExp> &groups)
     return res;
 }
 
+Groups QMMtest::strToGroups(QString &str)
+{
+    Groups res;
+    QMExp curr_group;
+    QMOperand curr_op;
+    for(int i=0; i<str.size(); i++)
+    {
+        if(str[i]==';')
+        {
+            res.push_back(curr_group);
+            curr_group.clear();
+        }else if(str[i]==' ')
+        {
+            curr_group.push_back(curr_op);
+            curr_op.vars.clear();
+        }else
+        {
+            curr_op.vars.push_back(str[i]);
+        }
+    }
+    return res;
+}
 
 
 
@@ -97,24 +120,28 @@ void QMMtest::opsMatchTest_data()
     QTest::addColumn<QString>("op2");
     QTest::addColumn<QString>("result");
     QTest::addColumn<int>("match_index");
+    QTest::addColumn<int>("opsize");
 
-    QTest::newRow("2T")<<"00"<<"10"<<"-0"<<0;
-    QTest::newRow("2F")<<"10"<<"01"<<""<<-1;
-    QTest::newRow("3T")<<"101"<<"111"<<"1-1"<<1;
-    QTest::newRow("dif len")<<"10"<<"110"<<""<<-1;
-    QTest::newRow("2step T")<<"1-01"<<"1-00"<<"1-0-"<<3;
-    QTest::newRow("2step F same - pos")<<"1-01"<<"0-11"<<""<<-1;
-    QTest::newRow("2step F dif - pos")<<"1-01"<<"10-1"<<""<<-1;
+    QTest::newRow("2T")<<"00"<<"10"<<"-0"<<0<<2;
+    QTest::newRow("2F")<<"10"<<"01"<<""<<-1<<2;
+    QTest::newRow("3T")<<"101"<<"111"<<"1-1"<<1<<3;
+    QTest::newRow("dif len, !=opsize")<<"10"<<"110"<<""<<-1<<3;
+    QTest::newRow("same len, !=opsize")<<"10"<<"11"<<""<<-1<<3;
+    QTest::newRow("2step T")<<"1-01"<<"1-00"<<"1-0-"<<3<<4;
+    QTest::newRow("2step F same - pos")<<"1-01"<<"0-11"<<""<<-1<<4;
+    QTest::newRow("2step F dif - pos")<<"1-01"<<"10-1"<<""<<-1<<4;
 }
 
 void QMMtest::opsMatchTest()
 {
     QFETCH(QString, op1);
     QFETCH(QString, op2);
+    QFETCH(int, opsize);
     QFETCH(QString, result);
     QFETCH(int, match_index);
 
     QMMinimizerT qmm;
+    qmm.opsize = opsize;
     QString test_res;
     QMOperand operand1(op1);
     QMOperand operand2(op2);
@@ -154,6 +181,7 @@ void QMMtest::toGroupsTest()
 
     QMMinimizerT qmm;
     QMExp tstexp = strToExp(expression);
+    qmm.opsize = tstexp[0].vars.size();
     Groups test_res;
     qmm.toGroups(tstexp, test_res);
     QCOMPARE(groupsToStr(test_res), result);
@@ -179,6 +207,7 @@ void QMMtest::firstMatchTest()
 
     QMMinimizerT qmm;
     QMExp tstexp = strToExp(expression);
+    qmm.opsize = tstexp[0].vars.size();
     Groups test_res;
     qmm.firstMatch(tstexp, test_res);
     QCOMPARE(groupsToStr(test_res), result);
@@ -190,14 +219,41 @@ void QMMtest::firstMatchTest()
 
 void QMMtest::secMatchTest_data()
 {
-    QTest::addColumn<
+    QTest::addColumn<QString>("groups");
+    QTest::addColumn<QString>("result");
+    QTest::addColumn<QString>("start_exp");
+    QTest::addColumn<QString>("res_exp");
+    QTest::addColumn<int>("opsize");
+
+    QTest::newRow("0,1,2,3")<<";0-0 0-1 ;00- 01- ;"<<";0-- ;0-- ;"<<""<<""<<3;
 }
+
+void QMMtest::secMatchTest()
+{
+    QFETCH(QString, groups);
+    QFETCH(QString, result);
+    QFETCH(QString, start_exp);
+    QFETCH(QString, res_exp);
+    QFETCH(int, opsize);
+
+    QMMinimizerT qmm;
+    qmm.opsize = opsize;
+    Groups test_res = strToGroups(groups);
+    QMExp test_exp = strToExp(start_exp);
+    qmm.secMatch(test_exp, test_res);
+    QCOMPARE(groupsToStr(test_res), result);
+    QCOMPARE(expToStr(test_exp), res_exp);
+}
+
+
+
 
 //void QMMtest::macthTest_data()
 //{
 //    QTest::addColumn<QString>("expression");
 //    QTest::addColumn<QString>("result");
 
+//    QTest::newRow("0,1,2,3")<<"000+001+010+011"<<"0--";
 //    QTest::newRow("0,1,3,5")<<"000+001+011+111"<<"00- 0-1 -11";
 //}
 
@@ -207,10 +263,10 @@ void QMMtest::secMatchTest_data()
 //    QFETCH(QString, result);
 
 //    QMMinimizerT qmm;
-//    qmm.exp = strToExp(expression);
-//    qmm.match();
+//    QMExp test_exp = strToExp(expression);
+//    qmm.match(test_exp);
 
-//    QCOMPARE(expToStr(qmm.exp), result);
+//    QCOMPARE(expToStr(qmm.getExp()), result);
 //}
 
 
