@@ -13,5 +13,6 @@ public:
 };
 
 typedef std::vector<QMOperand> QMExp;
+typedef std::vector<QMExp> Groups;
 
 #endif // QM_OPERAND_H

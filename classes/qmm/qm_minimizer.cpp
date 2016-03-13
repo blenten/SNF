@@ -3,7 +3,8 @@
 QM_Minimizer::QM_Minimizer()
 {
     parser = createParser();
-    exp.clear();
+    curr_exp.clear();
+    opsize = -1;
 }
 QM_Minimizer::~QM_Minimizer()
 {
@@ -15,6 +16,29 @@ QM_Minimizer::~QM_Minimizer()
 SNF_ParserFacade* QM_Minimizer::createParser()
 {
     return new SNF_ParserFacade();
+}
+void QM_Minimizer::set_opsize(int new_size)
+{
+    opsize = new_size;
+}
+void QM_Minimizer::set_currexp(QMExp exp)
+{
+    if(!exp.empty())
+    {
+        curr_exp = exp;
+    }
+}
+
+bool QM_Minimizer::inExp(QMOperand &op, QMExp &exp)
+{
+    for(int i=0; i<(int)exp.size(); i++)
+    {
+        if(exp[i].vars==op.vars)
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 
@@ -39,15 +63,53 @@ void QM_Minimizer::toGroups(QMExp &expression, Groups &res)
     }
 }
 
-QMOperand* QM_Minimizer::matchOps(QMOperand &op1, QMOperand &op2, int &match_index)
+void QM_Minimizer::export_unmatched(Groups &temp, QMExp &res_exp)
 {
+    for(int i=0; i<(int)temp.size(); i++)
+    {
+        for(int j=0; j<(int)temp[i].size();j++)
+        {
+            if(!temp[i][j].matched)
+            {
+                res_exp.push_back(temp[i][j]);
+            }
+        }
+    }
+}
+
+void QM_Minimizer::delsame(Groups &temp)
+{
+    QMExp texp;
+    for(int i=0; i<(int)temp.size(); i++)
+    {
+        int j=0;
+        while(j<(int)temp[i].size())
+        {
+            if(inExp(temp[i][j], texp))
+            {
+                temp[i].erase(temp[i].begin()+j);
+            }else
+            {
+                texp.push_back(temp[i][j]);
+                j++;
+            }
+        }
+    }
+}
+
+pair<QMOperand*, int> QM_Minimizer::matchOps(QMOperand &op1, QMOperand &op2)
+{
+     QString res_vars;
+     pair<QMOperand*, int> result;
+
      if(op1.vars.size()!=opsize || op2.vars.size()!=opsize) //not needed if input's correct
      {
-         match_index = -1;
-         return nullptr;
+         result.first = nullptr;
+         result.second = -1;
+         return result;
      }
-     QString res;
-     res = op1.vars;
+
+     res_vars = op1.vars;
      bool matched_already = false;
 
      for(int i=0; i<opsize; i++)
@@ -55,34 +117,37 @@ QMOperand* QM_Minimizer::matchOps(QMOperand &op1, QMOperand &op2, int &match_ind
          if(op1.vars[i]==op2.vars[i])
          {
              continue;
-         }else if(op1.vars[i]=='-' || op2.vars[i]=='-')
+         }else if(op1.vars[i]=='-' || op2.vars[i]=='-') //if '-' signs have different position in op1 and op2
          {
-             match_index = -1;
-             return nullptr;
+             result.first = nullptr;
+             result.second = -1;
+             return result;
          }else
          {
              if(matched_already)
              {
-                 match_index = -1;
-                 return nullptr;
+                 result.first = nullptr;
+                 result.second = -1;
+                  return result;
              }
 
-             res[i] = '-';
+             res_vars[i] = '-';
              matched_already = true;
-             match_index = i;
+             result.second = i;
          }
      }
-
-     return new QMOperand(res);
+     result.first = new QMOperand(res_vars);
+     return result;
 }
 
-void QM_Minimizer::firstMatch(QMExp &match_exp, Groups &res)
+void QM_Minimizer::firstMatch(QMExp &match_exp, Groups &match_groups)
 {
-    Groups temp;
-    toGroups(match_exp, temp);
-    match_exp.clear();
-    res.resize(opsize);
-//    res.resize(match_exp[0].vars.size());
+
+    Groups temp = match_groups;
+    match_groups.clear();
+    match_groups.resize(opsize);
+    bool anymatch = false; // for costille
+
 
     QMOperand *match_resop = nullptr;
     for(size_t i=0; i<(temp.size()-1); i++)
@@ -92,26 +157,24 @@ void QM_Minimizer::firstMatch(QMExp &match_exp, Groups &res)
             for(size_t k=0; k<temp[i+1].size(); k++)
             {
                 int match_i;
-                match_resop = matchOps(temp[i][j], temp[i+1][k], match_i);
+                std::tie(match_resop, match_i) = matchOps(temp[i][j], temp[i+1][k]);
                 if(match_resop!=nullptr)
                 {
-                    res[match_i].push_back(*match_resop);
+                    match_groups[match_i].push_back(*match_resop);
                     temp[i][j].matched = true;
                     temp[i+1][k].matched = true;
                     delete match_resop;
+                    anymatch = true;
                 }
             }
         }
     }
-    for(size_t i=0; i<temp.size(); i++)
+    export_unmatched(temp, match_exp);
+
+    // la secMatch cycle not to start if useless cotsille
+    if(!anymatch)
     {
-        for(size_t j=0; j<temp[i].size();j++)
-        {
-            if(!temp[i][j].matched)
-            {
-                match_exp.push_back(temp[i][j]);
-            }
-        }
+        match_groups.clear();
     }
 }
 
@@ -122,41 +185,59 @@ void QM_Minimizer::secMatch(QMExp &match_exp, Groups &match_groups)
     Groups temp = match_groups;
     match_groups.clear();
     match_groups.resize(opsize);
+    bool anymatch = false; // for costille
 
-    QMOperand *match_resop = nullptr;
-
-    for(size_t i=0; i<temp.size(); i++)
+    //matches in prematched groups
+    if(match_groups.size()>1)
     {
-        for(int j=0; j<(int)temp[i].size()-1; j++)
+        QMOperand *match_resop = nullptr;
+
+        for(size_t i=0; i<temp.size(); i++)
         {
-            for(int k=j+1; k<(int)temp[i].size();k++)
+            for(int j=0; j<(int)temp[i].size()-1; j++)
             {
-                int match_i;
-                match_resop = matchOps(temp[i][j], temp[i][k], match_i);
-                if(match_resop!=nullptr)
+                for(int k=j+1; k<(int)temp[i].size();k++)
                 {
-                    match_groups[match_i].push_back(*match_resop);
-                    temp[i][j].matched = true;
-                    temp[i][k].matched = true;
-                    delete match_resop;
+                    int match_i;
+                    std::tie(match_resop, match_i) = matchOps(temp[i][j], temp[i][k]);
+                    if(match_resop!=nullptr)
+                    {
+                        match_groups[match_i].push_back(*match_resop);
+                        temp[i][j].matched = true;
+                        temp[i][k].matched = true;
+                        delete match_resop;
+                        anymatch = true;
+                    }
                 }
             }
         }
     }
-    for(size_t i=0; i<temp.size(); i++)
+
+    // adds unmatched or single ops to result expression
+    export_unmatched(temp, match_exp);
+
+    // la endless secMatch cotsille
+    if(!anymatch)
     {
-        for(size_t j=0; j<temp[i].size();j++)
-        {
-            if(!temp[i][j].matched)
-            {
-                match_exp.push_back(temp[i][j]);
-            }
-        }
+        match_groups.clear();
     }
 }
 
-void QM_Minimizer::match(QMExp match_exp)
+QMExp QM_Minimizer::match(QMExp &match_exp)
 {
+    if(opsize==-1)
+    {
+        set_opsize(match_exp[0].vars.size());
+    }
+    QMExp res;
     Groups temp;
-    return;
+    toGroups(match_exp, temp);
+    firstMatch(res, temp);
+    delsame(temp);
+    while(!temp.empty())
+    {
+        secMatch(res, temp);
+        delsame(temp);
+    }
+    return res;
 }

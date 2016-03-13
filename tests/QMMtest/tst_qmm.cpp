@@ -15,10 +15,10 @@ class QMMtest : public QObject
     Q_OBJECT
 public:
 //    QMMtest();
-    QMExp strToExp(QString &str);
-    QString expToStr(QMExp &exp);
-    QString groupsToStr(vector<QMExp> &groups);
-    Groups strToGroups(QString &str);
+    QMExp strToExp(QString str);
+    QString expToStr(QMExp exp);
+    QString groupsToStr(vector<QMExp> groups);
+    Groups strToGroups(QString str);
 
 private Q_SLOTS:
 
@@ -34,12 +34,12 @@ private Q_SLOTS:
     void secMatchTest_data();
     void secMatchTest();
 
-//    void macthTest_data();
-//    void macthTest();
+    void macthTest_data();
+    void macthTest();
 
 };
 
-QString QMMtest::expToStr(QMExp &exp)
+QString QMMtest::expToStr(QMExp exp)
 {
     if(exp.empty()) return "";
     QString res;
@@ -52,7 +52,7 @@ QString QMMtest::expToStr(QMExp &exp)
     return res;
 }
 
-QMExp QMMtest::strToExp(QString &str)
+QMExp QMMtest::strToExp(QString str)
 {
     QMExp res;
     res.clear();
@@ -72,7 +72,7 @@ QMExp QMMtest::strToExp(QString &str)
     return res;
 }
 
-QString QMMtest::groupsToStr(vector<QMExp> &groups)
+QString QMMtest::groupsToStr(vector<QMExp> groups)
 {
     if(groups.empty()) return "empty";
     QString res;
@@ -88,7 +88,7 @@ QString QMMtest::groupsToStr(vector<QMExp> &groups)
     return res;
 }
 
-Groups QMMtest::strToGroups(QString &str)
+Groups QMMtest::strToGroups(QString str)
 {
     Groups res;
     QMExp curr_group;
@@ -141,14 +141,15 @@ void QMMtest::opsMatchTest()
     QFETCH(int, match_index);
 
     QMMinimizerT qmm;
-    qmm.opsize = opsize;
+    qmm.set_opsize(opsize);
     QString test_res;
     QMOperand operand1(op1);
     QMOperand operand2(op2);
 
 
     int tst_index;
-    QMOperand *mres = qmm.matchOps(operand1, operand2, tst_index);
+    QMOperand *mres;
+    std::tie(mres, tst_index) = qmm.matchOps(operand1, operand2);
     if(mres==nullptr)
     {
         test_res = "";
@@ -181,7 +182,7 @@ void QMMtest::toGroupsTest()
 
     QMMinimizerT qmm;
     QMExp tstexp = strToExp(expression);
-    qmm.opsize = tstexp[0].vars.size();
+    qmm.set_opsize(tstexp[0].vars.size());
     Groups test_res;
     qmm.toGroups(tstexp, test_res);
     QCOMPARE(groupsToStr(test_res), result);
@@ -192,23 +193,25 @@ void QMMtest::toGroupsTest()
 
 void QMMtest::firstMatchTest_data()
 {
-    QTest::addColumn<QString>("expression");
+    QTest::addColumn<QString>("start_groups");
     QTest::addColumn<QString>("result");
     QTest::addColumn<QString>("res_exp");
+    QTest::addColumn<int>("opsize");
 
-    QTest::newRow("0,1,2,3")<<"000+001+010+011"<<";0-0 0-1 ;00- 01- ;"<<"";
+    QTest::newRow("0,1,2,3")<<"000 ;001 010 ;011 ;"<<";0-0 0-1 ;00- 01- ;"<<""<<3;
 }
 
 void QMMtest::firstMatchTest()
 {
-    QFETCH(QString, expression);
+    QFETCH(QString, start_groups);
     QFETCH(QString, result);
     QFETCH(QString, res_exp);
+    QFETCH(int, opsize);
 
     QMMinimizerT qmm;
-    QMExp tstexp = strToExp(expression);
-    qmm.opsize = tstexp[0].vars.size();
-    Groups test_res;
+    QMExp tstexp;
+    qmm.set_opsize(opsize);
+    Groups test_res = strToGroups(start_groups);
     qmm.firstMatch(tstexp, test_res);
     QCOMPARE(groupsToStr(test_res), result);
     QCOMPARE(expToStr(tstexp), res_exp);
@@ -237,7 +240,7 @@ void QMMtest::secMatchTest()
     QFETCH(int, opsize);
 
     QMMinimizerT qmm;
-    qmm.opsize = opsize;
+    qmm.set_opsize(opsize);
     Groups test_res = strToGroups(groups);
     QMExp test_exp = strToExp(start_exp);
     qmm.secMatch(test_exp, test_res);
@@ -248,26 +251,26 @@ void QMMtest::secMatchTest()
 
 
 
-//void QMMtest::macthTest_data()
-//{
-//    QTest::addColumn<QString>("expression");
-//    QTest::addColumn<QString>("result");
+void QMMtest::macthTest_data()
+{
+    QTest::addColumn<QString>("expression");
+    QTest::addColumn<QString>("result");
 
-//    QTest::newRow("0,1,2,3")<<"000+001+010+011"<<"0--";
-//    QTest::newRow("0,1,3,5")<<"000+001+011+111"<<"00- 0-1 -11";
-//}
+    QTest::newRow("0,1,2,3")<<"000+001+010+011"<<"0--";
+    QTest::newRow("0,1,3,5")<<"000+001+011+111"<<"-11 0-1 00-";
+}
 
-//void QMMtest::macthTest()
-//{
-//    QFETCH(QString, expression);
-//    QFETCH(QString, result);
+void QMMtest::macthTest()
+{
+    QFETCH(QString, expression);
+    QFETCH(QString, result);
 
-//    QMMinimizerT qmm;
-//    QMExp test_exp = strToExp(expression);
-//    qmm.match(test_exp);
+    QMMinimizerT qmm;
+    QMExp test_exp = strToExp(expression);
+    qmm.set_opsize(test_exp[0].vars.size());
 
-//    QCOMPARE(expToStr(qmm.getExp()), result);
-//}
+    QCOMPARE(expToStr(qmm.match(test_exp)), result);
+}
 
 
 QTEST_APPLESS_MAIN(QMMtest)
