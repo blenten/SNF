@@ -173,6 +173,9 @@ void QMMtest::toGroupsTest_data()
 
     QTest::newRow("3v; 1 op in each g")<<"000+001+011+111"<<"000 ;001 ;011 ;111 ;";
     QTest::newRow("3v; all in 1 g")<<"001+010+100"<<";001 010 100 ;;;";
+    QTest::newRow("0v") << "" << " ;";
+    QTest::newRow("5v; len 5 with repeats") << "00010+00010+11001+11000+00101" << ";00010 00010 ;11000 00101 ;11001 ;;;";
+    QTest::newRow("2v; 1 op") << "01" << ";01 ;;";
 }
 
 void QMMtest::toGroupsTest()
@@ -199,6 +202,10 @@ void QMMtest::firstMatchTest_data()
     QTest::addColumn<int>("opsize");
 
     QTest::newRow("0,1,2,3")<<"000 ;001 010 ;011 ;"<<";0-0 0-1 ;00- 01- ;"<<""<<3;
+    QTest::newRow("3 g, first empty") << ";001 010 ; 011 ;" << ";0-1 ;01- ;"<<""<<3;
+    QTest::newRow("1 g") << "0 ;" << "empty" << "0" << 1;
+    QTest::newRow ("empty") << ";" << "empty" << "" << 0;
+    QTest::newRow("one alone") << "000 ;001 ;111" << ";;00- ;" << "111" << 3;
 }
 
 void QMMtest::firstMatchTest()
@@ -229,6 +236,8 @@ void QMMtest::secMatchTest_data()
     QTest::addColumn<int>("opsize");
 
     QTest::newRow("0,1,2,3")<<";0-0 0-1 ;00- 01- ;"<<";0-- ;0-- ;"<<""<<""<<3;
+    QTest::newRow("empty") << " ;" << "empty" << "" <<"" << 0;
+    QTest::newRow("one alone") << "00- 01- ; 0-0" << ";0-- ;;" << "000" << "000 0-0"<<3;
 }
 
 void QMMtest::secMatchTest()
@@ -258,6 +267,9 @@ void QMMtest::macthTest_data()
 
     QTest::newRow("0,1,2,3")<<"000+001+010+011"<<"0--";
     QTest::newRow("0,1,3,5")<<"000+001+011+111"<<"-11 0-1 00-";
+    QTest::newRow("empty") << ""<<"";
+    QTest::newRow("1 op") << "000" << "000";
+    QTest::newRow("1 not matched") << "001+110+011" << "110 0-1";
 }
 
 void QMMtest::macthTest()
