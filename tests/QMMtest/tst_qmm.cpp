@@ -37,17 +37,24 @@ private Q_SLOTS:
     void macthTest_data();
     void macthTest();
 
+//    void cutCoreTestData();
+//    void cutCoreTest();
+
 };
 
 QString QMMtest::expToStr(QMExp exp)
 {
     if(exp.empty()) return "";
     QString res;
+    res.clear();
     res.push_back(exp[0].vars);
     for(size_t i=1; i<exp.size(); i++)
     {
-        res.push_back(' ');
-        res.push_back(exp[i].vars);
+        if(!exp[i].vars.isEmpty())
+        {
+            res.push_back(' ');
+            res.push_back(exp[i].vars);
+        }
     }
     return res;
 }
@@ -205,7 +212,7 @@ void QMMtest::firstMatchTest_data()
     QTest::newRow("3 g, first empty") << ";001 010 ; 011 ;" << ";0-1 ;01- ;"<<""<<3;
     QTest::newRow("1 g") << "0 ;" << "empty" << "0" << 1;
     QTest::newRow ("empty") << ";" << "empty" << "" << 0;
-    QTest::newRow("one alone") << "000 ;001 ;111" << ";;00- ;" << "111" << 3;
+    QTest::newRow("one alone") << "000 ;001 ;111 ;" << ";;00- ;" << "111" << 3;
 }
 
 void QMMtest::firstMatchTest()
@@ -237,7 +244,7 @@ void QMMtest::secMatchTest_data()
 
     QTest::newRow("0,1,2,3")<<";0-0 0-1 ;00- 01- ;"<<";0-- ;0-- ;"<<""<<""<<3;
     QTest::newRow("empty") << " ;" << "empty" << "" <<"" << 0;
-    QTest::newRow("one alone") << "00- 01- ; 0-0" << ";0-- ;;" << "000" << "000 0-0"<<3;
+    QTest::newRow("one alone") << "00- 01- ; 0-0 ;" << ";0-- ;;" << "000" << "000 0-0"<<3;
 }
 
 void QMMtest::secMatchTest()
@@ -284,6 +291,31 @@ void QMMtest::macthTest()
     QCOMPARE(expToStr(qmm.match(test_exp)), result);
 }
 
+
+//void QMMtest::cutCoreTestData()
+//{
+//    QTest::addColumn<QString>("input");
+//    QTest::addColumn<QString>("expression");
+//    QTest::addColumn<QString>("result");
+//    QTest::addColumn<QString>("res_exp");
+
+//    QTest::newRow("all core")<<"001+000+101+111"<<"0-0+11-+-01"<<"0-0 11- -01"<< "";
+//}
+
+//void QMMtest::cutCoreTest()
+//{
+//    QFETCH(QString, input);
+//    QFETCH(QString, expression);
+//    QFETCH(QString, result);
+//    QFETCH(QString, res_exp);
+
+//    QMMinimizerT qmm;
+//    QMExp test_input = strToExp(input);
+//    QMExp test_exp = qmm.cutCore(strToExp(expression), test_input);
+
+//    QCOMPARE(expToStr(test_exp), result);
+//    QCOMPARE(expToStr(test_input), res_exp);
+//}
 
 QTEST_APPLESS_MAIN(QMMtest)
 

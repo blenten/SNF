@@ -18,8 +18,10 @@ public:
 
 protected:
     virtual SNF_ParserFacade* createParser();
+
     void set_opsize(int new_size);
     void set_currexp(QMExp exp);
+
     void delsame(Groups &temp);
     bool inExp(QMOperand &op, QMExp &exp);
 
@@ -29,6 +31,8 @@ protected:
     void firstMatch(QMExp &match_exp, Groups &match_groups);
     void secMatch(QMExp &match_exp, Groups &match_groups);
 
+    bool covers(QMOperand &matched_op, QMOperand &input_op);
+    QMExp cutCore(QMExp matched_ops, QMExp input_ops);
 
 private:
     SNF_ParserFacade *parser;

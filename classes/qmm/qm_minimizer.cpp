@@ -241,3 +241,22 @@ QMExp QM_Minimizer::match(QMExp &match_exp)
     }
     return res;
 }
+
+
+
+bool QM_Minimizer::covers(QMOperand &matched_op, QMOperand &input_op)
+{
+    for(int i=0; i<matched_op.vars.size(); i++)
+    {
+        if(matched_op.vars[i]!='-' && matched_op.vars[i]!=input_op.vars[i])
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+//QMExp QM_Minimizer::cutCore(QMExp matched_ops, QMExp input_ops)
+//{
+//    return "XYN";
+//}
