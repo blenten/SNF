@@ -50,11 +50,9 @@ QString QMMtest::expToStr(QMExp exp)
     res.push_back(exp[0].vars);
     for(size_t i=1; i<exp.size(); i++)
     {
-        if(!exp[i].vars.isEmpty())
-        {
-            res.push_back(' ');
-            res.push_back(exp[i].vars);
-        }
+        res.push_back(' ');
+        res.push_back(exp[i].vars);
+
     }
     return res;
 }
@@ -63,6 +61,10 @@ QMExp QMMtest::strToExp(QString str)
 {
     QMExp res;
     res.clear();
+    if(str=="")
+    {
+        return res;
+    }
     QMOperand tOp;
     for(int i=0; i<str.size(); i++)
     {
@@ -180,7 +182,7 @@ void QMMtest::toGroupsTest_data()
 
     QTest::newRow("3v; 1 op in each g")<<"000+001+011+111"<<"000 ;001 ;011 ;111 ;";
     QTest::newRow("3v; all in 1 g")<<"001+010+100"<<";001 010 100 ;;;";
-    QTest::newRow("0v") << "" << " ;";
+    QTest::newRow("0v") << "" << "empty";
     QTest::newRow("5v; len 5 with repeats") << "00010+00010+11001+11000+00101" << ";00010 00010 ;11000 00101 ;11001 ;;;";
     QTest::newRow("2v; 1 op") << "01" << ";01 ;;";
 }
@@ -191,10 +193,16 @@ void QMMtest::toGroupsTest()
     QFETCH(QString, result);
 
     QMMinimizerT qmm;
-    QMExp tstexp = strToExp(expression);
-    qmm.set_opsize(tstexp[0].vars.size());
+    QMExp test_exp = strToExp(expression);
+    if(test_exp.empty())
+    {
+        qmm.set_opsize(0);
+    }else
+    {
+        qmm.set_opsize(test_exp[0].vars.size());
+    }
     Groups test_res;
-    qmm.toGroups(tstexp, test_res);
+    qmm.toGroups(test_exp, test_res);
     QCOMPARE(groupsToStr(test_res), result);
 }
 
@@ -223,12 +231,12 @@ void QMMtest::firstMatchTest()
     QFETCH(int, opsize);
 
     QMMinimizerT qmm;
-    QMExp tstexp;
+    QMExp test_exp;
     qmm.set_opsize(opsize);
     Groups test_res = strToGroups(start_groups);
-    qmm.firstMatch(tstexp, test_res);
+    qmm.firstMatch(test_exp, test_res);
     QCOMPARE(groupsToStr(test_res), result);
-    QCOMPARE(expToStr(tstexp), res_exp);
+    QCOMPARE(expToStr(test_exp), res_exp);
 }
 
 
@@ -244,7 +252,7 @@ void QMMtest::secMatchTest_data()
 
     QTest::newRow("0,1,2,3")<<";0-0 0-1 ;00- 01- ;"<<";0-- ;0-- ;"<<""<<""<<3;
     QTest::newRow("empty") << " ;" << "empty" << "" <<"" << 0;
-    QTest::newRow("one alone") << "00- 01- ; 0-0 ;" << ";0-- ;;" << "000" << "000 0-0"<<3;
+    QTest::newRow("one alone") << "00- 01- ;0-0 ;" << ";0-- ;;" << "000" << "000 0-0"<<3;
 }
 
 void QMMtest::secMatchTest()
@@ -286,7 +294,13 @@ void QMMtest::macthTest()
 
     QMMinimizerT qmm;
     QMExp test_exp = strToExp(expression);
-    qmm.set_opsize(test_exp[0].vars.size());
+    if(test_exp.empty())
+    {
+        qmm.set_opsize(0);
+    }else
+    {
+        qmm.set_opsize(test_exp[0].vars.size());
+    }
 
     QCOMPARE(expToStr(qmm.match(test_exp)), result);
 }

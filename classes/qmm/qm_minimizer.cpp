@@ -225,11 +225,16 @@ void QM_Minimizer::secMatch(QMExp &match_exp, Groups &match_groups)
 
 QMExp QM_Minimizer::match(QMExp &match_exp)
 {
+    QMExp res;
+    if(match_exp.empty())
+    {
+        res.clear();
+        return res;
+    }
     if(opsize==-1)
     {
         set_opsize(match_exp[0].vars.size());
     }
-    QMExp res;
     Groups temp;
     toGroups(match_exp, temp);
     firstMatch(res, temp);
