@@ -368,7 +368,7 @@ void QM_Minimizer::del_dupl_implicants(QMExp &matched_ops, QMExp &input_ops)
     }
 }
 
-QMExp QM_Minimizer::get_Optimal_Impl(QMExp &matched_ops, QMExp &input_ops)
+QMExp QM_Minimizer::getOptimalCover(QMExp &matched_ops, QMExp &input_ops)
 {
     QMExp res;
     res.clear();
@@ -406,4 +406,22 @@ QMExp QM_Minimizer::get_Optimal_Impl(QMExp &matched_ops, QMExp &input_ops)
         matched_ops.erase(matched_ops.begin());
     }
     return res;
+}
+
+
+QString QM_Minimizer::minimize(QString input)
+{
+//    std::tie(curr_exp, curr_exp_Type) = parser->parse(input);
+
+    QMExp matched_exp = match(curr_exp);
+
+    QMExp result = cutCore(matched_exp, curr_exp);
+    QMExp temp = getOptimalCover(matched_exp, curr_exp);
+    for(int i=0; i<(int)temp.size(); i++)
+    {
+        result.push_back(temp[i]);
+    }
+
+//    return resToStr(result);
+    return "piska";
 }

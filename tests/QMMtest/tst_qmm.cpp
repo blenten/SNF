@@ -40,8 +40,8 @@ private Q_SLOTS:
     void cutCoreTest_data();
     void cutCoreTest();
 
-    void get_Optimal_ImplTest_data();
-    void get_Optimal_ImplTest();
+    void getOptimalCoverTest_data();
+    void getOptimalCoverTest();
 
 };
 
@@ -336,7 +336,7 @@ void QMMtest::cutCoreTest()
 }
 
 
-void QMMtest::get_Optimal_ImplTest_data()
+void QMMtest::getOptimalCoverTest_data()
 {
     QTest::addColumn<QString>("input_ops");
     QTest::addColumn<QString>("matched_ops");
@@ -346,7 +346,7 @@ void QMMtest::get_Optimal_ImplTest_data()
     QTest::newRow("needless skipping test")<<"001+101+110+111"<<"-01+-0-+11-"<<"-0- 11-";
 }
 
-void QMMtest::get_Optimal_ImplTest()
+void QMMtest::getOptimalCoverTest()
 {
     QFETCH(QString, input_ops);
     QFETCH(QString, matched_ops);
@@ -356,7 +356,7 @@ void QMMtest::get_Optimal_ImplTest()
     QMExp test_input = strToExp(input_ops);
     QMExp test_matched_ops = strToExp(matched_ops);
     QMExp test_result;
-    test_result = qmm.get_Optimal_Impl(test_matched_ops, test_input);
+    test_result = qmm.getOptimalCover(test_matched_ops, test_input);
 
     QCOMPARE(expToStr(test_result), result);
 }

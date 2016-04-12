@@ -15,6 +15,8 @@ public:
     inline QMExp get_currexp(){ return curr_exp; }
 
     QMExp match(QMExp &match_exp);
+    QString minimize(QString input);
+    QMExp getOptimalCover(QMExp &matched_ops, QMExp &input_ops);
 
 protected:
     virtual SNF_ParserFacade* createParser();
@@ -37,7 +39,6 @@ protected:
     QMExp get_covered(QMOperand &matched_op, QMExp &input_ops);
     void del_covered(QMOperand &match_op, QMExp &input_ops);
     QMExp cutCore(QMExp &matched_ops, QMExp &input_ops);
-    QMExp get_Optimal_Impl(QMExp &matched_ops, QMExp &input_ops);
 
 private:
     SNF_ParserFacade *parser;
