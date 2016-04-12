@@ -31,8 +31,13 @@ protected:
     void firstMatch(QMExp &match_exp, Groups &match_groups);
     void secMatch(QMExp &match_exp, Groups &match_groups);
 
+    void sort_implicants(QMExp &matched_ops, vector<int> &rating, int first, int last);
+    void del_dupl_implicants(QMExp &matched_ops, QMExp &input_ops);
     bool covers(QMOperand &matched_op, QMOperand &input_op);
-    QMExp cutCore(QMExp matched_ops, QMExp input_ops);
+    QMExp get_covered(QMOperand &matched_op, QMExp &input_ops);
+    void del_covered(QMOperand &match_op, QMExp &input_ops);
+    QMExp cutCore(QMExp &matched_ops, QMExp &input_ops);
+    QMExp get_Optimal_Impl(QMExp &matched_ops, QMExp &input_ops);
 
 private:
     SNF_ParserFacade *parser;

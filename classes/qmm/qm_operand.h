@@ -10,6 +10,7 @@ public:
     QMOperand(QString str);
     QString vars;
     bool matched;
+    bool operator==(const QMOperand &op) const;
 };
 
 typedef std::vector<QMOperand> QMExp;

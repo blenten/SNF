@@ -261,7 +261,149 @@ bool QM_Minimizer::covers(QMOperand &matched_op, QMOperand &input_op)
     return true;
 }
 
-//QMExp QM_Minimizer::cutCore(QMExp matched_ops, QMExp input_ops)
-//{
-//    return "XYN";
-//}
+QMExp QM_Minimizer::get_covered(QMOperand &matched_op, QMExp &input_ops)
+{
+    QMExp res;
+    res.clear();
+
+    for(int i=0; i<(int)input_ops.size(); i++)
+    {
+        if(covers(matched_op, input_ops[i]))
+        {
+            res.push_back(input_ops[i]);
+        }
+    }
+    return res;
+}
+
+void QM_Minimizer::del_covered(QMOperand &matched_op, QMExp &input_ops)
+{
+    int i = 0;
+    while(i<(int)input_ops.size())
+    {
+        if(covers(matched_op, input_ops[i]))
+        {
+            input_ops.erase(input_ops.begin()+i);
+        }else
+        {
+            i++;
+        }
+    }
+}
+
+QMExp QM_Minimizer::cutCore(QMExp &matched_ops, QMExp &input_ops)
+{
+    QMExp core;
+    core.clear();
+    for(int i=0; i<(int)input_ops.size(); i++)
+    {
+        int match_ops_cover = 0;
+        int cover_index = -1; //for only 1 cover case
+
+        for(int j=0; j<(int)matched_ops.size(); j++)
+        {
+            if(covers(matched_ops[j], input_ops[i]))
+            {
+                match_ops_cover++;
+                cover_index = j;
+            }
+        }
+        if(match_ops_cover==1)
+        {
+            core.push_back(matched_ops[cover_index]);
+            matched_ops.erase(matched_ops.begin()+cover_index);
+        }
+    }
+
+    for(int i=0; i<(int)core.size(); i++)
+    {
+        del_covered(core[i], input_ops);
+    }
+    return core;
+}
+
+void QM_Minimizer::sort_implicants(QMExp &matched_ops, vector<int> &rating, int first, int last)
+{
+    int f = first;
+    int l = last;
+    int x = rating[(f+l)/2];
+
+    do{
+        while(rating[f]>x) f++;
+        while(rating[l]<x) l--;
+
+        if(f<=l)
+        {
+            if(rating[f]<rating[l])
+            {
+                swap(rating[f], rating[l]);
+                swap(matched_ops[f], matched_ops[l]);
+            }
+            f++;
+            l--;
+        }
+    }while(f<=l);
+
+    if(f<last) sort_implicants(matched_ops, rating, f, last);
+    if(l>first) sort_implicants(matched_ops, rating, first, l);
+}
+
+void QM_Minimizer::del_dupl_implicants(QMExp &matched_ops, QMExp &input_ops)
+{
+    for(int i=0; i<(int)matched_ops.size()-1; i++)
+    {
+        QMExp f_covered = get_covered(matched_ops[i], input_ops);
+        int j=1+i;
+        while( j<(int)matched_ops.size())
+        {
+            QMExp s_covered = get_covered(matched_ops[j], input_ops);
+            if(f_covered==s_covered)
+            {
+                matched_ops.erase(matched_ops.begin()+j);
+            }else
+            {
+                j++;
+            }
+        }
+    }
+}
+
+QMExp QM_Minimizer::get_Optimal_Impl(QMExp &matched_ops, QMExp &input_ops)
+{
+    QMExp res;
+    res.clear();
+
+    vector<int> rating;
+    rating.resize(matched_ops.size());
+    for(int i=0; i<(int)rating.size(); i++)
+    {
+        rating[i] = 0;
+    }
+
+    for(int i=0; i<(int)matched_ops.size(); i++)
+    {
+        for(int j=0; j<(int)input_ops.size(); j++)
+        {
+            if(covers(matched_ops[i], input_ops[j]))
+            {
+                rating[i]++;
+            }
+        }
+        for(int j=0; j<(int)matched_ops[i].vars.size(); j++)
+        {
+            if(matched_ops[i].vars[j]=='-')
+            {
+                rating[i]++;
+            }
+        }
+    }
+    sort_implicants(matched_ops, rating, 0, (int)matched_ops.size()-1);
+    del_dupl_implicants(matched_ops, input_ops);
+    while(!input_ops.empty() && !matched_ops.empty())
+    {
+        del_covered(matched_ops[0], input_ops);
+        res.push_back(matched_ops[0]);
+        matched_ops.erase(matched_ops.begin());
+    }
+    return res;
+}

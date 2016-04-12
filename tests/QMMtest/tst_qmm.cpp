@@ -37,8 +37,11 @@ private Q_SLOTS:
     void macthTest_data();
     void macthTest();
 
-//    void cutCoreTestData();
-//    void cutCoreTest();
+    void cutCoreTest_data();
+    void cutCoreTest();
+
+    void get_Optimal_ImplTest_data();
+    void get_Optimal_ImplTest();
 
 };
 
@@ -306,30 +309,57 @@ void QMMtest::macthTest()
 }
 
 
-//void QMMtest::cutCoreTestData()
-//{
-//    QTest::addColumn<QString>("input");
-//    QTest::addColumn<QString>("expression");
-//    QTest::addColumn<QString>("result");
-//    QTest::addColumn<QString>("res_exp");
+void QMMtest::cutCoreTest_data()
+{
+    QTest::addColumn<QString>("input_ops");
+    QTest::addColumn<QString>("matched_ops");
+    QTest::addColumn<QString>("result");
+    QTest::addColumn<QString>("res_exp");
 
-//    QTest::newRow("all core")<<"001+000+101+111"<<"0-0+11-+-01"<<"0-0 11- -01"<< "";
-//}
+    QTest::newRow("all core")<<"001+000+101+111"<<"0-0+11-+-01"<<"-01 0-0 11-"<< "";
+}
 
-//void QMMtest::cutCoreTest()
-//{
-//    QFETCH(QString, input);
-//    QFETCH(QString, expression);
-//    QFETCH(QString, result);
-//    QFETCH(QString, res_exp);
+void QMMtest::cutCoreTest()
+{
+    QFETCH(QString, input_ops);
+    QFETCH(QString, matched_ops);
+    QFETCH(QString, result);
+    QFETCH(QString, res_exp);
 
-//    QMMinimizerT qmm;
-//    QMExp test_input = strToExp(input);
-//    QMExp test_exp = qmm.cutCore(strToExp(expression), test_input);
+    QMMinimizerT qmm;
+    QMExp test_input = strToExp(input_ops);
+    QMExp test_matched_ops = strToExp(matched_ops);
+    QMExp test_exp = qmm.cutCore(test_matched_ops, test_input);
 
-//    QCOMPARE(expToStr(test_exp), result);
-//    QCOMPARE(expToStr(test_input), res_exp);
-//}
+    QCOMPARE(expToStr(test_exp), result);
+    QCOMPARE(expToStr(test_input), res_exp);
+}
+
+
+void QMMtest::get_Optimal_ImplTest_data()
+{
+    QTest::addColumn<QString>("input_ops");
+    QTest::addColumn<QString>("matched_ops");
+    QTest::addColumn<QString>("result");
+
+    QTest::newRow("simple rating test")<<"001+101+110+111"<<"-0-+-01+11-+1--"<<"1-- -0-";
+    QTest::newRow("needless skipping test")<<"001+101+110+111"<<"-01+-0-+11-"<<"-0- 11-";
+}
+
+void QMMtest::get_Optimal_ImplTest()
+{
+    QFETCH(QString, input_ops);
+    QFETCH(QString, matched_ops);
+    QFETCH(QString, result);
+
+    QMMinimizerT qmm;
+    QMExp test_input = strToExp(input_ops);
+    QMExp test_matched_ops = strToExp(matched_ops);
+    QMExp test_result;
+    test_result = qmm.get_Optimal_Impl(test_matched_ops, test_input);
+
+    QCOMPARE(expToStr(test_result), result);
+}
 
 QTEST_APPLESS_MAIN(QMMtest)
 
