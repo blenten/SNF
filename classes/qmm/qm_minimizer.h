@@ -14,6 +14,8 @@ public:
 
     inline QMExp get_currexp(){ return curr_exp; }
 
+    QString expToQStr(QMExp &exp);
+
     QMExp match(QMExp &match_exp);
     QString minimize(QString input);
     QMExp getOptimalCover(QMExp &matched_ops, QMExp &input_ops);

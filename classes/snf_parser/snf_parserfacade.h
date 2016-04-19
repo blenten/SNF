@@ -6,13 +6,13 @@
 class SNF_ParserFacade
 {
 private:
-
 FunctionInputForm getFunctionInputForm (std::string input);
 Parser* getParser(std::string input);
 
 public:
     FunctionType parse(std::string input, Expression &output);
-    FunctionType parse(std::string input, QMExp &output);
+    virtual ~SNF_ParserFacade(){}
+    virtual pair<QMExp, FunctionType> parse(QString input);
 };
 
 #endif // SNF_PARSERDECORATOR_H

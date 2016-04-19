@@ -2,8 +2,9 @@
 
 QM_Minimizer::QM_Minimizer()
 {
-    parser = createParser();
+    parser = nullptr;
     curr_exp.clear();
+    curr_exp_Type = SNDF;
     opsize = -1;
 }
 QM_Minimizer::~QM_Minimizer()
@@ -324,6 +325,7 @@ QMExp QM_Minimizer::cutCore(QMExp &matched_ops, QMExp &input_ops)
 
 void QM_Minimizer::sort_implicants(QMExp &matched_ops, vector<int> &rating, int first, int last)
 {
+    //qsort for implicants
     int f = first;
     int l = last;
     int x = rating[(f+l)/2];
@@ -408,20 +410,64 @@ QMExp QM_Minimizer::getOptimalCover(QMExp &matched_ops, QMExp &input_ops)
     return res;
 }
 
+QString QM_Minimizer::expToQStr(QMExp &exp)
+{
+    QString result = "";
+    if(!exp.empty())
+    {
+        int opsize = exp[0].vars.size();
+        if(curr_exp_Type==SNKF)
+        {
+            result.push_back('(');
+        }
+        for(int i=0; i<(int)exp.size(); i++)
+        {
+               for(int j=0; j<opsize;j++)
+               {
+                   if(exp[i].vars[j]=='-')
+                   {
+                       continue;
+                   }else if(exp[i].vars[j]=='0')
+                   {
+                       result.push_back('!');
+                   }
+                   result.push_back('x');
+                   result.push_back(QString::number(j+1));
+               }
+               if(i!=(int)exp.size()-1)
+               {
+                   if(curr_exp_Type==SNDF)
+                   {
+                       result.push_back('+');
+                   }else if(curr_exp_Type==SNKF)
+                   {
+                       result.push_back(")(");
+                   }else
+                   {
+                       result.push_back(' ');
+                   }
+               }else if(curr_exp_Type==SNKF)
+               {
+                   result.push_back(')');
+               }
+        }
+    }
+    return result;
+}
 
 QString QM_Minimizer::minimize(QString input)
 {
-//    std::tie(curr_exp, curr_exp_Type) = parser->parse(input);
+    parser = createParser();
+    std::tie(curr_exp, curr_exp_Type) = parser->parse(input);
 
     QMExp matched_exp = match(curr_exp);
 
     QMExp result = cutCore(matched_exp, curr_exp);
-    QMExp temp = getOptimalCover(matched_exp, curr_exp);
-    for(int i=0; i<(int)temp.size(); i++)
+    QMExp cover = getOptimalCover(matched_exp, curr_exp);
+    for(int i=0; i<(int)cover.size(); i++)
     {
-        result.push_back(temp[i]);
+        result.push_back(cover[i]);
     }
 
-//    return resToStr(result);
-    return "piska";
+    return expToQStr(result);
 }

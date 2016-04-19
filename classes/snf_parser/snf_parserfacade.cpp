@@ -19,16 +19,19 @@ FunctionInputForm SNF_ParserFacade::getFunctionInputForm(string input)
     return FORM_EXPANDED;
 }
 
-FunctionType SNF_ParserFacade::parse(string input, QMExp &output)
+pair<QMExp, FunctionType> SNF_ParserFacade::parse(QString input)
 {
-    Parser* parser = getParser(input);
+    pair<QMExp, FunctionType> res;
+
+    Parser* parser = getParser(input.toStdString());
     Expression ex;
-    FunctionType ft = parser->parse(input, ex);
-    output = parser->expressionToQMExp(ex);
+
+    res.second = parser->parse(input.toStdString(), ex);
+    res.first = parser->expressionToQMExp(ex);
 
     delete parser;
 
-    return ft;
+    return res;
 }
 
 Parser* SNF_ParserFacade::getParser(std::string input)
@@ -40,3 +43,4 @@ Parser* SNF_ParserFacade::getParser(std::string input)
 
     return parser;
 }
+

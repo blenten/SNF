@@ -3,11 +3,42 @@
 
 #include "../../classes/qmm/qm_minimizer.h"
 
+class FakeParser : public SNF_ParserFacade
+{
+public:
+    FakeParser(QMExp &expr, FunctionType &ftype);
+    QMExp expr;
+    FunctionType ftype;
+    pair<QMExp, FunctionType> parse(QString input);
+};
+FakeParser::FakeParser(QMExp &expr, FunctionType &ftype)
+{
+    this->expr = expr;
+    this->ftype = ftype;
+}
+pair<QMExp, FunctionType> FakeParser::parse(QString input)
+{
+    pair<QMExp, FunctionType> res;
+    res.first = expr;
+    res.second = ftype;
+    return res;
+}
+
+
 
 class QMMinimizerT : public QM_Minimizer
 {
     friend class QMMtest;
+public:
+    QMExp exp;
+    FunctionType type;
+    SNF_ParserFacade* createParser();
 };
+
+SNF_ParserFacade* QMMinimizerT::createParser()
+{
+    return new FakeParser(exp, type);
+}
 
 
 class QMMtest : public QObject
@@ -42,6 +73,9 @@ private Q_SLOTS:
 
     void getOptimalCoverTest_data();
     void getOptimalCoverTest();
+
+    void minimizeTest_data();
+    void minimizeTest();
 
 };
 
@@ -359,6 +393,30 @@ void QMMtest::getOptimalCoverTest()
     test_result = qmm.getOptimalCover(test_matched_ops, test_input);
 
     QCOMPARE(expToStr(test_result), result);
+}
+
+
+void QMMtest::minimizeTest_data()
+{
+    QTest::addColumn<QString>("expression");
+    QTest::addColumn<int>("ftype");
+    QTest::addColumn<QString>("result");
+
+    QTest::newRow("0,1,2,5 SDNF")<<"000+001+010+101"<<static_cast<int>(SNDF)<<"!x1!x3+!x2x3";
+}
+
+void QMMtest::minimizeTest()
+{
+   QFETCH(QString, expression);
+   QFETCH(int, ftype);
+   QFETCH(QString, result);
+
+   QMMinimizerT qmm;
+   qmm.exp = strToExp(expression);
+   qmm.type = static_cast<FunctionType>(ftype);
+   QString test_res = qmm.minimize("piska");
+
+   QCOMPARE(test_res, result);
 }
 
 QTEST_APPLESS_MAIN(QMMtest)
