@@ -403,6 +403,7 @@ void QMMtest::minimizeTest_data()
     QTest::addColumn<QString>("result");
 
     QTest::newRow("0,1,2,5 SDNF")<<"000+001+010+101"<<static_cast<int>(SNDF)<<"!x1!x3+!x2x3";
+    QTest::newRow ("0") << "000+010+101+110+111" << static_cast<int>(SNDF)<<"x1x3+!x1!x3+x2!x3";
 }
 
 void QMMtest::minimizeTest()

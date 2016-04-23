@@ -361,14 +361,6 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuMethod">
-    <property name="title">
-     <string>Method</string>
-    </property>
-    <addaction name="actionAlgebraicManipulation"/>
-    <addaction name="actionQuineMcCluskey"/>
-   </widget>
-   <addaction name="menuMethod"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionAlgebraicManipulation">

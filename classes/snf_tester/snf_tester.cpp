@@ -1,13 +1,7 @@
 #include "snf_tester.h"
 
-void SNF_Tester::setMethod(Method m)
-{
-    method = m;
-}
-
 void SNF_Tester::start()
 {
-    method = ALGEBRAIC;
     isStopped=false;
     if (checkRanges())
     {
@@ -76,7 +70,7 @@ void SNF_Tester::testMinimizing()
             if (getRandom(1)) func = generateFunction(i,j, SNDF);
             else func = generateFunction(i,j, SNKF);
 
-            logCurrentFunction(i, j, getMinimizingTime(func));
+            logCurrentFunction(i, j, minimizeAlgebraic(func), minimizeQuine(func));
 
             doneStepsCount++;
             logInfoPercentCompleted(doneStepsCount/stepsCount*100);
@@ -139,54 +133,43 @@ bool SNF_Tester::isOperandRepeated(string operand)
     return false;
 }
 
-double SNF_Tester::getMinimizingTime (std::string function)
+double SNF_Tester::minimizeAlgebraic(string function)
 {
     QElapsedTimer timer;
     timer.start();
 
-    switch(method)
-    {
-    case ALGEBRAIC:
-    {
-        SNF_Tester::minimizeAlgebraic(function);
-        break;
-    }
-    case QUINE:
-    {
-        SNF_Tester::minimizeQuine(function);
-        break;
-    }
-    }
+    SNF_Minimizer snf;
+    snf.minimize(QString::fromStdString(function)).toStdString();
 
     return ((double)timer.nsecsElapsed()/1000000000.0); //to seconds
 }
 
-std::string SNF_Tester::minimizeAlgebraic(string function)
+double SNF_Tester::minimizeQuine(string function)
 {
-    SNF_Minimizer snf;
-    return snf.minimize(QString::fromStdString(function)).toStdString();
-}
+    QElapsedTimer timer;
+    timer.start();
 
-std::string SNF_Tester::minimizeQuine(string function)
-{
     QM_Minimizer qm;
-    return qm.minimize(QString::fromStdString(function)).toStdString();
+    qm.minimize(QString::fromStdString(function)).toStdString();
+
+    return ((double)timer.nsecsElapsed()/1000000000.0); //to seconds
 }
 
 void SNF_Tester::logHead()
 {
     logStream.open(logPath);
     logStream << stepsCount << " functions will be checked\n";
-    logStream << "variables\toperands\ttime\n";
+    logStream << "variables\toperands\tAlgebraic\tQuine\n";
     logStream.close();
 }
 
-void SNF_Tester::logCurrentFunction (int currentVariablesNumber, int currentOperandsNumber, double currentTime)
+void SNF_Tester::logCurrentFunction (int currentVariablesNumber, int currentOperandsNumber, double currentTimeAlgebraic, double currentTimeQuine)
 {
     logStream.open(logPath, std::ios_base::app);
     logStream << std::setw(9) << currentVariablesNumber << "\t";
     logStream << std::setw(8) << currentOperandsNumber << "\t";
-    logStream << std::to_string(currentTime) << "s\n";
+    logStream << std::to_string(currentTimeAlgebraic) << "s\t";
+    logStream << std::to_string(currentTimeQuine) << "s\n";
     logStream.close();
 }
 

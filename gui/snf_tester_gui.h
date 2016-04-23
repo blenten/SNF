@@ -33,7 +33,6 @@ private:
 
     void setInputValidators();
     void setTesterData();
-    void getMethod();
 };
 
 #endif // SNF_TESTER_GUI_H

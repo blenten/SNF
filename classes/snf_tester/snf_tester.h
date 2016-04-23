@@ -9,12 +9,6 @@
 #include <QElapsedTimer>
 #include <QObject>
 
-enum Method
-{
-    ALGEBRAIC,
-    QUINE
-};
-
 class SNF_Tester: public QObject
 {    
     Q_OBJECT
@@ -24,8 +18,6 @@ private:
 
     double stepsCount;
     bool isStopped;
-
-    Method method;
 
     std::vector<std::string> generatedOperands;
     std::vector <quint64> maxOperandsNumbers; //max numbers of operands for each variables number to avoid repeating (equals 2 to the number power)
@@ -40,14 +32,12 @@ private:
 
     int getRandom (int max);
 
-    double getMinimizingTime (std::string function);
-
-    std::string minimizeAlgebraic (std::string function);
-    std::string minimizeQuine (std::string function);
+    double minimizeQuine (std::string function);
+    double minimizeAlgebraic (std::string function);
 
     void logHead();
 
-    void logCurrentFunction (int currentVariablesNumber, int currentOperandsNumber, double currentTime);
+    void logCurrentFunction (int currentVariablesNumber, int currentOperandsNumber, double currentTimeAlgebraic, double currentTimeQuine);
 
     void logInfoPercentCompleted(double percent);
 
@@ -65,8 +55,6 @@ public:
     std::string logPath;
 
     std::string generateFunction (quint64 variablesNumber, quint64 operandsNumber, FunctionType ft);
-
-    void setMethod(Method m);
 
 signals:
     void onInfoSend(QString info);
