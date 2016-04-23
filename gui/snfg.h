@@ -49,8 +49,10 @@ private:
     void setLocale (QString locale);
 
 private slots:
-    void getCondition(QString condition);
-    void getLog(QString log);
+    void receiveCondition(QString condition);
+    void receiveLog(QString log);
+    void receiveSleep(int ms);
+    void receiveProgress(int val);
 };
 
 #endif // SNFG_H

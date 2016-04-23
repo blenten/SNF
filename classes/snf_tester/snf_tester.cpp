@@ -164,18 +164,12 @@ double SNF_Tester::getMinimizingTime (std::string function)
 std::string SNF_Tester::minimizeAlgebraic(string function)
 {
     SNF_Minimizer snf;
-    if(snf.parse(function))
-        return "";
-
-    snf.match();
-    snf.delUnness();
-    return snf.res_toString();
+    return snf.minimize(QString::fromStdString(function)).toStdString();
 }
 
 std::string SNF_Tester::minimizeQuine(string function)
 {
     QM_Minimizer qm;
-
     return qm.minimize(QString::fromStdString(function)).toStdString();
 }
 

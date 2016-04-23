@@ -70,7 +70,7 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QWidget" name="layoutWidget">
+      <widget class="QWidget" name="progressLayoutWidget">
        <layout class="QVBoxLayout" name="progress" stretch="0,0">
         <property name="sizeConstraint">
          <enum>QLayout::SetDefaultConstraint</enum>

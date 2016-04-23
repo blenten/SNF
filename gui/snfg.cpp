@@ -51,56 +51,44 @@ void SNFG::on_minimizeButton_clicked()
 
 void SNFG::minimizeAlgebraic()
 {
-    SNF_Minimizer snf;
-    QString input = ui->inputText->toPlainText();
-
-    QTime time = QTime::currentTime();
-    int val = 0;
-    qsrand((uint)time.msec());
-
+    this->log="";
     ui->progressBar->setValue(0);
-    ui->conditionLabel->setText(Localizator::instance().translate("%ConditionParsing"));
-    sleep(100 + qrand()%50);
-    if(snf.parse(input.toStdString()))
-    {
-        ui->conditionLabel->setText(Localizator::instance().translate("%ConditionError"));
-        ui->outputLine->setText(Localizator::instance().translate("%ConditionError"));
-        log = snf.getLog().c_str();
-        return;
-    }
-    val += 30 + qrand()%14;
-    ui->progressBar->setValue(val);
-    ///
-    ui->conditionLabel->setText(Localizator::instance().translate("%ConditionMatch"));
-    sleep(100 + qrand()%50);
-    snf.match();
-    val += 30 + qrand()%14;
-    ui->progressBar->setValue(val);
-    ///
-    ui->conditionLabel->setText(Localizator::instance().translate("%ConditionNessessity"));
-    sleep(100 + qrand()%50);
-    snf.delUnness();
-    ui->progressBar->setValue(100);
-    ///
-    ui->conditionLabel->setText(Localizator::instance().translate("%ConditionReady"));
-    ui->outputLine->setText(snf.res_toString().c_str());
-    log = snf.getLog().c_str();
+
+    SNF_Minimizer snf;
+
+    connect (&snf, SIGNAL(sendCondition(QString)), this, SLOT(receiveCondition(QString)));
+    connect (&snf, SIGNAL(sendLog(QString)), this, SLOT(receiveLog(QString)));
+    connect (&snf, SIGNAL(sendSleep(int)), this, SLOT(receiveSleep(int)));
+    connect (&snf, SIGNAL(sendProgress(int)), this, SLOT(receiveProgress(int)));
+
+    QString input = ui->inputText->toPlainText();
+    ui->outputLine->setText(snf.minimize(input));
+
+    disconnect (&snf, SIGNAL(sendCondition(QString)), this, SLOT(receiveCondition(QString)));
+    disconnect (&snf, SIGNAL(sendLog(QString)), this, SLOT(receiveLog(QString)));
+    disconnect (&snf, SIGNAL(sendSleep(int)), this, SLOT(receiveSleep(int)));
+    disconnect (&snf, SIGNAL(sendProgress(int)), this, SLOT(receiveProgress(int)));
 }
 
 void SNFG::minimizeQuine()
 {
     this->log="";
+    ui->progressBar->setValue(0);
 
     QM_Minimizer qm;
 
-    connect (&qm, SIGNAL(sendCondition(QString)), this, SLOT(getCondition(QString)));
-    connect (&qm, SIGNAL(sendLog(QString)), this, SLOT(getLog(QString)));
+    connect (&qm, SIGNAL(sendCondition(QString)), this, SLOT(receiveCondition(QString)));
+    connect (&qm, SIGNAL(sendLog(QString)), this, SLOT(receiveLog(QString)));
+    connect (&qm, SIGNAL(sendSleep(int)), this, SLOT(receiveSleep(int)));
+    connect (&qm, SIGNAL(sendProgress(int)), this, SLOT(receiveProgress(int)));
 
     QString input = ui->inputText->toPlainText();
     ui->outputLine->setText(qm.minimize(input));
 
-    disconnect (&qm, SIGNAL(sendCondition(QString)), this, SLOT(getCondition(QString)));
-    disconnect (&qm, SIGNAL(sendLog(QString)), this, SLOT(getLog(QString)));
+    disconnect (&qm, SIGNAL(sendCondition(QString)), this, SLOT(receiveCondition(QString)));
+    disconnect (&qm, SIGNAL(sendLog(QString)), this, SLOT(receiveLog(QString)));
+    disconnect (&qm, SIGNAL(sendSleep(int)), this, SLOT(receiveSleep(int)));
+    disconnect (&qm, SIGNAL(sendProgress(int)), this, SLOT(receiveProgress(int)));
 }
 
 void SNFG::on_stepsButton_clicked()
@@ -126,15 +114,25 @@ void SNFG::help_clicked()
     helpform->show();
 }
 
-void SNFG::getCondition(QString condition)
+void SNFG::receiveCondition(QString condition)
 {
     ui->conditionLabel->setText(Localizator::instance().translate(condition));
 }
 
-void SNFG::getLog(QString log)
+void SNFG::receiveLog(QString log)
 {
     if (log=="") return;
 
     this->log+=log;
     this->log+="\n";
+}
+\
+void SNFG::receiveSleep(int ms)
+{
+    sleep (ms);
+}
+
+void SNFG::receiveProgress(int val)
+{
+    ui->progressBar->setValue(val);
 }

@@ -1,5 +1,4 @@
 #include "qm_minimizer.h"
-#include <iostream>
 
 QM_Minimizer::QM_Minimizer()
 {
@@ -459,6 +458,7 @@ QString QM_Minimizer::expToQStr(QMExp &exp)
                    }
                    result.push_back('x');
                    result.push_back(QString::number(j+1));
+                   if (curr_exp_Type==SNKF && j<opsize-1) result.push_back("+");
                }
                if(i!=(int)exp.size()-1)
                {
@@ -485,6 +485,7 @@ QString QM_Minimizer::minimize(QString input)
 {
     emit sendCondition("%ConditionParsing");
 
+    int progress = 0;
     parser = createParser();
 
     try
@@ -501,15 +502,27 @@ QString QM_Minimizer::minimize(QString input)
     emit sendLog("%Parsing");
     emit sendLog(expToQStr(curr_exp));
     emit sendLog("\n");
+    progress += 20;
+    sendProgress(progress);
+    emit sendSleep(50 + qrand()%25);
 
     emit sendCondition("%ConditionMatch");
     QMExp matched_exp = match(curr_exp);
+    progress += 20;
+    sendProgress(progress);
+    emit sendSleep(50 + qrand()%25);
 
     emit sendCondition("%ConditionCore");
     QMExp result = cutCore(matched_exp, curr_exp);
+    progress += 20;
+    sendProgress(progress);
+    emit sendSleep(50 + qrand()%25);
 
     emit sendCondition("%ConditionCoverage");
     QMExp cover = getOptimalCover(matched_exp, curr_exp);
+    progress += 20;
+    sendProgress(progress);
+    emit sendSleep(50 + qrand()%25);
 
     for(int i=0; i<(int)cover.size(); i++)
     {
@@ -517,6 +530,8 @@ QString QM_Minimizer::minimize(QString input)
     }
 
     emit sendCondition("%ConditionReady");
+    progress += 20;
+    sendProgress(progress);
 
     emit sendLog("%Result");
     emit sendLog(expToQStr(result));

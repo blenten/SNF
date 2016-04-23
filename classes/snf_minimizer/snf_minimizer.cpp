@@ -1,16 +1,12 @@
 #include "snf_minimizer.h"
 //------------SNF-------------//
 
-string SNF_Minimizer::getLog()
+QString SNF_Minimizer::expToQStr(Expression &logex)
 {
-    return logs.str();
-}
-
-void SNF_Minimizer::log(Expression &logex)
-{
+    QString res;
     if(logex.empty())
     {
-        logs<<"%ExpressionIsEmpty\n";
+        res+="%ExpressionIsEmpty\n";
     }else
     {
         int size = (int) logex.size();
@@ -19,22 +15,22 @@ void SNF_Minimizer::log(Expression &logex)
             for(int j=0; j<(int)logex[i].variables.size(); j++)
             {
                 if(logex[i].variables[j].inversion)
-                    logs<<'!';
+                    res+='!';
 
-                logs<<logex[i].variables[j].name;
-                if (j < (int)logex[i].variables.size()-1) logs << (expType==SNKF? "+" :"*");
+                res+=logex[i].variables[j].name.c_str();
+                if (j < (int)logex[i].variables.size()-1) res+= (expType==SNKF? "+" :"*");
             }
-            logs<<'\t';
+            res+='\t';
         }
     }
-    logs<<endl;
+    res+="\n";
+    return res;
 }
 
 void SNF_Minimizer::logResult()
 {
-    logs<<"\n";
-    logs <<"%Result\n";
-    log(exp);
+    emit sendLog("%Result\n");
+    emit sendLog(expToQStr(exp));
 }
 
 //CONSTRUCTOR
@@ -42,6 +38,38 @@ SNF_Minimizer::SNF_Minimizer()
 {
     exp.clear();
 }
+
+QString SNF_Minimizer::minimize(QString input)
+{
+    int progress = 0;
+
+    emit sendCondition("%ConditionParsing");
+    emit sendSleep (100+qrand()%50);
+    if (parse(input.toStdString()))
+    {
+        emit sendCondition("%ConditionError");
+        return "";
+    }
+    progress += 30+qrand()%14;
+    emit sendProgress(progress);
+
+    emit sendCondition("%ConditionMatch");
+    match();
+    progress += 30+qrand()%14;
+    emit sendProgress(progress);
+    emit sendSleep(100 + qrand()%50);
+
+    emit sendCondition("%ConditionNessessity");
+    delUnness();
+    progress += 30+qrand()%14;
+    emit sendProgress(progress);
+    emit sendSleep(100 + qrand()%50);
+
+    emit sendCondition("%ConditionReady");
+    emit sendProgress(100);
+    return QString::fromStdString(res_toString());
+}
+
 //PARSE
 bool SNF_Minimizer::parse(string input)
 {
@@ -50,21 +78,20 @@ bool SNF_Minimizer::parse(string input)
         std::tie(exp, expType) = parser.parse(input);
     }catch(InvalidFunctionException e)
     {
-         logs<<e.getError()<<"\n";
+        emit sendLog(QString::fromStdString(e.getError()));
         return true;
     }
     if(exp.size()<1)
     {
-        logs<<"%Default\n";
+        emit sendLog("%Default");
         return true;
     }
-    logs<<"%Parsing\n";
-    log(exp);
+    emit sendLog("%Parsing");
+    emit sendLog(expToQStr(exp));
     if (containsAllOperands())
     {
-        logs<<"\n";
-        logs <<"%Result\n";
-        logs<<"1";
+        emit sendLog("%Result");
+        emit sendLog("1");
         exp.clear();
         Operand op;
         op.variables.push_back(Variable("1", false));
@@ -161,10 +188,8 @@ void SNF_Minimizer::match()
             exp.clear();
             exp = temp;
 
-            logs<<"\n";
-            logs<<"%Matching@"<<iter<<":\n";
-            log(exp);
-            iter++;
+            emit sendLog("%Matching@"+QString::number(iter++));
+            emit sendLog(expToQStr(exp));
         }
     }while(!temp.empty());
     delsame(exp);
@@ -196,9 +221,8 @@ void SNF_Minimizer::delUnness()
     if (exp.size()==1) return;
     if (resolves(exp))
     {
-        logs<<"\n";
-        logs <<"%Result\n";
-        logs<<"1";
+        emit sendLog("%Result");
+        emit sendLog("1");
         exp.clear();
         Operand op;
         op.variables.push_back(Variable("1", false));

@@ -54,6 +54,8 @@ private:
 signals:
     void sendCondition(QString condition);
     void sendLog(QString log);
+    void sendSleep (int ms);
+    void sendProgress (int val);
 };
 
 #endif // KM_MINIMIZER_H
