@@ -1,5 +1,8 @@
 {
 		"Title": "SNF Minimizer {0}",
+        "MethodMenu": "Method",
+        "AlgebraicMethod": "Algebraic Manipulation",
+        "QuineMethod": "Quine-McCluskey",
         "HelpMenu": "Help",
         "UserGuideAction": "User guide",
         "InputLabel": "Input function:",
@@ -12,10 +15,14 @@
         "ConditionMatch": "Matching...",
         "ConditionNessessity": "Nessessity checking...",
         "ConditionReady": "Ready.",
+        "ConditionCore": "Finding the core...",
+        "ConditionCoverage": "Finding an optimal coverage...",
 
 		"LogTitle": "Log",
         "Parsing": "Initial function:",
         "Matching": "Match #{0}",
+        "Coverage": "Coverage:",
+        "Core": "Core:",
         "Result": "Result:",
 
 		"HelpTitle": "Help",

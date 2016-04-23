@@ -31,7 +31,7 @@ private:
     std::string numberToBinary(int number, int size);
 
 public:
-    FunctionType parse (std::string input, Expression &output);
+    std::pair<Expression, FunctionType> parse (std::string input);
 };
 
 #endif // SHORTFORMPARSER_H

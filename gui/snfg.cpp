@@ -9,7 +9,13 @@ SNFG::SNFG(QWidget *parent) :
 
     connect(ui->actionEng, SIGNAL(triggered()), this, SLOT(langEn_clicked()));
     connect(ui->actionRu, SIGNAL(triggered()), this, SLOT(langRu_clicked()));
-    connect(ui->actionUguide,SIGNAL(triggered()), this, SLOT(help_clicked()));
+    connect(ui->actionUguide, SIGNAL(triggered()), this, SLOT(help_clicked()));
+
+    QActionGroup* methodGroup = new QActionGroup(this);
+
+    QList<QAction*> methodActions = ui->menuMethod->actions();
+    for (auto i = methodActions.begin();i<methodActions.end();i++)
+        methodGroup->addAction(*i);
 
     Localizator::instance().loadLocale("ru_RU");
     Localizator::instance().localize(this);
@@ -20,7 +26,7 @@ SNFG::~SNFG()
     delete ui;
 }
 
-void SNFG::sleep(unsigned int ms)
+void SNFG::sleep(int ms)
 {
     QTime dieTime = QTime::currentTime().addMSecs(ms);
     while(QTime::currentTime() < dieTime)
@@ -36,6 +42,14 @@ void SNFG::setLocale (QString locale)
 
 
 void SNFG::on_minimizeButton_clicked()
+{
+    if (ui->actionAlgebraicManupulation->isChecked())
+        minimizeAlgebraic();
+    else if (ui->actionQuineMcCluskey->isChecked())
+        minimizeQuine();
+}
+
+void SNFG::minimizeAlgebraic()
 {
     SNF_Minimizer snf;
     QString input = ui->inputText->toPlainText();
@@ -73,6 +87,22 @@ void SNFG::on_minimizeButton_clicked()
     log = snf.getLog().c_str();
 }
 
+void SNFG::minimizeQuine()
+{
+    this->log="";
+
+    QM_Minimizer qm;
+
+    connect (&qm, SIGNAL(sendCondition(QString)), this, SLOT(getCondition(QString)));
+    connect (&qm, SIGNAL(sendLog(QString)), this, SLOT(getLog(QString)));
+
+    QString input = ui->inputText->toPlainText();
+    ui->outputLine->setText(qm.minimize(input));
+
+    disconnect (&qm, SIGNAL(sendCondition(QString)), this, SLOT(getCondition(QString)));
+    disconnect (&qm, SIGNAL(sendLog(QString)), this, SLOT(getLog(QString)));
+}
+
 void SNFG::on_stepsButton_clicked()
 {
     Log *logform = new Log(this);
@@ -94,4 +124,17 @@ void SNFG::help_clicked()
 {
     Help* helpform = new Help (this);
     helpform->show();
+}
+
+void SNFG::getCondition(QString condition)
+{
+    ui->conditionLabel->setText(Localizator::instance().translate(condition));
+}
+
+void SNFG::getLog(QString log)
+{
+    if (log=="") return;
+
+    this->log+=log;
+    this->log+="\n";
 }

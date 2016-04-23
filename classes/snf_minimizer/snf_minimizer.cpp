@@ -47,7 +47,7 @@ bool SNF_Minimizer::parse(string input)
 {
     try
     {
-        expType = parser.parse(input, exp);
+        std::tie(exp, expType) = parser.parse(input);
     }catch(InvalidFunctionException e)
     {
          logs<<e.getError()<<"\n";

@@ -1,17 +1,20 @@
 #include "expandedformparser.h"
 
-FunctionType ExpandedFormParser::parse(std::string input, Expression &output)
+std::pair<Expression, FunctionType> ExpandedFormParser::parse(std::string input)
 {
-     expression = &output;
     _input = input;
     initialChecking();
 
-    return parseExpandedForm();
+    parseExpandedForm();
+
+    return std::make_pair(expression, functionType);
 }
 
 void ExpandedFormParser::initialChecking()
 {
-    expression->clear();
+    expression.clear();
+    functionType = OTHER;
+
     variables.clear();
     removeUseless();
     if (_input.length() == 0) throw InvalidFunctionException("%NoOperandsAndVariables");
@@ -42,13 +45,12 @@ void ExpandedFormParser::checkBrackets()
          {
              if (lCount <= rCount) throw InvalidFunctionException("%BracketsNesting@"+std::to_string(i));
 
-             //like as: (x+y+)z
              if (getSymbolType(_input[i-1]) != SYMBOL_OPERAND &&
                      getSymbolType(_input[i-1]) != SYMBOL_RBRACKET)
                  throw InvalidFunctionException ("%OperationBeforeRBracket@"+std::to_string(i));
              rCount++;
          }
-         // y(+x)
+
          else if (getSymbolType(_input[i]) == SYMBOL_LBRACKET)
          {
              if (getSymbolType(_input[i+1]) != SYMBOL_OPERAND &&
@@ -60,18 +62,15 @@ void ExpandedFormParser::checkBrackets()
      if (lCount!=rCount) throw InvalidFunctionException ("%BracketsNumberIsNotEqual");
 }
 
-FunctionType ExpandedFormParser::parseExpandedForm()
+void ExpandedFormParser::parseExpandedForm()
 {
-    FunctionType ft = OTHER;
-    ft = getVariables();
+    functionType = getVariables();
 
     if (variables.size() == 0) throw InvalidFunctionException("%NoVariables");
 
     if (isVariablesRepeat()) throw InvalidFunctionException("%RepeatingVariables");
 
-    fillExpression(ft);
-
-    return ft;
+    fillExpression();
 }
 
 void ExpandedFormParser::insertConjunctionSymbols()
@@ -140,7 +139,7 @@ FunctionType ExpandedFormParser::getVariables()
              return ((currState)==Conjunction? SNKF: SNDF);
 
 
-         OperationState nextState = getNextState(lena,currState);
+         OperationState nextState = getNextState(lena, currState);
          if (currVar==""&& currState!=Undefined && prevState!=Undefined)
          {
              if (prevState==currState)
@@ -249,9 +248,9 @@ bool ExpandedFormParser::isVariablesRepeat()
     return 0;
 }
 
-void ExpandedFormParser::fillExpression(const FunctionType& ft)
+void ExpandedFormParser::fillExpression()
 {
-    OperationState startState = (ft == SNKF) ? Disjunction: Conjunction;
+    OperationState startState = (functionType == SNKF) ? Disjunction: Conjunction;
     OperationState currState = startState;
 
     size_t lena = 0, varIndex = 0;
@@ -279,7 +278,7 @@ void ExpandedFormParser::fillExpression(const FunctionType& ft)
                 throw InvalidFunctionException("%IncorrectOperationChanging@" + std::to_string(lena));
 
 
-            expression->at(operandsNumber-1).variables.push_back(var);
+            expression.at(operandsNumber-1).variables.push_back(var);
             varIndex++;
         }
         else if (currVar != "")
@@ -300,7 +299,7 @@ void ExpandedFormParser::fillExpression(const FunctionType& ft)
 void ExpandedFormParser::addOperandToExpression()
 {
     Operand op;
-    expression->push_back(op);
+    expression.push_back(op);
 }
 
 Variable ExpandedFormParser::parseVariable(std::string &currVar)

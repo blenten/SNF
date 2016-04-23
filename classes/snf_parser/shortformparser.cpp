@@ -1,8 +1,7 @@
 #include "shortformparser.h"
 
-FunctionType ShortFormParser::parse(string input, Expression &output)
+std::pair<Expression, FunctionType> ShortFormParser::parse(string input)
 {
-     expression = &output;
      _input = input;
      checkCorrectness();
 
@@ -13,16 +12,16 @@ FunctionType ShortFormParser::parse(string input, Expression &output)
 
     parseNumbers();
 
-    FunctionType ft = (getSymbolType(operation)==SYMBOL_CONJUNCTION) ? SNKF:SNDF;
+    functionType = (getSymbolType(operation)==SYMBOL_CONJUNCTION) ? SNKF:SNDF;
 
     fillExpression();
 
-    return ft;
+    return std::make_pair (expression, functionType);
 }
 
 void ShortFormParser::checkCorrectness()
 {
-    expression->clear();
+    expression.clear();
     variables.clear();
     removeUseless();
 
@@ -138,7 +137,7 @@ void ShortFormParser::fillExpression()
 
             op.variables.push_back(var);
         }
-       expression->push_back(op);
+       expression.push_back(op);
     }
 }
 

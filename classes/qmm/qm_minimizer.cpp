@@ -1,4 +1,5 @@
 #include "qm_minimizer.h"
+#include <iostream>
 
 QM_Minimizer::QM_Minimizer()
 {
@@ -238,11 +239,23 @@ QMExp QM_Minimizer::match(QMExp &match_exp)
     }
     Groups temp;
     toGroups(match_exp, temp);
+
+    emit sendLog("%Matching@1");
+
     firstMatch(res, temp);
     delsame(temp);
+
+    emit sendLog(expToQStr(res));
+    emit sendLog("\n");
+
+    int iter = 2;
     while(!temp.empty())
     {
+        emit sendLog("%Matching@"+QString::number(iter++));
         secMatch(res, temp);
+        emit sendLog(expToQStr(res));
+        emit sendLog("\n");
+
         delsame(temp);
     }
     return res;
@@ -320,11 +333,17 @@ QMExp QM_Minimizer::cutCore(QMExp &matched_ops, QMExp &input_ops)
     {
         del_covered(core[i], input_ops);
     }
+    emit sendLog("%Core");
+    emit sendLog(expToQStr(core));
+    emit sendLog("\n");
+
     return core;
 }
 
 void QM_Minimizer::sort_implicants(QMExp &matched_ops, vector<int> &rating, int first, int last)
 {
+    if (rating.size()==0) return;
+
     //qsort for implicants
     int f = first;
     int l = last;
@@ -377,6 +396,7 @@ QMExp QM_Minimizer::getOptimalCover(QMExp &matched_ops, QMExp &input_ops)
 
     vector<int> rating;
     rating.resize(matched_ops.size());
+
     for(int i=0; i<(int)rating.size(); i++)
     {
         rating[i] = 0;
@@ -399,6 +419,7 @@ QMExp QM_Minimizer::getOptimalCover(QMExp &matched_ops, QMExp &input_ops)
             }
         }
     }
+
     sort_implicants(matched_ops, rating, 0, (int)matched_ops.size()-1);
     del_dupl_implicants(matched_ops, input_ops);
     while(!input_ops.empty() && !matched_ops.empty())
@@ -407,6 +428,11 @@ QMExp QM_Minimizer::getOptimalCover(QMExp &matched_ops, QMExp &input_ops)
         res.push_back(matched_ops[0]);
         matched_ops.erase(matched_ops.begin());
     }
+
+    emit sendLog("%Coverage");
+    emit sendLog(expToQStr(res));
+    emit sendLog("\n");
+
     return res;
 }
 
@@ -457,17 +483,43 @@ QString QM_Minimizer::expToQStr(QMExp &exp)
 
 QString QM_Minimizer::minimize(QString input)
 {
-    parser = createParser();
-    std::tie(curr_exp, curr_exp_Type) = parser->parse(input);
+    emit sendCondition("%ConditionParsing");
 
+    parser = createParser();
+
+    try
+    {
+        std::tie(curr_exp, curr_exp_Type) = parser->parse(input);
+    }
+    catch (InvalidFunctionException e)
+    {
+        emit sendCondition("%ConditionError");
+        emit sendLog(QString::fromStdString(e.getError()));
+        return "";
+    }
+
+    emit sendLog("%Parsing");
+    emit sendLog(expToQStr(curr_exp));
+    emit sendLog("\n");
+
+    emit sendCondition("%ConditionMatch");
     QMExp matched_exp = match(curr_exp);
 
+    emit sendCondition("%ConditionCore");
     QMExp result = cutCore(matched_exp, curr_exp);
+
+    emit sendCondition("%ConditionCoverage");
     QMExp cover = getOptimalCover(matched_exp, curr_exp);
+
     for(int i=0; i<(int)cover.size(); i++)
     {
         result.push_back(cover[i]);
     }
+
+    emit sendCondition("%ConditionReady");
+
+    emit sendLog("%Result");
+    emit sendLog(expToQStr(result));
 
     return expToQStr(result);
 }

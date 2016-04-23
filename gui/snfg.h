@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "ui_snfg.h"
 #include "classes/snf_minimizer/snf_minimizer.h"
+#include "classes/qmm/qm_minimizer.h"
 #include "classes/localizator/localizator.h"
 
 #include <QTime>
@@ -26,9 +27,13 @@ public:
     ~SNFG();
 
 private slots:
-    void sleep (unsigned int ms);
+    void sleep (int ms);
 
     void on_minimizeButton_clicked();
+
+    void minimizeAlgebraic();
+    void minimizeQuine();
+
     void on_stepsButton_clicked();
 
     void langEn_clicked();
@@ -42,6 +47,10 @@ private:
     bool logShown = false;
 
     void setLocale (QString locale);
+
+private slots:
+    void getCondition(QString condition);
+    void getLog(QString log);
 };
 
 #endif // SNFG_H

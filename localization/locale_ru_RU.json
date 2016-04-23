@@ -1,5 +1,8 @@
 ﻿{
 		"Title": "SNF Minimizer {0}",
+        "MethodMenu": "Метод",
+        "AlgebraicMethod": "Алгебраических преобразований",
+        "QuineMethod": "Квайна Мак-Класки",
         "HelpMenu": "Помощь",
         "UserGuideAction": "Справка",
         "InputLabel": "Функция ввода:",
@@ -12,10 +15,14 @@
         "ConditionMatch": "Склейка...",
         "ConditionNessessity": "Проверка избыточности...",
         "ConditionReady": "Готово.",
+        "ConditionCore": "Нахождение ядра...",
+        "ConditionCoverage": "Нахождение оптимального покрытия...",
 
 		"LogTitle": "Лог",
         "Parsing": "Исходная фукция:",
         "Matching": "Склейка №{0}",
+        "Coverage": "Покрытие:",
+        "Core": "Ядро:",
         "Result": "Результат:",
 
 

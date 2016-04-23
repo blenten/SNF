@@ -227,7 +227,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuLanguage">
@@ -243,8 +243,16 @@
     </property>
     <addaction name="actionUguide"/>
    </widget>
-   <addaction name="menuLanguage"/>
+   <widget class="QMenu" name="menuMethod">
+    <property name="title">
+     <string>Method</string>
+    </property>
+    <addaction name="actionAlgebraicManupulation"/>
+    <addaction name="actionQuineMcCluskey"/>
+   </widget>
+   <addaction name="menuMethod"/>
    <addaction name="menuHelp"/>
+   <addaction name="menuLanguage"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionUguide">
@@ -260,6 +268,25 @@
   <action name="actionRu">
    <property name="text">
     <string>Русский</string>
+   </property>
+  </action>
+  <action name="actionAlgebraicManupulation">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Algebraic Manupulation</string>
+   </property>
+  </action>
+  <action name="actionQuineMcCluskey">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Quine-McCluskey</string>
    </property>
   </action>
  </widget>

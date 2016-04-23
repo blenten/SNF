@@ -361,8 +361,35 @@
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuMethod">
+    <property name="title">
+     <string>Method</string>
+    </property>
+    <addaction name="actionAlgebraicManipulation"/>
+    <addaction name="actionQuineMcCluskey"/>
+   </widget>
+   <addaction name="menuMethod"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionAlgebraicManipulation">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Algebraic Manipulation</string>
+   </property>
+  </action>
+  <action name="actionQuineMcCluskey">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Quine-McCluskey</string>
+   </property>
+  </action>
  </widget>
  <tabstops>
   <tabstop>downVariablesNumber</tabstop>

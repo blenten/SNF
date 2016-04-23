@@ -1,12 +1,27 @@
 #include "snf_parserfacade.h"
 
-FunctionType SNF_ParserFacade::parse(string input, Expression &output)
+std::pair<Expression, FunctionType> SNF_ParserFacade::parse(string input)
 {
-    Parser* parser = getParser(input);
+    Parser* parser = getParser(input);    
+    Expression output;
+    FunctionType ft;
 
-    FunctionType ft = parser->parse(input,output);
+    std::tie(output, ft) = parser->parse(input);
+
     delete parser;
-    return ft;
+    return std::make_pair(output, ft);
+}
+
+std::pair<QMExp, FunctionType> SNF_ParserFacade::parse(QString input)
+{
+    Parser* parser = getParser(input.toStdString());
+
+    Expression output;
+    FunctionType ft;
+    std::tie (output, ft) = parser->parse(input.toStdString());
+
+    delete parser;
+    return std::make_pair(parser->expressionToQMExp(output), ft);
 }
 
 FunctionInputForm SNF_ParserFacade::getFunctionInputForm(string input)
@@ -17,21 +32,6 @@ FunctionInputForm SNF_ParserFacade::getFunctionInputForm(string input)
     if (getSymbolType(input[i]) == SYMBOL_CONJUNCTION || getSymbolType(input[i]) == SYMBOL_DISJUNCTION )
         return FORM_SHORT;
     return FORM_EXPANDED;
-}
-
-pair<QMExp, FunctionType> SNF_ParserFacade::parse(QString input)
-{
-    pair<QMExp, FunctionType> res;
-
-    Parser* parser = getParser(input.toStdString());
-    Expression ex;
-
-    res.second = parser->parse(input.toStdString(), ex);
-    res.first = parser->expressionToQMExp(ex);
-
-    delete parser;
-
-    return res;
 }
 
 Parser* SNF_ParserFacade::getParser(std::string input)

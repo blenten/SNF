@@ -6,6 +6,7 @@
 #include "../Types/types.h"
 #include <cstdint>
 #include <cmath>
+#include <tuple>
 
 #include "../qmm/qm_operand.h"
 
@@ -16,18 +17,20 @@
 //inverse: x1!x2!x3 as conjunction
 //all spaces and unused symbols will be removed
 //double inversions will be removed and replaced by conjunction symbol
-//function can be inputted in short form (e.g. +(1,3,5) means !x1*!x2*x3 + !x1*x2*x3 + x1*!x2*x3)
+//function can be input in a short form (e.g. +(1,3,5) means !x1*!x2*x3 + !x1*x2*x3 + x1*!x2*x3)
 
 class Parser
 {
 protected:
     std::string _input;
 
-    Expression *expression;
+    Expression expression;
+    FunctionType functionType;
+
     std::vector <std::string> variables;
 
 public:
-    virtual FunctionType parse (std::string input, Expression &output) = 0;
+    virtual std::pair<Expression, FunctionType>parse (std::string input) = 0;
     QMExp expressionToQMExp(Expression& input);
 
     virtual ~Parser();

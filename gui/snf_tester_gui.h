@@ -30,8 +30,10 @@ private:
     Ui::SNF_Tester_gui *ui;
     SNF_Tester tester;
     QThread testerThread;
+
     void setInputValidators();
     void setTesterData();
+    void getMethod();
 };
 
 #endif // SNF_TESTER_GUI_H

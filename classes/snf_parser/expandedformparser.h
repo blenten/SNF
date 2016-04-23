@@ -22,9 +22,9 @@ private:
     void removeUseless();
     void checkBrackets();
     void insertConjunctionSymbols();
-    void checkInversions();
+    void checkInversions();  
 
-    FunctionType parseExpandedForm();
+    void parseExpandedForm();
 
     FunctionType getVariables();
 
@@ -40,14 +40,14 @@ private:
 
     OperationState getOperationStateAfterLeftBracket(size_t index, OperationState currState);
 
-    void fillExpression(const FunctionType &ft);
+    void fillExpression();
 
     void addOperandToExpression();
 
     Variable parseVariable(std::string &currVar);
 
 public:
-    FunctionType parse (std::string input, Expression &output);
+    std::pair<Expression, FunctionType> parse (std::string input);
 };
 
 #endif // EXPANDEDFORMPARSER_H

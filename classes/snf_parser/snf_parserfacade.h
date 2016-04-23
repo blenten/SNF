@@ -10,9 +10,10 @@ FunctionInputForm getFunctionInputForm (std::string input);
 Parser* getParser(std::string input);
 
 public:
-    FunctionType parse(std::string input, Expression &output);
     virtual ~SNF_ParserFacade(){}
-    virtual pair<QMExp, FunctionType> parse(QString input);
+
+    virtual std::pair<Expression, FunctionType> parse(std::string input);
+    virtual std::pair<QMExp, FunctionType> parse(QString input);
 };
 
 #endif // SNF_PARSERDECORATOR_H

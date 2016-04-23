@@ -1,7 +1,13 @@
 #include "snf_tester.h"
 
+void SNF_Tester::setMethod(Method m)
+{
+    method = m;
+}
+
 void SNF_Tester::start()
 {
+    method = ALGEBRAIC;
     isStopped=false;
     if (checkRanges())
     {
@@ -137,11 +143,25 @@ double SNF_Tester::getMinimizingTime (std::string function)
 {
     QElapsedTimer timer;
     timer.start();
-    SNF_Tester::minimize(function);
+
+    switch(method)
+    {
+    case ALGEBRAIC:
+    {
+        SNF_Tester::minimizeAlgebraic(function);
+        break;
+    }
+    case QUINE:
+    {
+        SNF_Tester::minimizeQuine(function);
+        break;
+    }
+    }
+
     return ((double)timer.nsecsElapsed()/1000000000.0); //to seconds
 }
 
-std::string SNF_Tester::minimize(string function)
+std::string SNF_Tester::minimizeAlgebraic(string function)
 {
     SNF_Minimizer snf;
     if(snf.parse(function))
@@ -150,6 +170,13 @@ std::string SNF_Tester::minimize(string function)
     snf.match();
     snf.delUnness();
     return snf.res_toString();
+}
+
+std::string SNF_Tester::minimizeQuine(string function)
+{
+    QM_Minimizer qm;
+
+    return qm.minimize(QString::fromStdString(function)).toStdString();
 }
 
 void SNF_Tester::logHead()

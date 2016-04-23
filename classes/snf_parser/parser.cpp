@@ -20,6 +20,5 @@ QMExp Parser::expressionToQMExp(Expression &input)
 
         exp.push_back(operand);
     }
-
     return exp;
 }

@@ -12,7 +12,7 @@ TARGET = SNF_lib
 TEMPLATE = lib
 
 DEFINES += SNF_LIB_LIBRARY
-DEFINES += SNF_version=\\"1.2\\"
+DEFINES += SNF_version=\\"2.0\\"
 
 SOURCES += \
     classes/Exceptions/invalidfunctionexception.cpp \
@@ -21,9 +21,10 @@ SOURCES += \
     classes/snf_parser/parser.cpp \
     classes/snf_parser/shortformparser.cpp \
     classes/snf_parser/snf_parserfacade.cpp \
-    classes/Types/types.cpp \
+    classes/types/types.cpp \
     classes/operand.cpp \
-    classes/qmm/qm_operand.cpp
+    classes/qmm/qm_operand.cpp \
+    classes/qmm/qm_minimizer.cpp
 
 
 HEADERS += \
@@ -33,10 +34,11 @@ HEADERS += \
     classes/snf_parser/parser.h \
     classes/snf_parser/shortformparser.h \
     classes/snf_parser/snf_parserfacade.h \
-    classes/Types/types.h \
+    classes/types/types.h \
     classes/lvar.h \
     classes/operand.h \
-    classes/qmm/qm_operand.h
+    classes/qmm/qm_operand.h \
+    classes/qmm/qm_minimizer.h
 
 
 unix {

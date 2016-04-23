@@ -18,6 +18,10 @@ void Localizator::localize(SNFG *window)
     window->ui->minimizeButton->setText(translate("%MinimizeButton"));
     window->ui->stepsButton->setText(translate("%StepsButton"));
     window->ui->conditionLabel->setText(translate("%ConditionDefault"));
+    window->ui->menuMethod->setTitle(translate("%MethodMenu"));
+    window->ui->menuMethod->actions().at(0)->setText(translate("%AlgebraicMethod"));
+    window->ui->menuMethod->actions().at(1)->setText(translate("%QuineMethod"));
+
     window->ui->menuHelp->setTitle(translate("%HelpMenu"));
     window->ui->menuHelp->actions().at(0)->setText(translate("%UserGuideAction"));
 

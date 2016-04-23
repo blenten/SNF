@@ -33,6 +33,4 @@ enum SymbolType
 
 SymbolType  getSymbolType(char symb);
 
-
-
 #endif //TYPES_H

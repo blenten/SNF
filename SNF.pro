@@ -16,7 +16,7 @@ TEMPLATE = app
 
 CONFIG += C++11
 CONFIG += qt
-DEFINES += SNF_version=\\\"1.2.5\\\"
+DEFINES += SNF_version=\\\"2.0\\\"
 
 SOURCES += main.cpp \
      gui/log.cpp \
@@ -24,14 +24,15 @@ SOURCES += main.cpp \
      classes/Exceptions/invalidfunctionexception.cpp \
      classes/snf_minimizer/snf_minimizer.cpp \
      classes/localizator/localizator.cpp \
-     classes/Types/types.cpp \
+     classes/types/types.cpp \
      classes/snf_parser/shortformparser.cpp \
      classes/snf_parser/expandedformparser.cpp \
      classes/snf_parser/parser.cpp \
      classes/snf_parser/snf_parserfacade.cpp \
      classes/operand.cpp \
      classes/qmm/qm_operand.cpp \
-    gui/snfg.cpp
+     classes/qmm/qm_minimizer.cpp \
+     gui/snfg.cpp
 
 HEADERS  += \
      gui/log.h \
@@ -40,14 +41,15 @@ HEADERS  += \
      classes/snf_minimizer/snf_minimizer.h \
      classes/lvar.h \
      classes/localizator/localizator.h \
-     classes/Types/types.h \
+     classes/types/types.h \
      classes/snf_parser/shortformparser.h \
      classes/snf_parser/expandedformparser.h \
      classes/snf_parser/parser.h \
      classes/snf_parser/snf_parserfacade.h \
      classes/operand.h \
      classes/qmm/qm_operand.h \
-    gui/snfg.h
+     classes/qmm/qm_minimizer.h \
+     gui/snfg.h
 
 FORMS    += \
     gui/log.ui \

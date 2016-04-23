@@ -2,15 +2,18 @@
 #define KM_MINIMIZER_H
 
 #include <tuple>
+#include <QObject>
 
 #include "../snf_parser/snf_parserfacade.h"
 #include "qm_operand.h"
 
-class QM_Minimizer
+class QM_Minimizer: public QObject
 {
+      Q_OBJECT
+
 public:
     QM_Minimizer();
-    ~QM_Minimizer();
+     ~QM_Minimizer();
 
     inline QMExp get_currexp(){ return curr_exp; }
 
@@ -48,6 +51,9 @@ private:
     FunctionType curr_exp_Type;
     QMExp curr_exp;
 
+signals:
+    void sendCondition(QString condition);
+    void sendLog(QString log);
 };
 
 #endif // KM_MINIMIZER_H

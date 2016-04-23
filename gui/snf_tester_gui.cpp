@@ -8,6 +8,12 @@ SNF_Tester_gui::SNF_Tester_gui(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowTitle("SNF Tester " + QString(SNF_version));
 
+    QActionGroup* methodGroup = new QActionGroup(this);
+
+    QList<QAction*> methodActions = ui->menuMethod->actions();
+    for (auto i = methodActions.begin();i<methodActions.end();i++)
+        methodGroup->addAction(*i);
+
     setInputValidators();
     connect (&tester, SIGNAL(onInfoSend(QString)), this, SLOT(getInfo(QString)));
 
@@ -32,7 +38,16 @@ void SNF_Tester_gui::setInputValidators()
 void SNF_Tester_gui::on_testButt_clicked()
 {
     setTesterData();
+    getMethod();
     testerThread.start();
+}
+
+void SNF_Tester_gui::getMethod()
+{
+    if (ui->actionAlgebraicManipulation->isChecked())
+        tester.setMethod(ALGEBRAIC);
+    else if (ui->actionQuineMcCluskey->isChecked())
+        tester.setMethod(QUINE);
 }
 
 void SNF_Tester_gui::setTesterData()

@@ -1,12 +1,19 @@
 #ifndef SNF_TESTER_H
 #define SNF_TESTER_H
 #include "../snf_minimizer/snf_minimizer.h"
+#include "../qmm/qm_minimizer.h"
 #include <QDateTime>
 #include <cstdlib>
 #include <iomanip>
 #include <fstream>
 #include <QElapsedTimer>
 #include <QObject>
+
+enum Method
+{
+    ALGEBRAIC,
+    QUINE
+};
 
 class SNF_Tester: public QObject
 {    
@@ -17,6 +24,8 @@ private:
 
     double stepsCount;
     bool isStopped;
+
+    Method method;
 
     std::vector<std::string> generatedOperands;
     std::vector <quint64> maxOperandsNumbers; //max numbers of operands for each variables number to avoid repeating (equals 2 to the number power)
@@ -33,7 +42,8 @@ private:
 
     double getMinimizingTime (std::string function);
 
-    std::string minimize (std::string function);
+    std::string minimizeAlgebraic (std::string function);
+    std::string minimizeQuine (std::string function);
 
     void logHead();
 
@@ -55,6 +65,8 @@ public:
     std::string logPath;
 
     std::string generateFunction (quint64 variablesNumber, quint64 operandsNumber, FunctionType ft);
+
+    void setMethod(Method m);
 
 signals:
     void onInfoSend(QString info);
