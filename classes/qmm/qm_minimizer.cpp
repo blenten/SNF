@@ -308,14 +308,16 @@ QMExp QM_Minimizer::cutCore(QMExp &matched_ops, QMExp &input_ops)
 {
     QMExp core;
     core.clear();
-    for(int i=0; i<(int)input_ops.size(); i++)
+    QMExp  temp = input_ops;
+    input_ops.clear();
+    while(!temp.empty())
     {
         int match_ops_cover = 0;
         int cover_index = -1; //for only 1 cover case
 
         for(int j=0; j<(int)matched_ops.size(); j++)
         {
-            if(covers(matched_ops[j], input_ops[i]))
+            if(covers(matched_ops[j], temp[0]))
             {
                 match_ops_cover++;
                 cover_index = j;
@@ -324,14 +326,16 @@ QMExp QM_Minimizer::cutCore(QMExp &matched_ops, QMExp &input_ops)
         if(match_ops_cover==1)
         {
             core.push_back(matched_ops[cover_index]);
+            del_covered(matched_ops[cover_index], temp);
             matched_ops.erase(matched_ops.begin()+cover_index);
+        }else
+        {
+            input_ops.push_back(temp[0]);
+            temp.erase(temp.begin());
         }
     }
 
-    for(int i=0; i<(int)core.size(); i++)
-    {
-        del_covered(core[i], input_ops);
-    }
+    //FIXME: move emits from cutCore to minimize
     emit sendLog("%Core");
     emit sendLog(expToQStr(core));
     emit sendLog("\n");
@@ -484,10 +488,10 @@ QString QM_Minimizer::expToQStr(QMExp &exp)
 QString QM_Minimizer::minimize(QString input)
 {
     emit sendCondition("%ConditionParsing");
+    int progress = 0;   
 
-    int progress = 0;
+    //PARSE
     parser = createParser();
-
     try
     {
         std::tie(curr_exp, curr_exp_Type) = parser->parse(input);
@@ -498,32 +502,41 @@ QString QM_Minimizer::minimize(QString input)
         emit sendLog(QString::fromStdString(e.getError()));
         return "";
     }
-
     emit sendLog("%Parsing");
     emit sendLog(expToQStr(curr_exp));
     emit sendLog("\n");
     progress += 20;
-    sendProgress(progress);
+    emit sendProgress(progress);
     emit sendSleep(50 + qrand()%25);
 
+    //MATCH
     emit sendCondition("%ConditionMatch");
+
     QMExp matched_exp = match(curr_exp);
+
     progress += 20;
-    sendProgress(progress);
+    emit sendProgress(progress);
     emit sendSleep(50 + qrand()%25);
 
+    //CUT CORE
     emit sendCondition("%ConditionCore");
+
     QMExp result = cutCore(matched_exp, curr_exp);
+
     progress += 20;
-    sendProgress(progress);
+    emit sendProgress(progress);
     emit sendSleep(50 + qrand()%25);
 
+    //GET COVER
     emit sendCondition("%ConditionCoverage");
+
     QMExp cover = getOptimalCover(matched_exp, curr_exp);
+
     progress += 20;
-    sendProgress(progress);
+    emit sendProgress(progress);
     emit sendSleep(50 + qrand()%25);
 
+    //RESULT
     for(int i=0; i<(int)cover.size(); i++)
     {
         result.push_back(cover[i]);
@@ -531,7 +544,7 @@ QString QM_Minimizer::minimize(QString input)
 
     emit sendCondition("%ConditionReady");
     progress += 20;
-    sendProgress(progress);
+    emit sendProgress(progress);
 
     emit sendLog("%Result");
     emit sendLog(expToQStr(result));
