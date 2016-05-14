@@ -348,9 +348,11 @@ void QMMtest::cutCoreTest_data()
     QTest::addColumn<QString>("input_ops");
     QTest::addColumn<QString>("matched_ops");
     QTest::addColumn<QString>("result");
-    QTest::addColumn<QString>("res_exp");
+    QTest::addColumn<QString>("res_input_exp");
+    QTest::addColumn<QString>("res_matched_exp");
 
-    QTest::newRow("all core")<<"001+000+101+111"<<"0-0+11-+-01"<<"-01 0-0 11-"<< "";
+    QTest::newRow("all core")<<"001+000+101+111"<<"0-0+11-+-01"<<"-01 0-0 11-"<< ""<< "";
+    QTest::newRow("t1")<<"000+010+101+110+111"<<"1-1+0-0+-10+11-"<<"0-0 1-1"<<"110"<<"-10 11-";
 }
 
 void QMMtest::cutCoreTest()
@@ -358,7 +360,8 @@ void QMMtest::cutCoreTest()
     QFETCH(QString, input_ops);
     QFETCH(QString, matched_ops);
     QFETCH(QString, result);
-    QFETCH(QString, res_exp);
+    QFETCH(QString, res_input_exp);
+    QFETCH(QString, res_matched_exp);
 
     QMMinimizerT qmm;
     QMExp test_input = strToExp(input_ops);
@@ -366,7 +369,9 @@ void QMMtest::cutCoreTest()
     QMExp test_exp = qmm.cutCore(test_matched_ops, test_input);
 
     QCOMPARE(expToStr(test_exp), result);
-    QCOMPARE(expToStr(test_input), res_exp);
+    QCOMPARE(expToStr(test_input), res_input_exp);
+    QCOMPARE(expToStr(test_matched_ops), res_matched_exp);
+
 }
 
 
@@ -402,8 +407,8 @@ void QMMtest::minimizeTest_data()
     QTest::addColumn<int>("ftype");
     QTest::addColumn<QString>("result");
 
-    QTest::newRow("0,1,2,5 SDNF")<<"000+001+010+101"<<static_cast<int>(SNDF)<<"!x1!x3+!x2x3";
-    QTest::newRow ("0") << "000+010+101+110+111" << static_cast<int>(SNDF)<<"x1x3+!x1!x3+x2!x3";
+    QTest::newRow("0,1,2,5 SDNF")<<"000+001+010+101"<<static_cast<int>(SNDF)<<"!x1!x3+!x2x3+!x1!x2";
+    QTest::newRow ("0,2,5,6,7 SDNF") << "000+010+101+110+111" << static_cast<int>(SNDF)<<"!x1!x3+x1x3+x2!x3";
 }
 
 void QMMtest::minimizeTest()
