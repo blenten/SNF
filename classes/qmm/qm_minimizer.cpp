@@ -458,7 +458,11 @@ QString QM_Minimizer::expToQStr(QMExp &exp)
                    }
                    result.push_back('x');
                    result.push_back(QString::number(j+1));
-                   if (curr_exp_Type==SNKF && j<opsize-1) result.push_back("+");
+                   if (curr_exp_Type==SNKF && j<opsize-1)
+                   {
+                       if ((exp[i].vars[j+1] == '-' && j+1 == opsize-1)) break;
+                       result.push_back("+");
+                   }
                }
                if(i!=(int)exp.size()-1)
                {
