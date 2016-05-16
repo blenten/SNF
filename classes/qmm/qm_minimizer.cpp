@@ -335,6 +335,11 @@ QMExp QM_Minimizer::cutCore(QMExp &matched_ops, QMExp &input_ops)
         }
     }
 
+    for(int i=0; i<(int)core.size(); i++)
+    {
+        del_covered(core[i], input_ops);
+    }
+
     //FIXME: move emits from cutCore to minimize
     emit sendLog("%Core");
     emit sendLog(expToQStr(core));
