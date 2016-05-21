@@ -159,7 +159,7 @@ void SNF_Tester::logHead()
 {
     logStream.open(logPath);
     logStream << stepsCount << " functions will be checked\n";
-    logStream << "variables\toperands\tAlgebraic\tQuine\n";
+    logStream << "variables\toperands\tAlgebraic, s\tQuine, s\n";
     logStream.close();
 }
 
@@ -168,8 +168,8 @@ void SNF_Tester::logCurrentFunction (int currentVariablesNumber, int currentOper
     logStream.open(logPath, std::ios_base::app);
     logStream << std::setw(9) << currentVariablesNumber << "\t";
     logStream << std::setw(8) << currentOperandsNumber << "\t";
-    logStream << std::to_string(currentTimeAlgebraic) << "s\t";
-    logStream << std::to_string(currentTimeQuine) << "s\n";
+    logStream << std::to_string(currentTimeAlgebraic) << "\t\t";
+    logStream << std::to_string(currentTimeQuine) << "\n";
     logStream.close();
 }
 
