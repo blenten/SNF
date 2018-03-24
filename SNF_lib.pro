@@ -15,7 +15,7 @@ DEFINES += SNF_LIB_LIBRARY
 DEFINES += SNF_version=\\"2.0\\"
 
 SOURCES += \
-    classes/Exceptions/invalidfunctionexception.cpp \
+    classes/exceptions/invalidfunctionexception.cpp \
     classes/snf_minimizer/snf_minimizer.cpp \
     classes/snf_parser/expandedformparser.cpp \
     classes/snf_parser/parser.cpp \
@@ -28,7 +28,7 @@ SOURCES += \
 
 
 HEADERS += \
-    classes/Exceptions/invalidfunctionexception.h \
+    classes/exceptions/invalidfunctionexception.h \
     classes/snf_minimizer/snf_minimizer.h \
     classes/snf_parser/expandedformparser.h \
     classes/snf_parser/parser.h \

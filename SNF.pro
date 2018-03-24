@@ -1,62 +1,19 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2015-05-30T20:45:12
-#
-#-------------------------------------------------
+TEMPLATE = subdirs
 
+CONFIG += ordered
+SUBDIRS += src app tester
 
-#debug project
+CONFIG(debug, debug|release) {
+    SUBDIRS += tests
+    tests.depends = src
+}
 
-QT       += core gui
+win32: copydata.commands = $(COPY_DIR) $$shell_path($$PWD/help) $$shell_path($$OUT_PWD/app/help)
+!win32: copydata.commands = $(COPY_DIR) $$shell_path($$PWD/help) $$shell_path($$OUT_PWD/app)
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+first.depends = $(first) copydata
 
-TARGET = SNFG
-TEMPLATE = app
+export(first.depends)
+export(copydata.commands)
 
-CONFIG += C++11
-CONFIG += qt
-DEFINES += SNF_version=\\\"2.0\\\"
-
-SOURCES += main.cpp \
-     gui/log.cpp \
-     gui/help.cpp \
-     classes/Exceptions/invalidfunctionexception.cpp \
-     classes/snf_minimizer/snf_minimizer.cpp \
-     classes/localizator/localizator.cpp \
-     classes/types/types.cpp \
-     classes/snf_parser/shortformparser.cpp \
-     classes/snf_parser/expandedformparser.cpp \
-     classes/snf_parser/parser.cpp \
-     classes/snf_parser/snf_parserfacade.cpp \
-     classes/operand.cpp \
-     classes/qmm/qm_operand.cpp \
-     classes/qmm/qm_minimizer.cpp \
-     gui/snfg.cpp
-
-HEADERS  += \
-     gui/log.h \
-     gui/help.h \
-     classes/Exceptions/invalidfunctionexception.h \
-     classes/snf_minimizer/snf_minimizer.h \
-     classes/lvar.h \
-     classes/localizator/localizator.h \
-     classes/types/types.h \
-     classes/snf_parser/shortformparser.h \
-     classes/snf_parser/expandedformparser.h \
-     classes/snf_parser/parser.h \
-     classes/snf_parser/snf_parserfacade.h \
-     classes/operand.h \
-     classes/qmm/qm_operand.h \
-     classes/qmm/qm_minimizer.h \
-     gui/snfg.h
-
-FORMS    += \
-    gui/log.ui \
-    gui/help.ui \
-    gui/snfg.ui
-
-DISTFILES +=
-
-RESOURCES += \
-    localization/locale.qrc
+QMAKE_EXTRA_TARGETS += first copydata
